@@ -15,36 +15,22 @@ export default [
       },
     ],
   },
+  // 首页
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
+    path: '/home',
+    name: 'home',
+    icon: 'HomeOutlined',
+    component: './home',
   },
   {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
+    path: '/classroom',
+    name: 'classroom',
+    icon: 'BulbOutlined',
+    component: './classroom',
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/home',
   },
   {
     component: './404',
