@@ -1,22 +1,28 @@
 import React from 'react';
-import {Button, Card, Descriptions, Table} from "antd";
+import {Card} from "antd";
 import PublicTable from "@/components/Table";
+import PrepareRule from "@/pages/deal/prepare/PrepareRule";
 
-const TeamMembers = () => {
+const PrepareTable = () => {
   const dataSource = [];
   const columns = [
     {
-      title: '用户',
+      title: '期数',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '名称',
+      title: '交易类型',
       dataIndex: 'age',
       key: 'age',
     },
     {
-      title: '岗位',
+      title: '准备金账户余额(万元)',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '当期准备金调整(万元)',
       dataIndex: 'address',
       key: 'address',
     },
@@ -28,7 +34,7 @@ const TeamMembers = () => {
   ];
   return (
     <Card
-      title="团队成员"
+      title='准备金管理'
       bordered={false}
       type='inner'
     >
@@ -37,8 +43,9 @@ const TeamMembers = () => {
         columns={columns}
         bordered
       />
+      <PrepareRule/>
     </Card>
   );
 };
 
-export default TeamMembers;
+export default PrepareTable;

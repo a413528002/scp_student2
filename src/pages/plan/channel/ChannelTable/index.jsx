@@ -1,22 +1,27 @@
 import React from 'react';
-import {Button, Card, Descriptions, Table} from "antd";
+
 import PublicTable from "@/components/Table";
 
-const TeamMembers = () => {
+const ChannelTable = () => {
   const dataSource = [];
   const columns = [
     {
-      title: '用户',
+      title: '渠道名称',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '名称',
+      title: '建设周期',
       dataIndex: 'age',
       key: 'age',
     },
     {
-      title: '岗位',
+      title: '每期建设费用(万元)',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '建设状态',
       dataIndex: 'address',
       key: 'address',
     },
@@ -27,18 +32,12 @@ const TeamMembers = () => {
     },
   ];
   return (
-    <Card
-      title="团队成员"
-      bordered={false}
-      type='inner'
-    >
       <PublicTable
         dataSource={dataSource}
         columns={columns}
         bordered
       />
-    </Card>
   );
 };
 
-export default TeamMembers;
+export default ChannelTable;

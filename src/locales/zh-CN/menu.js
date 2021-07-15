@@ -2,6 +2,23 @@ export default {
   'menu.home': '首页',
   'menu.classroom': '我的课堂',
   'menu.login': '登录',
+  'menu.plan': '规划管理',
+  'menu.plan.tactic': '战略规划',
+  'menu.plan.organization': '机构建设',
+  'menu.plan.channel': '渠道建设',
+  'menu.plan.marketing': '精准营销',
+  'menu.deal': '日常交易',
+  'menu.deal.deposit': '存款抢单',
+  'menu.deal.loans': '贷款抢单',
+  'menu.deal.prepare': '准备金管理',
+  'menu.deal.provision': '拨备管理',
+  'menu.deal.deposits': '存款管理',
+  'menu.deal.loan': '贷款管理',
+
+
+
+
+
   'menu.register': '注册',
   'menu.register-result': '注册结果',
   'menu.exception.403': '403',

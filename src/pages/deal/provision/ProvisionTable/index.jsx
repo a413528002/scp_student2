@@ -1,25 +1,37 @@
 import React from 'react';
-import {Button, Card, Descriptions, Table} from "antd";
+import {Card} from "antd";
 import PublicTable from "@/components/Table";
+import ProvisionRule from "@/pages/deal/provision/ProvisionRule";
 
-const TeamMembers = () => {
+const ProvisionTable = () => {
   const dataSource = [];
   const columns = [
     {
-      title: '用户',
+      title: '期数',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '名称',
+      title: '交易类型',
       dataIndex: 'age',
       key: 'age',
     },
     {
-      title: '岗位',
+      title: '计提前余额(万元)',
       dataIndex: 'address',
       key: 'address',
     },
+    {
+      title: '计提金额(万元)',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '计提后余额(万元)',
+      dataIndex: 'address',
+      key: 'address',
+    },
+
     {
       title: '操作',
       dataIndex: 'address',
@@ -28,7 +40,7 @@ const TeamMembers = () => {
   ];
   return (
     <Card
-      title="团队成员"
+      title='拨备管理'
       bordered={false}
       type='inner'
     >
@@ -37,8 +49,9 @@ const TeamMembers = () => {
         columns={columns}
         bordered
       />
+      <ProvisionRule/>
     </Card>
   );
 };
 
-export default TeamMembers;
+export default ProvisionTable;

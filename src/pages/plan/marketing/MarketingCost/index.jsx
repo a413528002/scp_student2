@@ -1,22 +1,28 @@
 import React from 'react';
-import {Button, Card, Descriptions, Table} from "antd";
+import {Card} from "antd";
 import PublicTable from "@/components/Table";
+import MarketingCostRule from "@/pages/plan/marketing/MarketingCostRule";
 
-const TeamMembers = () => {
+const MarketingCost = () => {
   const dataSource = [];
   const columns = [
     {
-      title: '用户',
+      title: '期数',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '名称',
+      title: '存款营销费用(万元)',
       dataIndex: 'age',
       key: 'age',
     },
     {
-      title: '岗位',
+      title: '贷款营销费用(万元)',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '超额补足倍率',
       dataIndex: 'address',
       key: 'address',
     },
@@ -28,7 +34,7 @@ const TeamMembers = () => {
   ];
   return (
     <Card
-      title="团队成员"
+      title='营销费用'
       bordered={false}
       type='inner'
     >
@@ -37,8 +43,9 @@ const TeamMembers = () => {
         columns={columns}
         bordered
       />
+      <MarketingCostRule/>
     </Card>
   );
 };
 
-export default TeamMembers;
+export default MarketingCost;
