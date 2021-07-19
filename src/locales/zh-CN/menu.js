@@ -14,6 +14,19 @@ export default {
   'menu.deal.provision': '拨备管理',
   'menu.deal.deposits': '存款管理',
   'menu.deal.loan': '贷款管理',
+  'menu.financial': '金融市场',
+  'menu.financial.creditors': '债权市场',
+  'menu.financial.financing': '投融资市场',
+  'menu.finance': '财务管理',
+  'menu.finance.operation': '运营管理',
+  'menu.finance.transfer': '资金转账',
+  'menu.finance.broke': '破产管理',
+  'menu.finance.statement': '财务报表',
+  'menu.risk': '风险管理',
+  'menu.risk.handle': '操作风险',
+  'menu.risk.credit': '信用风险',
+  'menu.risk.market': '市场风险',
+  'menu.risk.regulatory': '风险监管',
 
 
 

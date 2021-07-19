@@ -121,7 +121,102 @@ export default [
     ],
 
   },
-
+  // 金融
+  {
+    path: '/financial',
+    name: 'financial',
+    icon: 'TransactionOutlined',
+    routes: [
+      {
+        path: '/financial',
+        redirect: '/financial/creditors',
+      },
+      {
+        // 债权
+        name: 'creditors',
+        path: '/financial/creditors',
+        component: './financial/creditors',
+      },
+      {
+        // 投融资
+        name: 'financing',
+        path: '/financial/financing',
+        component: './financial/financing',
+      },
+    ],
+  },
+  // 财务
+  {
+    path: '/finance',
+    name: 'finance',
+    icon: 'AccountBookOutlined',
+    routes: [
+      {
+        path: '/finance',
+        redirect: '/finance/operation',
+      },
+      {
+        // 运营
+        name: 'operation',
+        path: '/finance/operation',
+        component: './finance/operation',
+      },
+      {
+        // 资金
+        name: 'transfer',
+        path: '/finance/transfer',
+        component: './finance/transfer',
+      },
+      {
+        // 破产
+        name: 'broke',
+        path: '/finance/broke',
+        component: './finance/broke',
+      },
+      {
+        // 报表
+        name: 'statement',
+        path: '/finance/statement',
+        component: './finance/statement',
+      },
+    ],
+  },
+  // 风险
+  {
+    path: '/risk',
+    name: 'risk',
+    icon: 'AccountBookOutlined',
+    routes: [
+      {
+        path: '/risk',
+        redirect: '/risk/handle',
+      },
+      {
+        // 操作
+        name: 'handle',
+        path: '/risk/handle',
+        component: './risk/handle',
+      },
+      {
+        // 信用
+        name: 'credit',
+        path: '/risk/credit',
+        component: './risk/credit',
+      },
+      {
+        // 市场
+        name: 'market',
+        path: '/risk/market',
+        component: './risk/market',
+      },
+      {
+        // 监管
+        name: 'regulatory',
+        path: '/risk/regulatory',
+        component: './risk/regulatory',
+      },
+    ]
+  },
   {
     component: './404',
   },
