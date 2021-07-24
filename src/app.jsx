@@ -1,10 +1,9 @@
-import { PageLoading } from '@ant-design/pro-layout';
-import { notification } from 'antd';
-import { history, Link } from 'umi';
+import {PageLoading} from '@ant-design/pro-layout';
+import {notification} from 'antd';
+import {history} from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -19,8 +18,7 @@ export const initialStateConfig = {
 export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
-      return msg.data;
+      return JSON.parse(sessionStorage.getItem('STUDENT_INFO'));
     } catch (error) {
       history.push(loginPath);
     }
@@ -36,7 +34,6 @@ export async function getInitialState() {
       settings: {},
     };
   }
-
   return {
     fetchUserInfo,
     settings: {},
@@ -97,6 +94,7 @@ export const request = {
 }; // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
 export const layout = ({ initialState }) => {
+  console.log(initialState)
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,

@@ -5,13 +5,13 @@ import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import { outLogin } from '@/services/ant-design-pro/api';
+import {getLogout} from "@/services/login";
 
 /**
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  await outLogin();
+  await getLogout();
   const { query = {}, pathname } = history.location;
   const { redirect } = query; // Note: There may be security issues, please note
 
@@ -23,6 +23,8 @@ const loginOut = async () => {
       }),
     });
   }
+  // 退出登录后清空localStorage
+  localStorage.clear()
 };
 
 const AvatarDropdown = ({ menu }) => {
@@ -59,22 +61,23 @@ const AvatarDropdown = ({ menu }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+
+  if (!currentUser || !currentUser.nickname) {
     return loading;
   }
 
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
+      {/*{menu && (
         <Menu.Item key="center">
           <UserOutlined />
           个人中心
         </Menu.Item>
-      )}
+      )}*/}
       {menu && (
         <Menu.Item key="settings">
           <SettingOutlined />
-          个人设置
+          修改密码
         </Menu.Item>
       )}
       {menu && <Menu.Divider />}
@@ -88,8 +91,8 @@ const AvatarDropdown = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+        {/*<Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />*/}
+        <span className={`${styles.name} anticon`}>{currentUser.nickname}</span>
       </span>
     </HeaderDropdown>
   );

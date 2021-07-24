@@ -20,7 +20,7 @@ const GlobalHeaderRight = () => {
 
   return (
     <Space className={className}>
-      <Avatar />
+      <Avatar menu/>
       <SelectLang className={styles.action} />
     </Space>
   );

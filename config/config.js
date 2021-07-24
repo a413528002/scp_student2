@@ -6,6 +6,9 @@ import proxy from './proxy';
 import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
+  define:{
+    NODE_API:'/api',
+  },
   hash: true,
   antd: {},
   dva: {
@@ -48,7 +51,7 @@ export default defineConfig({
   },
   // Fast Refresh 热更新
   fastRefresh: {},
-  openAPI: [
+  /*openAPI: [
     {
       requestLibPath: "import { request } from 'umi'",
       // 或者使用在线的版本
@@ -61,11 +64,11 @@ export default defineConfig({
       schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
       projectName: 'swagger',
     },
-  ],
+  ],*/
   nodeModulesTransform: {
     type: 'none',
   },
-  mfsu: {},
+  // mfsu: {},
   webpack5: {},
   exportStatic: {},
 });
