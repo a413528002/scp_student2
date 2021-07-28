@@ -100,11 +100,12 @@ const codeMessage = {
 export const request = {
   errorHandler: async (error) => {
     const {response} = error;
-    const {errMsg} = await response.json()
+
 
     if (response && response.status) {
       const errorText = codeMessage[response.status] || response.statusText;
       const {status} = response;
+      // const {errMsg} = await response.json()
       // 401需要重新登录
       if (status === 401) {
         // 如果不是登录页面 跳转去登录页
@@ -122,13 +123,12 @@ export const request = {
         message: '网络异常',
       });
     }
-
+    return response;
     throw error;
   },
 }; // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
 export const layout = ({initialState}) => {
-  console.log(initialState)
   return {
     rightContentRender: () => <RightContent/>,
     disableContentMargin: false,

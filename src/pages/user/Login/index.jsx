@@ -4,10 +4,10 @@ import {
 } from '@ant-design/icons';
 import {Alert, message, Tabs} from 'antd';
 import React, {useEffect, useState} from 'react';
-import ProForm, {ProFormText} from '@ant-design/pro-form';
+import ProForm, {ProFormText, ProFormSelect} from '@ant-design/pro-form';
 import {useIntl, Link, history, FormattedMessage, SelectLang, useModel, connect} from 'umi';
 import Footer from '@/components/Footer';
-import {getLogin} from '@/services/login';
+import {getLogin, getQueryTenantOptions} from '@/services/login';
 import styles from './index.less';
 
 const LoginMessage = ({content}) => (
@@ -21,26 +21,11 @@ const LoginMessage = ({content}) => (
   />
 );
 
-const Login = (props) => {
-  const {dispatch, loginQueryTenantOptions} = props;
+const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const [userLoginState, setUserLoginState] = useState({});
   const {initialState, setInitialState} = useModel('@@initialState');
-  const [queryTenantOptions={}] = loginQueryTenantOptions
-  /**
-   * 获取登录参数 id
-   * tenantId
-   */
-  const {id} = queryTenantOptions && queryTenantOptions
   const intl = useIntl();
-  /**
-   * 获取租户信息
-   */
-  useEffect(() => {
-    dispatch({
-      type: 'login/queryTenantOptions'
-    })
-  }, [])
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -54,15 +39,15 @@ const Login = (props) => {
     setSubmitting(true);
     try {
       // 登录
-      const response = await getLogin({...values, tenantId: id});
-      console.log(response)
+      const response = await getLogin({...values});
+      // console.log(response)
 
       if (response.status === undefined) {
         const defaultloginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
-        sessionStorage.setItem('STUDENT_INFO',JSON.stringify(response))
+        sessionStorage.setItem('STUDENT_INFO', JSON.stringify(response))
         message.success(defaultloginSuccessMessage);
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
@@ -87,6 +72,20 @@ const Login = (props) => {
   };
 
   const {status} = userLoginState;
+  // 获取下拉列表datalist
+  const request = async () =>  {
+    //返回的select网络请求
+    let params = await getQueryTenantOptions();
+    let res = [];
+    params.map(item =>{
+      let temp = {};
+      temp['label'] = item.name;
+      temp['value'] = item.id;
+      res.push(temp)
+    });
+    return res
+  }
+
   return (
     <div className={styles.container}>
       {/*国际化*/}
@@ -127,7 +126,7 @@ const Login = (props) => {
                 },
               },
             }}
-            onFinish={async (values) => {
+            onFinish={(values) => {
               handleSubmit(values);
             }}
           >
@@ -151,6 +150,16 @@ const Login = (props) => {
             )}
 
             <>
+              <ProFormSelect
+                name="tenantId"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined className={styles.prefixIcon}/>,
+                }}
+                request={request}
+                placeholder="请选择登录账号"
+                rules={[{required: true, message: '请选择登录账号'}]}
+              />
               <ProFormText
                 name="username"
                 fieldProps={{
@@ -220,4 +229,4 @@ const Login = (props) => {
   );
 };
 
-export default connect(({login}) => ({loginQueryTenantOptions: login.loginQueryTenantOptions}))(Login);
+export default connect()(Login);

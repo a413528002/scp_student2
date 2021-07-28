@@ -6,7 +6,7 @@ const LoginModel = {
     loginQueryTenantOptions: []
   },
   effects: {
-    // 获取用户信息
+    // 获取用户信息 暂时不用
     * queryTenantOptions({payload}, {call, put}) {
       const response = yield call(getQueryTenantOptions, payload)
       if (response.status === undefined) {
