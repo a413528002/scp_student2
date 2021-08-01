@@ -24,6 +24,7 @@ const LoginMessage = ({content}) => (
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const [userLoginState, setUserLoginState] = useState({});
+  const [selectDefaultValue, setSelectDefaultValue] = useState(undefined);
   const {initialState, setInitialState} = useModel('@@initialState');
   const intl = useIntl();
 
@@ -59,9 +60,9 @@ const Login = () => {
         // const {query} = history.location;
         // const {redirect} = query;
         // history.push(redirect || '/');
-        if (auth&&auth==='STUDENT'){
+        if (auth && auth === 'STUDENT') {
           history.push('/student/home');
-        }else if(auth&&auth==='TEACHER'){
+        } else if (auth && auth === 'TEACHER') {
           history.push('/teacher/classroom');
         }
         return;
@@ -81,19 +82,21 @@ const Login = () => {
 
   const {status} = userLoginState;
   // 获取下拉列表datalist
-  const request = async () =>  {
+  const request = async () => {
     //返回的select网络请求
     let params = await getQueryTenantOptions();
     let res = [];
-    params.map(item =>{
+    params.map(item => {
       let temp = {};
       temp['label'] = item.name;
       temp['value'] = item.id;
       res.push(temp)
     });
+    const {value} = res && res[0]
+    // 设置默认选中项 未生效
+    setSelectDefaultValue(value)
     return res
   }
-
   return (
     <div className={styles.container}>
       {/*国际化*/}
@@ -118,6 +121,9 @@ const Login = () => {
 
         <div className={styles.main}>
           <ProForm
+            initialValues={{
+              "tenantId": selectDefaultValue,
+            }}
             submitter={{
               searchConfig: {
                 submitText: intl.formatMessage({

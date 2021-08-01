@@ -10,7 +10,7 @@ const ClassroomInformation = (props) => {
   // 获取当前正在进行的课堂状态
   const STUDENT_IN_CLASS = !!localStorage.getItem('STUDENT_IN_CLASS')
   // 获取学生信息 sessionStorage
-  const {nickname} = JSON.parse(sessionStorage.getItem('STUDENT_INFO'))
+  const {nickname} = JSON.parse(sessionStorage.getItem('AUTHORITIES_INFO'))
 
   // 获取当前搜索到的课堂信息 redux中的studentInClassData不存在 拿localStorage里面的
   const {
@@ -19,17 +19,21 @@ const ClassroomInformation = (props) => {
     classHourName,
     classHourStatusName,
     classHourId,
-  } = studentInClassData !== undefined ? studentInClassData : JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  } = !!studentInClassData ? studentInClassData : JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   // 学生上课的状态 redux中的studentInClassStateData不存在 拿localStorage里面的
-  const studentInClassState = studentInClassStateData !== undefined ? studentInClassStateData : localStorage.getItem('STUDENT_IN_CLASS_STATE') || ''
+  const studentInClassState = !!studentInClassStateData ? studentInClassStateData : localStorage.getItem('STUDENT_IN_CLASS_STATE')||''
   // 根据课堂编码查询课堂
   const onSearchQueryClassHourByCode = code => {
-    dispatch({
-      type: 'classroom/queryClassHourByCode',
-      payload: {
-        code
-      }
-    })
+    // input为空时不搜索
+    if (code.trim()) {
+      dispatch({
+        type: 'studentClassroom/queryClassHourByCode',
+        payload: {
+          code
+        }
+      })
+    }
+
   }
   // 加入课堂
   const joinClassHour = () => {
@@ -78,6 +82,7 @@ const ClassroomInformation = (props) => {
               style={{width: 300}}
               enterButton="查询课堂"
               loading={searchLoading}
+              allowClear
             />
 
             <Button type="primary" onClick={joinClassHour}>加入课堂</Button>
@@ -113,8 +118,8 @@ const ClassroomInformation = (props) => {
   );
 }
 
-export default connect(({classroom, loading}) => ({
-  studentInClassData: classroom.classroomStudentInClassData,
-  studentInClassStateData: classroom.classroomStudentInClassStateData,
-  searchLoading: loading.effects['classroom/queryClassHourByCode']
+export default connect(({studentClassroom, loading}) => ({
+  studentInClassData: studentClassroom.studentClassroomStudentInClassData,
+  studentInClassStateData: studentClassroom.studentClassroomStudentInClassStateData,
+  searchLoading: loading.effects['studentClassroom/queryClassHourByCode']
 }))(ClassroomInformation)

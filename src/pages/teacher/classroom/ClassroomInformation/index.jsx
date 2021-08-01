@@ -108,6 +108,6 @@ const ClassroomInformation = (props) => {
   )
 }
 
-export default connect(({classroom}) => ({
-  teacherInClassData: classroom.classroomTeacherInClassData
+export default connect(({teacherClassroom}) => ({
+  teacherInClassData: teacherClassroom.teacherClassroomTeacherInClassData
 }))(ClassroomInformation)

@@ -73,6 +73,6 @@ const NewBankModal = (props) => {
   );
 };
 
-export default connect(({classroom}) => ({
-  studentInClassData: classroom.classroomStudentInClassData,
+export default connect(({studentClassroom}) => ({
+  studentInClassData: studentClassroom.studentClassroomStudentInClassData,
 }))(NewBankModal);

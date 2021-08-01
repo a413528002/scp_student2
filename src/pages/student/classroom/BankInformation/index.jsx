@@ -90,7 +90,7 @@ const BankInformation = (props) => {
   );
 }
 
-export default connect(({classroom}) => ({
-  bankInInfoData: classroom.classroomBankInInfoData,
-  studentInClassData: classroom.classroomStudentInClassData,
+export default connect(({studentClassroom}) => ({
+  bankInInfoData: studentClassroom.classroomBankInInfoData,
+  studentInClassData: studentClassroom.studentClassroomStudentInClassData,
 }))(BankInformation)

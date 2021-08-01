@@ -8,10 +8,10 @@ import {
 import {message} from "antd";
 
 const ClassroomModel = {
-  namespace: 'classroom',
+  namespace: 'studentClassroom',
   state: {
-    classroomStudentInClassData: undefined,
-    classroomStudentInClassStateData: undefined,
+    studentClassroomStudentInClassData: undefined,
+    studentClassroomStudentInClassStateData: undefined,
     classroomQueryJoinedClassHoursData: [],
     classroomBankInInfoData: undefined
   },
@@ -20,15 +20,19 @@ const ClassroomModel = {
     * queryClassHourByCode({payload}, {call, put}) {
       const response = yield call(getStudentQueryClassHourByCode, payload)
       if (response.status === undefined) {
-        localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(response))
-        localStorage.setItem('STUDENT_IN_CLASS_STATE', '未加入')
-        yield put({
-          type: 'save',
-          payload: {
-            classroomStudentInClassData: response,
-            classroomStudentInClassStateData: '未加入'
-          }
-        })
+        if (response){
+          localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(response))
+          localStorage.setItem('STUDENT_IN_CLASS_STATE', '未加入')
+          yield put({
+            type: 'save',
+            payload: {
+              studentClassroomStudentInClassData: response,
+              studentClassroomStudentInClassStateData: '未加入'
+            }
+          })
+        }else {
+          message.error('没有该课堂')
+        }
       }
     },
 
@@ -40,7 +44,7 @@ const ClassroomModel = {
         yield put({
           type: 'save',
           payload: {
-            classroomStudentInClassStateData: '已加入'
+            studentClassroomStudentInClassStateData: '已加入'
           }
         })
         message.success('已加入')

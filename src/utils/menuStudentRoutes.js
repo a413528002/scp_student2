@@ -10,11 +10,11 @@ export default [
     icon: 'HomeOutlined',
   },
   // 我的课堂
-  /*{
+  {
     path: '/student/classroom',
     name: 'student-classroom',
     icon: 'BulbOutlined',
-  },*/
+  },
   // 规划
   /*{
     path: '/plan',

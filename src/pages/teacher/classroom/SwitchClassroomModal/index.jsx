@@ -21,7 +21,7 @@ const SwitchClassroomModal = (props) => {
         // 不等于上课中才调用接口
         const [classHourId] = selectedRowKeys
         dispatch({
-          type: 'classroom/startClassHour',
+          type: 'teacherClassroom/startClassHour',
           payload: {
             classHourId
           },
@@ -45,7 +45,7 @@ const SwitchClassroomModal = (props) => {
   // 获取切换课堂表格数据
   const getSwitchClassroomTableData = () => {
     dispatch({
-      type: 'classroom/queryMyClassHours',
+      type: 'teacherClassroom/queryMyClassHours',
       payload: {
         page: 0,
         size: 20,
@@ -123,7 +123,7 @@ const SwitchClassroomModal = (props) => {
   );
 };
 
-export default connect(({classroom, loading}) => ({
-  dataSource: classroom.classroomQueryMyClassHoursData,
-  loading: loading.effects['classroom/queryMyClassHours']
+export default connect(({teacherClassroom, loading}) => ({
+  dataSource: teacherClassroom.teacherClassroomQueryMyClassHoursData,
+  loading: loading.effects['teacherClassroom/queryMyClassHours']
 }))(SwitchClassroomModal);

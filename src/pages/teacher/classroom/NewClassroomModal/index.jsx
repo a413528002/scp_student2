@@ -8,7 +8,7 @@ const NewClassroomModal = (props) => {
   // 新建课堂
   const createClassHour = (params) => {
     dispatch({
-      type: 'classroom/createClassHour',
+      type: 'teacherClassroom/createClassHour',
       payload: {...params},
       // 新建成功后的回调
       callback: () => {
