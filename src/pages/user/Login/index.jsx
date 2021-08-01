@@ -43,19 +43,27 @@ const Login = () => {
       // console.log(response)
 
       if (response.status === undefined) {
+        const {authorities} = response
+        // 当前身份
+        const [auth] = authorities
         const defaultloginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
-        sessionStorage.setItem('STUDENT_INFO', JSON.stringify(response))
         message.success(defaultloginSuccessMessage);
+        sessionStorage.setItem('AUTHORITIES_INFO', JSON.stringify(response))
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
         if (!history) return;
-        const {query} = history.location;
-        const {redirect} = query;
-        history.push(redirect || '/');
+        // const {query} = history.location;
+        // const {redirect} = query;
+        // history.push(redirect || '/');
+        if (auth&&auth==='STUDENT'){
+          history.push('/student/home');
+        }else if(auth&&auth==='TEACHER'){
+          history.push('/teacher/classroom');
+        }
         return;
       } // 如果失败去设置用户错误信息
 

@@ -1,35 +1,20 @@
 export default [
   {
-    path: '/user',
-    layout: false,
-    routes: [
-      {
-        path: '/user',
-        routes: [
-          {
-            name: 'login',
-            path: '/user/login',
-            component: './user/Login',
-          },
-        ],
-      },
-    ],
-  },
-
-  {
     path: '/',
-    redirect: '/404',
+    redirect: '/student/home',
   },
   // 首页
   {
     path: '/student/home',
-    component: './student/home',
+    name: 'student-home',
+    icon: 'HomeOutlined',
   },
   // 我的课堂
-  {
+  /*{
     path: '/student/classroom',
-    component: './student/classroom',
-  },
+    name: 'student-classroom',
+    icon: 'BulbOutlined',
+  },*/
   // 规划
   /*{
     path: '/plan',
@@ -213,13 +198,6 @@ export default [
       },
     ]
   },*/
-
-  // teacherMenu
-  {
-    path: 'teacher/classroom',
-    component: './teacher/classroom',
-  },
-
   {
     component: './404',
   },

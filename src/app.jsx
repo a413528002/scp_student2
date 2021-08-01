@@ -3,7 +3,9 @@ import {notification} from 'antd';
 import {history} from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-
+import menuStudentRoutes from "@/utils/menuStudentRoutes";
+import menuTeacherRoutes from "@/utils/menuTeacherRoutes";
+import iconMap from "@/utils/iconMap";
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -19,7 +21,7 @@ export const initialStateConfig = {
 export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
-      return JSON.parse(sessionStorage.getItem('STUDENT_INFO'));
+      return JSON.parse(sessionStorage.getItem('AUTHORITIES_INFO'));
     } catch (error) {
       history.push(loginPath);
     }
@@ -105,7 +107,6 @@ export const request = {
     if (response && response.status) {
       const errorText = codeMessage[response.status] || response.statusText;
       const {status} = response;
-      // const {errMsg} = await response.json()
       // 401需要重新登录
       if (status === 401) {
         // 如果不是登录页面 跳转去登录页
@@ -113,6 +114,8 @@ export const request = {
           history.replace(loginPath);
         }
       }
+      // 错误处理
+      const {errMsg} = await response.json()
       notification.error({
         message: errMsg || errorText,
         description: errMsg || errorText,
@@ -128,8 +131,52 @@ export const request = {
   },
 }; // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
+
 export const layout = ({initialState}) => {
+  /*const IconMap = {
+    smile: <SmileOutlined />,
+    heart: <HeartOutlined />,
+  };*/
+  const __rest = (this && this.__rest) || function (s, e) {
+    let t = {};
+    for (let p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+      t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+      for (let i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+        if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+          t[p[i]] = s[p[i]];
+      }
+    return t;
+  };
+
+  // 映射icon
+  const loopMenuItem = (menus) => menus.map((_a) => {
+    let { icon, children } = _a, item = __rest(_a, ["icon", "children"]);
+    return (Object.assign(Object.assign({}, item), { icon: icon && iconMap[icon], children: children && loopMenuItem(children) }));
+  });
+
   return {
+    menu: {
+      // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
+      params: {
+        userId: initialState?.currentUser?.authorities,
+      },
+      request: async ({userId}, defaultMenuData) => {
+        const [access] = userId
+        // 登录返回的权限名称
+        switch (access) {
+          case 'TEACHER':
+            return loopMenuItem(menuTeacherRoutes);
+          case 'STUDENT':
+            return loopMenuItem(menuStudentRoutes)
+        }
+
+        // return access==='TEACHER'?menuTData:menuSData;
+        // const defaultMenus = access==='TEACHER'?menuTData:menuSData;
+        // return loopMenuItem(defaultMenus);
+      },
+    },
+
     rightContentRender: () => <RightContent/>,
     disableContentMargin: false,
     waterMarkProps: {

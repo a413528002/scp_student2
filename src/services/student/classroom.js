@@ -30,3 +30,18 @@ export async function getStudentQueryJoinedClassHours(params) {
     params
   })
 }
+// 创建银行
+export async function getStudentCreateBank(params) {
+  return request(`${NODE_API}/student/ch/createBank`, {
+    method: 'POST',
+    data: params
+  })
+}
+
+// 退出银行
+export async function getStudentExitBank(params) {
+  return request(`${NODE_API}/student/ch/exitBank`, {
+    method: 'POST',
+    data: params
+  })
+}

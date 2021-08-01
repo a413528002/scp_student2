@@ -6,26 +6,34 @@ import PublicTable from "@/components/Table";
 const SwitchClassroomModal = (props) => {
   const {handleSwitchClassroomCancelModal, switchClassroomModalVisible} = props
   const {dispatch, dataSource, loading} = props
-  const selectedInClassRow = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS'))
+  const selectedInClassRow = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'))
   const {classHourId: selectedInClassRowKey = []} = selectedInClassRow || {}
   // 表格选中的key
   const [selectedRowKeys, setSelectedRowKeys] = useState([selectedInClassRowKey])
   // 选中当前行的信息
-  const [selectedRows, setSelectedRows] = useState([])
+  const [selectedRows, setSelectedRows] = useState([selectedInClassRow])
 
   // 开始课堂
   const startClassHour = () => {
     if (selectedRowKeys.length > 0) {
-      const [selectedRowsData] = selectedRows
-      if (selectedRowsData.classHourStatusName === '上课中') {
+      const [selectedRowsData] =  selectedRows
+      if (selectedRowsData.classHourStatusName !== '上课中') {
+        // 不等于上课中才调用接口
+        const [classHourId] = selectedRowKeys
+        dispatch({
+          type: 'classroom/startClassHour',
+          payload: {
+            classHourId
+          },
+          callback: () => handleSwitchClassroomCancelModal()
+        })
+      } else {
         // 选中当前行直接展示
         // 存储localStorage
-        localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(selectedRowsData))
+        localStorage.setItem('TEACHER_IN_CLASS', JSON.stringify(selectedRowsData))
         // 关闭modal
         handleSwitchClassroomCancelModal()
         message.success('切换课堂成功')
-      } else {
-        message.error('已下课，不可以切换')
       }
 
     } else {
@@ -37,7 +45,7 @@ const SwitchClassroomModal = (props) => {
   // 获取切换课堂表格数据
   const getSwitchClassroomTableData = () => {
     dispatch({
-      type: 'classroom/queryJoinedClassHours',
+      type: 'classroom/queryMyClassHours',
       payload: {
         page: 0,
         size: 20,
@@ -91,7 +99,7 @@ const SwitchClassroomModal = (props) => {
       key: 'tchNickname',
     },
     {
-      title: '学生状态',
+      title: '学生数量',
       dataIndex: 'address',
       key: 'address',
     },
@@ -116,6 +124,6 @@ const SwitchClassroomModal = (props) => {
 };
 
 export default connect(({classroom, loading}) => ({
-  dataSource: classroom.classroomQueryJoinedClassHoursData,
-  loading: loading.effects['classroom/queryJoinedClassHours']
+  dataSource: classroom.classroomQueryMyClassHoursData,
+  loading: loading.effects['classroom/queryMyClassHours']
 }))(SwitchClassroomModal);

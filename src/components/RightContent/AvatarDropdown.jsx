@@ -18,13 +18,16 @@ const loginOut = async () => {
   if (window.location.pathname !== '/user/login' && !redirect) {
     history.replace({
       pathname: '/user/login',
-      search: stringify({
+      // 去掉退出登录的不重定向到保存的URL
+      /*search: stringify({
         redirect: pathname,
-      }),
+      }),*/
     });
   }
   // 退出登录后清空localStorage
   localStorage.clear()
+  // 退出登录后清空sessionStorage
+  sessionStorage.clear()
 };
 
 const AvatarDropdown = ({ menu }) => {

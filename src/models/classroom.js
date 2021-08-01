@@ -1,9 +1,10 @@
 import {
+  getStudentCreateBank, getStudentExitBank,
   getStudentExitClassHour,
   getStudentJoinClassHour,
   getStudentQueryClassHourByCode,
   getStudentQueryJoinedClassHours
-} from "@/services/classroom";
+} from "@/services/student/classroom";
 import {message} from "antd";
 
 const ClassroomModel = {
@@ -11,7 +12,8 @@ const ClassroomModel = {
   state: {
     classroomStudentInClassData: undefined,
     classroomStudentInClassStateData: undefined,
-    classroomQueryJoinedClassHoursData: []
+    classroomQueryJoinedClassHoursData: [],
+    classroomBankInInfoData: undefined
   },
   effects: {
     // 根据课堂编码查询课堂
@@ -70,6 +72,42 @@ const ClassroomModel = {
           }
         })
       }
+    },
+    // 查询已加入课堂
+    * createBank({payload, callback}, {call, put}) {
+      const response = yield call(getStudentCreateBank, payload)
+      if (response.status === undefined) {
+        message.success('新建成功')
+        callback()
+        // 将当前正在进行中的课堂信息保存起来 数据持久化
+        localStorage.setItem('BANK_IN_INFO', JSON.stringify(response))
+        // 同时存储一份在redux中
+        yield put({
+          type: 'save',
+          payload: {
+            classroomBankInInfoData: response
+          }
+        })
+
+      }
+    },
+    // 退出银行
+    * exitBank({payload, callback}, {call, put}) {
+      const response = yield call(getStudentExitBank, payload)
+      /*if (response.status === undefined) {
+        message.success('新建成功')
+        callback()
+        // 将当前正在进行中的课堂信息保存起来 数据持久化
+        localStorage.setItem('BANK_IN_INFO', JSON.stringify(response))
+        // 同时存储一份在redux中
+        yield put({
+          type: 'save',
+          payload: {
+            classroomBankInInfoData: response
+          }
+        })
+
+      }*/
     },
   },
   reducers: {

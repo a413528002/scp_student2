@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "umi";
 import {Button, Card, Input, Space, Descriptions, Empty} from 'antd';
-import SwitchClassroomModal from "@/pages/classroom/SwitchClassroomModal";
+import SwitchClassroomModal from "@/pages/student/classroom/SwitchClassroomModal";
 
 
 const {Search} = Input;
