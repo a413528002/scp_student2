@@ -91,9 +91,16 @@ const ClassroomModel = {
       }
     },
     // 踢出课堂成员
-    * kickClassHourUser({payload}, {call}) {
+    * kickClassHourUser({payload}, {call,put}) {
       const response = yield call(getTeacherKickClassHourUser, payload)
       if (response.status === undefined) {
+        // 刷新表格
+        // 获取课堂id
+        const {classHourId} = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {}
+        yield put({
+          type:'queryClassHourUsers',
+          payload:{classHourId}
+        })
         message.success('已踢出')
       }
     },
