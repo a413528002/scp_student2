@@ -5,7 +5,6 @@ import PublicTable from "@/components/Table";
 
 const MemberInformation = (props) => {
     const {dispatch, dataSource, loading} = props
-  console.log(dataSource)
     // 获取课堂id
     const {classHourId} = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {}
     // 获取当前正在进行的课堂状态
@@ -13,7 +12,7 @@ const MemberInformation = (props) => {
     // 获取课堂成员
     const getMemberTableData = () => {
       dispatch({
-        type: 'classroom/queryClassHourUsers',
+        type: 'teacherClassroom/queryClassHourUsers',
         payload: {
           classHourId
         }
@@ -30,7 +29,7 @@ const MemberInformation = (props) => {
     const kickClassHourUser = (stuUserId) => {
       if (TEACHER_IN_CLASS) {
         dispatch({
-          type: 'classroom/kickClassHourUser',
+          type: 'teacherClassroom/kickClassHourUser',
           payload: {
             stuUserId,
             classHourId
@@ -68,18 +67,23 @@ const MemberInformation = (props) => {
         title: '操作',
         dataIndex: 'address',
         key: 'address',
-        render: (_, {stuUserId}) => (
+        render: (_, {stuUserId, statusName}) => (
           <Popconfirm
             title="确认踢出?"
             onConfirm={() => kickClassHourUser(stuUserId)}
             onCancel={handleCancelPop}
           >
-            <Button type='primary' size='small'>
-              踢出
-            </Button>
-          </Popconfirm>)
+            {
+              statusName==='被踢出'?'':(
+                <Button type='primary' size='small'>
+                  踢出
+                </Button>
+              )
+            }
+          </Popconfirm>
+        )
       },
-    ];
+    ]
     return (
       <Card
         title="团队成员"
@@ -97,7 +101,7 @@ const MemberInformation = (props) => {
   }
 ;
 
-export default connect(({classroom, loading}) => ({
-  dataSource: classroom.classroomQueryClassHourUsersData,
-  loading: loading.effects['classroom/queryClassHourUsers']
+export default connect(({teacherClassroom, loading}) => ({
+  dataSource: teacherClassroom.teacherClassroomQueryClassHourUsersData,
+  loading: loading.effects['teacherClassroom/queryClassHourUsers']
 }))(MemberInformation);

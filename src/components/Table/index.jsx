@@ -14,7 +14,7 @@ const PublicTable = (props) => {
       // row选择项
       rowSelection={rowSelection || false}
       // row唯一key值
-      rowKey={record => record.classHourId}
+      rowKey={record => record.classHourId||record.bankId}
       // 表格大小
       size='small'
       // x方向滚动距离

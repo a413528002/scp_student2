@@ -45,3 +45,27 @@ export async function getStudentExitBank(params) {
     data: params
   })
 }
+
+// 根据银行编码查询银行
+export async function getStudentQueryBankByCode(params) {
+  return request(`${NODE_API}/student/ch/queryBankByCode`, {
+    method: 'GET',
+    params
+  })
+}
+
+// 加入银行
+export async function getStudentJoinBank(params) {
+  return request(`${NODE_API}/student/ch/joinBank`, {
+    method: 'POST',
+    data: params
+  })
+}
+
+// 查询用户在课堂的详细信息
+export async function getStudentQueryClassHourUserDetails(params) {
+  return request(`${NODE_API}/student/ch/queryClassHourUserDetails`, {
+    method: 'GET',
+    params
+  })
+}

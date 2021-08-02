@@ -5,7 +5,7 @@ import PublicTable from "@/components/Table";
 
 const SwitchClassroomModal = (props) => {
   const {handleSwitchClassroomCancelModal, switchClassroomModalVisible} = props
-  const {dispatch, dataSource, loading} = props
+  const {dispatch, dataSource, switchLoading} = props
   const selectedInClassRow = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS'))
   const {classHourId: selectedInClassRowKey = []} = selectedInClassRow || {}
   // 表格选中的key
@@ -21,6 +21,7 @@ const SwitchClassroomModal = (props) => {
         // 选中当前行直接展示
         // 存储localStorage
         localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(selectedRowsData))
+        localStorage.setItem('STUDENT_IN_CLASS_STATE', '已加入')
         // 关闭modal
         handleSwitchClassroomCancelModal()
         message.success('切换课堂成功')
@@ -37,7 +38,7 @@ const SwitchClassroomModal = (props) => {
   // 获取切换课堂表格数据
   const getSwitchClassroomTableData = () => {
     dispatch({
-      type: 'classroom/queryJoinedClassHours',
+      type: 'studentClassroom/queryJoinedClassHours',
       payload: {
         page: 0,
         size: 20,
@@ -109,13 +110,13 @@ const SwitchClassroomModal = (props) => {
         columns={columns}
         bordered
         rowSelection={rowSelection}
-        loading={loading}
+        loading={switchLoading}
       />
     </Modal>
   );
 };
 
-export default connect(({classroom, loading}) => ({
-  dataSource: classroom.classroomQueryJoinedClassHoursData,
-  loading: loading.effects['classroom/queryJoinedClassHours']
+export default connect(({studentClassroom, loading}) => ({
+  dataSource: studentClassroom.studentClassroomQueryJoinedClassHoursData,
+  switchLoading: loading.effects['studentClassroom/queryJoinedClassHours']
 }))(SwitchClassroomModal);

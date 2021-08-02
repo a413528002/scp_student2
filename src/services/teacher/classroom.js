@@ -12,7 +12,7 @@ export async function getTeacherCreateClassHour(params) {
 export async function getTeacherQueryMyClassHours(params) {
   return request(`${NODE_API}/teacher/ch/queryMyClassHours`, {
     method: 'GET',
-    // params
+    params
   })
 }
 

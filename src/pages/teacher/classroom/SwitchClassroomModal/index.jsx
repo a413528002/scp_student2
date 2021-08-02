@@ -5,8 +5,14 @@ import PublicTable from "@/components/Table";
 
 const SwitchClassroomModal = (props) => {
   const {handleSwitchClassroomCancelModal, switchClassroomModalVisible} = props
-  const {dispatch, dataSource, loading} = props
+  /**
+   * dataSource 表格数据
+   * switchLoading 表格loading
+   * startLoading 开始课堂/切换课堂loading
+   */
+  const {dispatch, dataSource, switchLoading, startLoading} = props
   const selectedInClassRow = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'))
+  // 当前选中的课堂id
   const {classHourId: selectedInClassRowKey = []} = selectedInClassRow || {}
   // 表格选中的key
   const [selectedRowKeys, setSelectedRowKeys] = useState([selectedInClassRowKey])
@@ -16,7 +22,7 @@ const SwitchClassroomModal = (props) => {
   // 开始课堂
   const startClassHour = () => {
     if (selectedRowKeys.length > 0) {
-      const [selectedRowsData] =  selectedRows
+      const [selectedRowsData] = selectedRows
       if (selectedRowsData.classHourStatusName !== '上课中') {
         // 不等于上课中才调用接口
         const [classHourId] = selectedRowKeys
@@ -42,13 +48,14 @@ const SwitchClassroomModal = (props) => {
 
   }
 
-  // 获取切换课堂表格数据
+  // 获取切换课堂表格数据 sort 写死 按照id倒序  把新的数据排在前面
   const getSwitchClassroomTableData = () => {
     dispatch({
       type: 'teacherClassroom/queryMyClassHours',
       payload: {
-        page: 0,
-        size: 20,
+        sort: 'id,desc',
+        // page: 0,
+        // size: 20,
       }
     })
   }
@@ -111,13 +118,14 @@ const SwitchClassroomModal = (props) => {
       onOk={startClassHour}
       title='切换课堂'
       width={800}
+      confirmLoading={startLoading}
     >
       <PublicTable
         dataSource={dataSource}
         columns={columns}
         bordered
         rowSelection={rowSelection}
-        loading={loading}
+        loading={switchLoading}
       />
     </Modal>
   );
@@ -125,5 +133,6 @@ const SwitchClassroomModal = (props) => {
 
 export default connect(({teacherClassroom, loading}) => ({
   dataSource: teacherClassroom.teacherClassroomQueryMyClassHoursData,
-  loading: loading.effects['teacherClassroom/queryMyClassHours']
+  switchLoading: loading.effects['teacherClassroom/queryMyClassHours'],
+  startLoading: loading.effects['teacherClassroom/startClassHour']
 }))(SwitchClassroomModal);

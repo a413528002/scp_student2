@@ -4,14 +4,14 @@ import {Modal, Form, Input, Button, Space} from 'antd';
 
 const NewBankModal = (props) => {
   const {newBankModalVisible, handleNewBankCancelModal, dispatch} = props
-  const {studentInClassData} = props
+  const {studentInClassData,loading} = props
   const [form] = Form.useForm();
   // 获取当前搜索到的课堂信息 redux中的studentInClassData不存在 拿localStorage里面的
   const {classHourId} = studentInClassData !== undefined ? studentInClassData : JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   // 新建课堂
   const createBank = (params) => {
     dispatch({
-      type: 'classroom/createBank',
+      type: 'studentClassroom/createBank',
       payload: {...params, classHourId},
       // 新建成功后的回调
       callback: () => {
@@ -63,7 +63,7 @@ const NewBankModal = (props) => {
             <Button htmlType="button" onClick={handleCancelResetFields}>
               取消
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               确认
             </Button>
           </Space>
@@ -73,6 +73,7 @@ const NewBankModal = (props) => {
   );
 };
 
-export default connect(({studentClassroom}) => ({
+export default connect(({studentClassroom,loading}) => ({
   studentInClassData: studentClassroom.studentClassroomStudentInClassData,
+  loading:loading.effects['studentClassroom/createBank']
 }))(NewBankModal);

@@ -50,7 +50,7 @@ const ClassroomInformation = (props) => {
   // 结束课堂
   const endClassHour = () => {
     dispatch({
-      type: 'classroom/endClassHour',
+      type: 'teacherClassroom/endClassHour',
       payload: {
         classHourId
       }

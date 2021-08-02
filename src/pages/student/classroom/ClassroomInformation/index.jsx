@@ -1,12 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "umi";
-import {Button, Card, Input, Space, Descriptions, Empty} from 'antd';
+import {Button, Card, Input, Space, Descriptions, Empty, message} from 'antd';
 import SwitchClassroomModal from "@/pages/student/classroom/SwitchClassroomModal";
 
 
 const {Search} = Input;
 const ClassroomInformation = (props) => {
-  const {dispatch, searchLoading, studentInClassData, studentInClassStateData} = props
+  /**
+   * joinLoading 加入课堂的loading
+   * exitLoading 退出课堂的loading
+   * searchLoading 搜索的loading
+   * studentInClassData 当前课堂的信息
+   * studentInClassStateData 课堂的状态（待完善）
+   */
+  const {dispatch, studentInClassData, studentInClassStateData} = props
+  const {joinLoading, exitLoading, searchLoading} = props
   // 获取当前正在进行的课堂状态
   const STUDENT_IN_CLASS = !!localStorage.getItem('STUDENT_IN_CLASS')
   // 获取学生信息 sessionStorage
@@ -21,24 +29,31 @@ const ClassroomInformation = (props) => {
     classHourId,
   } = !!studentInClassData ? studentInClassData : JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   // 学生上课的状态 redux中的studentInClassStateData不存在 拿localStorage里面的
-  const studentInClassState = !!studentInClassStateData ? studentInClassStateData : localStorage.getItem('STUDENT_IN_CLASS_STATE')||''
+  const studentInClassState = !!studentInClassStateData ? studentInClassStateData : localStorage.getItem('STUDENT_IN_CLASS_STATE') || ''
   // 根据课堂编码查询课堂
   const onSearchQueryClassHourByCode = code => {
     // input为空时不搜索
     if (code.trim()) {
+      // 如果搜索的课堂code与当前课堂的code相同，直接返回提示信息，不进行搜索
+      if (classHourCode === code) {
+        message.warn('已加入该课堂')
+        return false
+      }
       dispatch({
         type: 'studentClassroom/queryClassHourByCode',
         payload: {
           code
         }
       })
+    } else {
+      message.error('搜索内容不能为空')
     }
 
   }
   // 加入课堂
   const joinClassHour = () => {
     dispatch({
-      type: 'classroom/joinClassHour',
+      type: 'studentClassroom/joinClassHour',
       payload: {
         classHourId,
         nickname
@@ -47,12 +62,17 @@ const ClassroomInformation = (props) => {
   }
   // 退出课堂
   const exitClassHour = () => {
-    dispatch({
-      type: 'classroom/exitClassHour',
-      payload: {
-        classHourId
-      }
-    })
+    if (STUDENT_IN_CLASS) {
+      dispatch({
+        type: 'studentClassroom/exitClassHour',
+        payload: {
+          classHourId
+        }
+      })
+    } else {
+      message.error('没有已加入的课堂信息')
+    }
+
   }
 
   // 切换课堂modal显示状态 ----start-----
@@ -84,10 +104,9 @@ const ClassroomInformation = (props) => {
               loading={searchLoading}
               allowClear
             />
-
-            <Button type="primary" onClick={joinClassHour}>加入课堂</Button>
+            <Button type="primary" onClick={joinClassHour} loading={joinLoading}>加入课堂</Button>
             <Button type="primary" onClick={handleSwitchClassroomShowModal}>切换课堂</Button>
-            <Button onClick={exitClassHour}>退出课堂</Button>
+            <Button onClick={exitClassHour} loading={exitLoading}>退出课堂</Button>
           </Space>
         </>
       }
@@ -121,5 +140,7 @@ const ClassroomInformation = (props) => {
 export default connect(({studentClassroom, loading}) => ({
   studentInClassData: studentClassroom.studentClassroomStudentInClassData,
   studentInClassStateData: studentClassroom.studentClassroomStudentInClassStateData,
-  searchLoading: loading.effects['studentClassroom/queryClassHourByCode']
+  searchLoading: loading.effects['studentClassroom/queryClassHourByCode'],
+  joinLoading: loading.effects['studentClassroom/joinClassHour'],
+  exitLoading: loading.effects['studentClassroom/exitClassHour'],
 }))(ClassroomInformation)
