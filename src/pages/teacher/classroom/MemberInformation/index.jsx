@@ -84,6 +84,7 @@ const MemberInformation = (props) => {
         title="团队成员"
         bordered={false}
         type='inner'
+        extra={<Button type="primary" onClick={getMemberTableData} loading={loading}>刷新</Button>}
       >
         <PublicTable
           dataSource={dataSource}
