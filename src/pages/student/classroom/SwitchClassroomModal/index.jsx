@@ -40,8 +40,8 @@ const SwitchClassroomModal = (props) => {
     dispatch({
       type: 'studentClassroom/queryJoinedClassHours',
       payload: {
-        page: 0,
-        size: 20,
+        // page: 0,
+        // size: 20,
       }
     })
   }
@@ -93,8 +93,8 @@ const SwitchClassroomModal = (props) => {
     },
     {
       title: '学生状态',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'classHourStatusName',
+      key: 'classHourStatusName',
     },
   ];
   return (

@@ -35,11 +35,13 @@ const SwitchClassroomModal = (props) => {
         })
       } else {
         // 选中当前行直接展示
-        // 存储localStorage
-        localStorage.setItem('TEACHER_IN_CLASS', JSON.stringify(selectedRowsData))
-        // 关闭modal
         handleSwitchClassroomCancelModal()
-        message.success('切换课堂成功')
+        dispatch({
+          type: 'teacherClassroom/switchStartClassHour',
+          payload:{
+            ...selectedRowsData
+          }
+        })
       }
 
     } else {

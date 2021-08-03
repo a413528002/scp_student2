@@ -12,7 +12,7 @@ const MemberInformation = (props) => {
     // 获取课堂成员
     const getMemberTableData = () => {
       dispatch({
-        type: 'teacherClassroom/queryClassHourUsers',
+        type: 'classroom/queryClassHourUsers',
         payload: {
           classHourId
         }
@@ -29,7 +29,7 @@ const MemberInformation = (props) => {
     const kickClassHourUser = (stuUserId) => {
       if (TEACHER_IN_CLASS) {
         dispatch({
-          type: 'teacherClassroom/kickClassHourUser',
+          type: 'classroom/kickClassHourUser',
           payload: {
             stuUserId,
             classHourId
@@ -67,23 +67,18 @@ const MemberInformation = (props) => {
         title: '操作',
         dataIndex: 'address',
         key: 'address',
-        render: (_, {stuUserId, statusName}) => (
+        render: (_, {stuUserId}) => (
           <Popconfirm
             title="确认踢出?"
             onConfirm={() => kickClassHourUser(stuUserId)}
             onCancel={handleCancelPop}
           >
-            {
-              statusName==='被踢出'?'':(
-                <Button type='primary' size='small'>
-                  踢出
-                </Button>
-              )
-            }
-          </Popconfirm>
-        )
+            <Button type='primary' size='small'>
+              踢出
+            </Button>
+          </Popconfirm>)
       },
-    ]
+    ];
     return (
       <Card
         title="团队成员"
