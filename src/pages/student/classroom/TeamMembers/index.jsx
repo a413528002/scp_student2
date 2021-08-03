@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {connect} from "umi";
-import {Button, Card, Popconfirm, Space} from "antd";
+import {Button, Card, Popconfirm, message, Space} from "antd";
 import PublicTable from "@/components/Table";
 
 const TeamMembers = (props) => {
-  const {dispatch, studentInClassData, loading, dataSource} = props;
+  const {dispatch, studentInClassData, loading, queryClassHourUserDetailsData} = props;
+  const {isPresident, bankMembers: dataSource} = queryClassHourUserDetailsData
   // 获取当前正在进行的课堂状态
   const STUDENT_IN_CLASS = !!localStorage.getItem('STUDENT_IN_CLASS')
   // 获取学生信息 sessionStorage
@@ -27,16 +28,49 @@ const TeamMembers = (props) => {
     })
   }
   useEffect(() => {
+    // 学生当前课堂信息存在时请求
     if (STUDENT_IN_CLASS) {
       getTeamMembersTableData()
     }
   }, [])
+
+  /**
+   * 踢出银行成员
+   * @param stuUserId
+   */
+  const kickBankMember = (stuUserId) => {
+    dispatch({
+      type: 'studentClassroom/kickBankMember',
+      payload: {
+        classHourId,
+        stuUserId
+      }
+    })
+  }
+  /**
+   * 同意加入银行
+   * @param stuUserId
+   */
+  const acceptBankMember = (stuUserId)=>{
+    dispatch({
+      type:'studentClassroom/acceptBankMember',
+      payload:{
+        classHourId,
+        stuUserId
+      }
+    })
+  }
+
+  // 取消pop
+  const handleCancelPop = () => {
+    message.error('已取消')
+  }
   const columns = [
     {
       title: '用户',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text, record, index) => `00${index + 1}`
+      dataIndex: 'stuUsername',
+      key: 'stuUsername',
+      // render: (text, record, index) => `00${index + 1}`
     },
     {
       title: '名称',
@@ -52,27 +86,65 @@ const TeamMembers = (props) => {
       title: '操作',
       dataIndex: 'address',
       key: 'address',
-      render: (_, {stuUserId, bankPositionName}) => (
-        <Space>
-          <Button type='primary' size='small'>
-            同意
-          </Button>
-          <Button size='small'>
-            踢出
-          </Button>
-        </Space>
-        /*<Popconfirm
-          title="确认踢出?"
-          // onConfirm={() => kickClassHourUser(stuUserId)}
-          // onCancel={handleCancelPop}
-        >
-          {
-            bankPositionName==='行长'?'':(
+      render: (_, {stuUserId, bankStatus}) => {
+        return (
+          <Space>
+            {
+              bankStatus === 'PENDING' ? (
+                <Popconfirm
+                  title="确认同意"
+                  onConfirm={() => acceptBankMember(stuUserId)}
+                  onCancel={handleCancelPop}
+                >
+                  <Button type='primary' size='small'>
+                    同意
+                  </Button>
+                </Popconfirm>
+              ) : null
+            }
+            {
+              isPresident && isPresident === true ? (
+                <Popconfirm
+                  title="确认踢出?"
+                  onConfirm={() => kickBankMember(stuUserId)}
+                  onCancel={handleCancelPop}
+                >
+                  <Button size='small'>
+                    踢出
+                  </Button>
+                </Popconfirm>
+              ) : null
+            }
+          </Space>
+        )
+        /*switch (bankStatus) {
+          case 'PENDING':
+            return (
+              <>
+
+              </>
+            )
+          default:
+            return (
+              <>
+                {
+                  isPresident && isPresident === true ? (
+                    <Popconfirm
+                      title="确认踢出?"
+                      onConfirm={() => kickBankMember(stuUserId)}
+                      onCancel={handleCancelPop}
+                    >
+                    <Button size='small'>
+                      踢出
+                    </Button>
+                    </Popconfirm>
+                  ) : null
+                }
+              </>
 
             )
-          }
-        </Popconfirm>*/
-      )
+        }*/
+      }
     },
   ];
   return (
@@ -93,6 +165,6 @@ const TeamMembers = (props) => {
 
 export default connect(({studentClassroom, loading}) => ({
   studentInClassData: studentClassroom.studentClassroomStudentInClassData,
-  dataSource: studentClassroom.studentClassroomQueryClassHourUserDetailsData,
+  queryClassHourUserDetailsData: studentClassroom.studentClassroomQueryClassHourUserDetailsData,
   loading: loading.effects['studentClassroom/queryClassHourUserDetails']
 }))(TeamMembers);

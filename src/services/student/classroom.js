@@ -69,3 +69,18 @@ export async function getStudentQueryClassHourUserDetails(params) {
     params
   })
 }
+
+// 踢出银行成员
+export async function getStudentKickBankMember(params) {
+  return request(`${NODE_API}/student/ch/kickBankMember`, {
+    method: 'POST',
+    data: params
+  })
+}
+// 同意加入银行
+export async function getStudentAcceptBankMember(params) {
+  return request(`${NODE_API}/student/ch/acceptBankMember`, {
+    method: 'POST',
+    data: params
+  })
+}

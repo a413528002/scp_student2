@@ -52,6 +52,8 @@ const Login = () => {
           defaultMessage: '登录成功！',
         });
         message.success(defaultloginSuccessMessage);
+        // 考虑意外退出的情况 登录成功后将存储的localStorage清除
+        localStorage.clear()
         sessionStorage.setItem('AUTHORITIES_INFO', JSON.stringify(response))
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */

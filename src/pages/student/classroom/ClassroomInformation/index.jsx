@@ -27,9 +27,10 @@ const ClassroomInformation = (props) => {
     classHourName,
     classHourStatusName,
     classHourId,
+    stuStatusName,
   } = !!studentInClassData ? studentInClassData : JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   // 学生上课的状态 redux中的studentInClassStateData不存在 拿localStorage里面的
-  const studentInClassState = !!studentInClassStateData ? studentInClassStateData : localStorage.getItem('STUDENT_IN_CLASS_STATE') || ''
+  // const studentInClassState = !!studentInClassStateData ? studentInClassStateData : localStorage.getItem('STUDENT_IN_CLASS_STATE') || ''
   // 根据课堂编码查询课堂
   const onSearchQueryClassHourByCode = code => {
     // input为空时不搜索
@@ -122,7 +123,7 @@ const ClassroomInformation = (props) => {
             <Descriptions.Item label="课堂状态"><span
               style={{color: "red"}}>{classHourStatusName}</span></Descriptions.Item>
             <Descriptions.Item label="学生状态"><span
-              style={{color: "red"}}>{studentInClassState}</span></Descriptions.Item>
+              style={{color: "red"}}>{stuStatusName}</span></Descriptions.Item>
           </Descriptions>
         ) : <Empty/>
       }

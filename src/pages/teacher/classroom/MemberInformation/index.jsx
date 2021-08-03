@@ -44,9 +44,9 @@ const MemberInformation = (props) => {
     const columns = [
       {
         title: '用户',
-        dataIndex: 'name',
-        key: 'name',
-        render: (text, record, index) => `00${index + 1}`
+        dataIndex: 'stuUsername',
+        key: 'stuUsername',
+        // render: (text, record, index) => `00${index + 1}`
       },
       {
         title: '名称',

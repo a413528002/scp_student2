@@ -1,7 +1,8 @@
 import {
+  getStudentAcceptBankMember,
   getStudentCreateBank, getStudentExitBank,
   getStudentExitClassHour, getStudentJoinBank,
-  getStudentJoinClassHour, getStudentQueryBankByCode,
+  getStudentJoinClassHour, getStudentKickBankMember, getStudentQueryBankByCode,
   getStudentQueryClassHourByCode, getStudentQueryClassHourUserDetails,
   getStudentQueryJoinedClassHours
 } from "@/services/student/classroom";
@@ -14,7 +15,7 @@ const ClassroomModel = {
     studentClassroomStudentInClassStateData: undefined,
     studentClassroomQueryJoinedClassHoursData: [],
     studentClassroomBankInInfoData: undefined,
-    studentClassroomQueryClassHourUserDetailsData:[]
+    studentClassroomQueryClassHourUserDetailsData: {}
   },
   effects: {
     // 根据课堂编码查询课堂
@@ -154,12 +155,39 @@ const ClassroomModel = {
       const response = yield call(getStudentQueryClassHourUserDetails, payload)
       console.log(response)
       if (response.status === undefined) {
-
         yield put({
           type: 'save',
           payload: {
-            studentClassroomQueryClassHourUserDetailsData: response.bankMembers,
+            studentClassroomQueryClassHourUserDetailsData: response,
           }
+        })
+      }
+    },
+    // 踢出银行成员
+    * kickBankMember({payload}, {call, put}) {
+      const response = yield call(getStudentKickBankMember, payload)
+      if (response.status === undefined) {
+        message.success('踢出成功')
+        // 刷新表格 查询用户在课堂的详细信息
+        // 获取课堂id
+        const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS_STATE')) || {}
+        yield put({
+          type: 'queryClassHourUserDetails',
+          payload: {classHourId}
+        })
+      }
+    },
+    // 同意加入银行
+    * acceptBankMember({payload}, {call, put}) {
+      const response = yield call(getStudentAcceptBankMember, payload)
+      if (response.status === undefined) {
+        message.success('已同意')
+        // 刷新表格 查询用户在课堂的详细信息
+        // 获取课堂id
+        const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS_STATE')) || {}
+        yield put({
+          type: 'queryClassHourUserDetails',
+          payload: {classHourId}
         })
       }
     },
