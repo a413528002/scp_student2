@@ -90,6 +90,10 @@ const MemberInformation = (props) => {
           columns={columns}
           bordered
           loading={loading}
+          pagination={{
+            defaultPageSize: 10,
+            total: dataSource.length,
+          }}
         />
       </Card>
     );
