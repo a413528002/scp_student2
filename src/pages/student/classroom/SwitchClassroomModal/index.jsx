@@ -111,6 +111,10 @@ const SwitchClassroomModal = (props) => {
         bordered
         rowSelection={rowSelection}
         loading={switchLoading}
+        pagination={{
+          defaultPageSize: 10,
+          total: dataSource.length,
+        }}
       />
     </Modal>
   );

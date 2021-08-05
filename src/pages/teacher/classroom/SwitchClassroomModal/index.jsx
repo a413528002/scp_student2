@@ -21,11 +21,11 @@ const SwitchClassroomModal = (props) => {
 
   // 开始课堂
   const startClassHour = () => {
+    const [classHourId] = selectedRowKeys
     if (selectedRowKeys.length > 0) {
       const [selectedRowsData] = selectedRows
-      if (selectedRowsData.classHourStatusName !== '上课中') {
-        // 不等于上课中才调用接口
-        const [classHourId] = selectedRowKeys
+      if (selectedRowsData.classHourStatus === 'INIT') {
+        // 课堂为初始状态才调用开始课堂
         dispatch({
           type: 'teacherClassroom/startClassHour',
           payload: {
@@ -43,7 +43,13 @@ const SwitchClassroomModal = (props) => {
           }
         })
       }
-
+      // 切换后刷新成员信息
+      dispatch({
+        type: 'teacherClassroom/queryClassHourUsers',
+        payload: {
+          classHourId
+        }
+      })
     } else {
       message.error('未选择课堂')
     }
@@ -51,19 +57,19 @@ const SwitchClassroomModal = (props) => {
   }
 
   // 获取切换课堂表格数据 sort 写死 按照id倒序  把新的数据排在前面
-  const getSwitchClassroomTableData = () => {
+  const getSwitchClassroomTableData = (page, size) => {
     dispatch({
       type: 'teacherClassroom/queryMyClassHours',
       payload: {
         sort: 'id,desc',
-        // page: 0,
-        // size: 20,
+        page: page,
+        size: size,
       }
     })
   }
   useEffect(() => {
     // 调用获取切换课堂表格数据
-    getSwitchClassroomTableData()
+    getSwitchClassroomTableData(0,10)
   }, [])
 
   // 选择表格项事件
@@ -80,7 +86,7 @@ const SwitchClassroomModal = (props) => {
     type: 'radio',
     getCheckboxProps: (record) => ({
       // 已下课不能被选中
-      disabled: record.classHourStatusName === '已下课',
+      // disabled: record.classHourStatusName === '已下课', // 已下课得可以选中
       // Column configuration not to be checked
       classHourStatusName: record.classHourStatusName,
     }),
@@ -107,11 +113,11 @@ const SwitchClassroomModal = (props) => {
       dataIndex: 'tchNickname',
       key: 'tchNickname',
     },
-    {
-      title: '学生数量',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    // {
+    //   title: '学生数量',
+    //   dataIndex: 'address',
+    //   key: 'address',
+    // },
   ];
   return (
     <Modal
@@ -123,11 +129,18 @@ const SwitchClassroomModal = (props) => {
       confirmLoading={startLoading}
     >
       <PublicTable
-        dataSource={dataSource}
+        dataSource={dataSource.content}
         columns={columns}
         bordered
         rowSelection={rowSelection}
         loading={switchLoading}
+        pagination={{
+          defaultPageSize: 10,
+          total: dataSource.totalElements,
+          onChange: (page, pageSize) => {
+            getSwitchClassroomTableData(page - 1, pageSize)
+          }
+        }}
       />
     </Modal>
   );

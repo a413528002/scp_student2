@@ -1,6 +1,8 @@
 import {
   getTeacherCreateClassHour,
-  getTeacherEndClassHour, getTeacherKickClassHourUser, getTeacherQueryClassHourUsers,
+  getTeacherEndClassHour,
+  getTeacherKickClassHourUser,
+  getTeacherQueryClassHourUsers,
   getTeacherQueryMyClassHours,
   getTeacherStartClassHour
 } from "@/services/teacher/classroom";
@@ -10,7 +12,7 @@ const ClassroomModel = {
   namespace: 'teacherClassroom',
   state: {
     teacherClassroomTeacherInClassData: undefined,
-    teacherClassroomQueryMyClassHoursData: [],
+    teacherClassroomQueryMyClassHoursData: {},
     teacherClassroomQueryClassHourUsersData: [],
   },
   effects: {
@@ -19,7 +21,7 @@ const ClassroomModel = {
       const response = yield call(getTeacherCreateClassHour, payload)
       if (response.status === undefined) {
         message.success('新建成功')
-        callback()
+        callback(response)
         // 将当前正在进行中的课堂信息保存起来 数据持久化
         localStorage.setItem('TEACHER_IN_CLASS', JSON.stringify(response))
         // 同时存储一份在redux中
@@ -39,7 +41,7 @@ const ClassroomModel = {
         yield put({
           type: 'save',
           payload: {
-            teacherClassroomQueryMyClassHoursData: response.content,
+            teacherClassroomQueryMyClassHoursData: response,
           }
         })
       }

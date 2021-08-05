@@ -14,15 +14,14 @@ const PublicTable = (props) => {
       // row选择项
       rowSelection={rowSelection || false}
       // row唯一key值
-      rowKey={record => record.classHourId||record.bankId}
+      // 后端约定带上 _key 字段
+      rowKey={record => record._key}
       // 表格大小
       size='small'
       // x方向滚动距离
       scroll={{x: 750}}
       // 分页 defaultPageSize 默认每页显示数量
-      pagination={{
-        defaultPageSize: 20,
-      }}
+      pagination={pagination}
       loading={loading}
     />
   );

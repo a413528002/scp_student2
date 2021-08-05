@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect} from "umi";
-import {Card, Button, message, Popconfirm} from "antd";
+import {Button, Card, message, Popconfirm} from "antd";
 import PublicTable from "@/components/Table";
 
 const MemberInformation = (props) => {
@@ -12,7 +12,7 @@ const MemberInformation = (props) => {
     // 获取课堂成员
     const getMemberTableData = () => {
       dispatch({
-        type: 'classroom/queryClassHourUsers',
+        type: 'teacherClassroom/queryClassHourUsers',
         payload: {
           classHourId
         }
@@ -29,7 +29,7 @@ const MemberInformation = (props) => {
     const kickClassHourUser = (stuUserId) => {
       if (TEACHER_IN_CLASS) {
         dispatch({
-          type: 'classroom/kickClassHourUser',
+          type: 'teacherClassroom/kickClassHourUser',
           payload: {
             stuUserId,
             classHourId
@@ -45,35 +45,34 @@ const MemberInformation = (props) => {
       {
         title: '用户',
         dataIndex: 'stuUsername',
-        key: 'stuUsername',
-        // render: (text, record, index) => `00${index + 1}`
       },
       {
         title: '名称',
         dataIndex: 'nickname',
-        key: 'nickname',
       },
       {
         title: '银行',
         dataIndex: 'bankName',
-        key: 'bankName',
       },
       {
         title: '岗位',
         dataIndex: 'bankPositionName',
-        key: 'bankPositionName',
+      },
+      {
+        title: '学生状态',
+        dataIndex: 'stuStatusName',
       },
       {
         title: '操作',
-        dataIndex: 'address',
-        key: 'address',
-        render: (_, {stuUserId}) => (
+        dataIndex: 'opt',
+        render: (_, {stuUserId,stuStatus}) => (
           <Popconfirm
+            disabled={stuStatus !== 'NORMAL'}
             title="确认踢出?"
             onConfirm={() => kickClassHourUser(stuUserId)}
             onCancel={handleCancelPop}
           >
-            <Button type='primary' size='small'>
+            <Button type='primary' size='small' disabled={stuStatus !== 'NORMAL'}>
               踢出
             </Button>
           </Popconfirm>)
@@ -81,7 +80,7 @@ const MemberInformation = (props) => {
     ];
     return (
       <Card
-        title="团队成员"
+        title="成员信息"
         bordered={false}
         type='inner'
         extra={<Button type="primary" onClick={getMemberTableData} loading={loading}>刷新</Button>}
@@ -91,6 +90,10 @@ const MemberInformation = (props) => {
           columns={columns}
           bordered
           loading={loading}
+          pagination={{
+            defaultPageSize: 10,
+            total: dataSource.length,
+          }}
         />
       </Card>
     );
