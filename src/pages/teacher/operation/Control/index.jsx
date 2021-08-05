@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from "umi";
 import {Button, Card} from "antd";
 import PublicTable from "@/components/Table";
@@ -7,8 +7,7 @@ const Control = (props) => {
     const {dispatch, classInfo, loading} = props
     // 获取课堂id
     const {classHourId} = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {}
-    // 获取课堂信息
-    useEffect(() => {
+    const getClassInfoData = () => {
       if (classHourId) {
         dispatch({
           type: 'teacherOperation/queryClassInfo',
@@ -17,6 +16,10 @@ const Control = (props) => {
           }
         })
       }
+    }
+    // 获取课堂信息
+    useEffect(() => {
+      getClassInfoData();
     }, [classHourId])
     const dataSource = [
       {
@@ -131,6 +134,7 @@ const Control = (props) => {
           title="经营控制"
           bordered={false}
           type='inner'
+          extra={<Button type="primary" onClick={e => getClassInfoData()} loading={loading}>刷新</Button>}
         >
           <PublicTable
             dataSource={dataSource}
