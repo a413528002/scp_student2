@@ -131,7 +131,7 @@ const Control = (props) => {
     return (
       <>
         <Card
-          title="经营控制"
+          title={"经营控制（" + classInfo.periodCur + "/" + classInfo.periodTtl +"）"}
           bordered={false}
           type='inner'
           extra={<Button type="primary" onClick={e => getClassInfoData()} loading={loading}>刷新</Button>}
