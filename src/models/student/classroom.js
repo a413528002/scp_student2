@@ -71,6 +71,7 @@ const ClassroomModel = {
     * queryJoinedClassHours({payload}, {call, put}) {
       const response = yield call(getStudentQueryJoinedClassHours, payload)
       if (response.status === undefined) {
+        response.map(item => item._key = item.classHourId)
         yield put({
           type: 'save',
           payload: {
@@ -155,6 +156,9 @@ const ClassroomModel = {
       const response = yield call(getStudentQueryClassHourUserDetails, payload)
       console.log(response)
       if (response.status === undefined) {
+        if (response.bankMembers) {
+          response.bankMembers.map(item => item._key = item.stuUserId)
+        }
         yield put({
           type: 'save',
           payload: {

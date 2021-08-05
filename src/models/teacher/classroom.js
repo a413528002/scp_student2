@@ -38,6 +38,7 @@ const ClassroomModel = {
     * queryMyClassHours({payload}, {call, put}) {
       const response = yield call(getTeacherQueryMyClassHours, payload)
       if (response.status === undefined) {
+        response.content.map(item => item._key = item.classHourId)
         yield put({
           type: 'save',
           payload: {
@@ -97,6 +98,7 @@ const ClassroomModel = {
     * queryClassHourUsers({payload}, {call, put}) {
       const response = yield call(getTeacherQueryClassHourUsers, payload)
       if (response.status === undefined) {
+        response.map(item => item._key = item.classHourUserId)
         yield put({
           type: 'save',
           payload: {

@@ -12,6 +12,12 @@ export default [
   },
   // 我的课堂
   {
+    path: '/teacher/operation',
+    name: 'teacher-operation',
+    icon: 'BulbOutlined',
+    component: './teacher/operation',
+  },
+  {
     component: './404',
   },
 ];
