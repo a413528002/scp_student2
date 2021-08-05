@@ -29,7 +29,7 @@ const Control = (props) => {
           {
             buttonName: '开始经营',
             buttonDisabled: classInfo.periodStatus !== 'PREPARING',
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/startPeriod',
               })
@@ -38,7 +38,7 @@ const Control = (props) => {
           {
             buttonName: '结束经营',
             buttonDisabled: classInfo.periodStatus !== 'STARTED',
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/endPeriod',
               })
@@ -47,7 +47,7 @@ const Control = (props) => {
           {
             buttonName: '转入下期',
             buttonDisabled: classInfo.periodStatus !== 'ENDED' || classInfo.periodCur === classInfo.periodTtl,
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/nextPeriod',
               })
@@ -62,7 +62,7 @@ const Control = (props) => {
           {
             buttonName: '开始抢单',
             buttonDisabled: classInfo.periodStatus !== 'STARTED' || classInfo.grabDpstStatus !== 'NONE',
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/startGrabDeposit',
               })
@@ -71,7 +71,7 @@ const Control = (props) => {
           {
             buttonName: '结束抢单',
             buttonDisabled: classInfo.periodStatus !== 'STARTED' || classInfo.grabDpstStatus !== 'STARTED',
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/endGrabDeposit',
               })
@@ -86,7 +86,7 @@ const Control = (props) => {
           {
             buttonName: '开始抢单',
             buttonDisabled: classInfo.periodStatus !== 'STARTED' || classInfo.grabLoanStatus !== 'NONE',
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/startGrabLoan',
               })
@@ -95,7 +95,7 @@ const Control = (props) => {
           {
             buttonName: '结束抢单',
             buttonDisabled: classInfo.periodStatus !== 'STARTED' || classInfo.grabLoanStatus !== 'STARTED',
-            onClick: (e) => {
+            onClick: () => {
               dispatch({
                 type: 'teacherOperation/endGrabLoan',
               })
@@ -135,7 +135,7 @@ const Control = (props) => {
           title="经营信息"
           bordered={false}
           type='inner'
-          extra={<Button type="primary" onClick={e => getClassInfoData()} loading={loading}>刷新</Button>}
+          extra={<Button type="primary" onClick={() => getClassInfoData()} loading={loading}>刷新</Button>}
         >
           {classInfo.classHourId ? (
             <Descriptions column={1}>
