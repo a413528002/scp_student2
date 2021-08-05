@@ -219,6 +219,10 @@ export default [
     path: 'teacher/classroom',
     component: './teacher/classroom',
   },
+  {
+    path: 'teacher/operation',
+    component: './teacher/operation',
+  },
 
   {
     component: './404',
