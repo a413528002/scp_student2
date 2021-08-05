@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from "umi";
-import {Button, Card} from "antd";
+import {Button, Card, Descriptions, Empty} from "antd";
 import PublicTable from "@/components/Table";
 
 const Control = (props) => {
@@ -46,7 +46,7 @@ const Control = (props) => {
           },
           {
             buttonName: '转入下期',
-            buttonDisabled: classInfo.periodStatus !== 'ENDED',
+            buttonDisabled: classInfo.periodStatus !== 'ENDED' || classInfo.periodCur === classInfo.periodTtl,
             onClick: (e) => {
               dispatch({
                 type: 'teacherOperation/nextPeriod',
@@ -120,6 +120,7 @@ const Control = (props) => {
                       type='primary'
                       disabled={item.buttonDisabled}
                       onClick={item.onClick}
+                      style={{'margin-right':'5px'}}
               >
                 {item.buttonName}
               </Button>
@@ -131,10 +132,24 @@ const Control = (props) => {
     return (
       <>
         <Card
-          title={"经营控制（" + classInfo.periodCur + "/" + classInfo.periodTtl +"）"}
+          title="经营信息"
           bordered={false}
           type='inner'
           extra={<Button type="primary" onClick={e => getClassInfoData()} loading={loading}>刷新</Button>}
+        >
+          {classInfo.classHourId ? (
+            <Descriptions column={1}>
+              <Descriptions.Item label="期间">{classInfo.periodCur + " / " + classInfo.periodTtl}</Descriptions.Item>
+              <Descriptions.Item label="期间状态">{classInfo.periodStatusName}</Descriptions.Item>
+              <Descriptions.Item label="当前经营期间开始于">{classInfo.periodCurStartTime ? classInfo.periodCurStartTime : '未开始'}</Descriptions.Item>
+            </Descriptions>
+          ) : <Empty/>}
+        </Card>
+        <Card
+          title="经营控制"
+          bordered={false}
+          type='inner'
+          // extra={<Button type="primary" onClick={e => getClassInfoData()} loading={loading} >刷新</Button>}
         >
           <PublicTable
             dataSource={dataSource}
