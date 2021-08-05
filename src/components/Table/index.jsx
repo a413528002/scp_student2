@@ -21,7 +21,9 @@ const PublicTable = (props) => {
       // x方向滚动距离
       scroll={{x: 750}}
       // 分页 defaultPageSize 默认每页显示数量
-      pagination={pagination}
+      pagination={{
+        defaultPageSize: 20,
+      }}
       loading={loading}
     />
   );
