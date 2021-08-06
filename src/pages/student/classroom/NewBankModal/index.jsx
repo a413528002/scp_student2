@@ -1,18 +1,16 @@
 import React from 'react';
-import {connect} from "umi";
-import {Modal, Form, Input, Button, Space} from 'antd';
+import { connect } from 'umi';
+import { Button, Form, Input, Modal, Space } from 'antd';
 
 const NewBankModal = (props) => {
   const {newBankModalVisible, handleNewBankCancelModal, dispatch} = props
-  const {studentInClassData,loading} = props
+  const {loading} = props
   const [form] = Form.useForm();
-  // 获取当前搜索到的课堂信息 redux中的studentInClassData不存在 拿localStorage里面的
-  const {classHourId} = studentInClassData !== undefined ? studentInClassData : JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   // 新建课堂
   const createBank = (params) => {
     dispatch({
       type: 'studentClassroom/createBank',
-      payload: {...params, classHourId},
+      payload: {...params},
       // 新建成功后的回调
       callback: () => {
         handleCancelResetFields()
@@ -73,7 +71,6 @@ const NewBankModal = (props) => {
   );
 };
 
-export default connect(({studentClassroom,loading}) => ({
-  studentInClassData: studentClassroom.studentClassroomStudentInClassData,
+export default connect(({loading}) => ({
   loading:loading.effects['studentClassroom/createBank']
 }))(NewBankModal);

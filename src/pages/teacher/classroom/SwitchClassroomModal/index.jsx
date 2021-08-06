@@ -37,7 +37,7 @@ const SwitchClassroomModal = (props) => {
         // 选中当前行直接展示
         handleSwitchClassroomCancelModal()
         dispatch({
-          type: 'teacherClassroom/switchStartClassHour',
+          type: 'teacherClassroom/switchClassroom',
           payload:{
             ...selectedRowsData
           }

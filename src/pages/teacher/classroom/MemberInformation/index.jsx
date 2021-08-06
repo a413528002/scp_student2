@@ -18,11 +18,11 @@ const MemberInformation = (props) => {
         }
       })
     }
-    useEffect(() => {
-      if (TEACHER_IN_CLASS) {
-        getMemberTableData()
-      }
-    }, [classHourId])
+    // useEffect(() => {
+    //   if (TEACHER_IN_CLASS) {
+    //     getMemberTableData()
+    //   }
+    // }, [classHourId])
 
 
     // 踢出课堂成员

@@ -24,6 +24,8 @@ const loginOut = async () => {
       }),*/
     });
   }
+  // 刷新页面，清空model里的数据
+  window.location.reload()
   // 退出登录后清空localStorage
   localStorage.clear()
   // 退出登录后清空sessionStorage

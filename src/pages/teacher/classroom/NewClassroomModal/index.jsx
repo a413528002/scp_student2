@@ -11,14 +11,7 @@ const NewClassroomModal = (props) => {
       type: 'teacherClassroom/createClassHour',
       payload: {...params},
       // 新建成功后的回调
-      callback: ({classHourId}) => {
-        // 刷新成员信息
-        dispatch({
-          type: 'teacherClassroom/queryClassHourUsers',
-          payload: {
-            classHourId
-          }
-        })
+      callback: () => {
         handleCancelResetFields()
       },
     })

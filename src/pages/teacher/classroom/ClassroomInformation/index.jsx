@@ -1,11 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "umi";
-import {Button, Card, Space, Descriptions, Empty, Popconfirm, message} from 'antd';
-import NewClassroomModal from "@/pages/teacher/classroom/NewClassroomModal";
-import SwitchClassroomModal from "@/pages/teacher/classroom/SwitchClassroomModal";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'umi';
+import { Button, Card, Descriptions, Empty, message, Popconfirm, Space } from 'antd';
+import NewClassroomModal from '@/pages/teacher/classroom/NewClassroomModal';
+import SwitchClassroomModal from '@/pages/teacher/classroom/SwitchClassroomModal';
 
 const ClassroomInformation = (props) => {
   const {dispatch, teacherInClassData} = props
+
+  const TEACHER_IN_CLASS = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'))
+
+  const {
+    classHourCode,
+    tchNickname,
+    classHourName,
+    classHourStatusName,
+    classHourId,
+  } = teacherInClassData
+
   // 新建课堂modal显示状态 ----start-----
   const [newClassroomModalVisible, setNewClassroomModalVisible] = useState(false);
 
@@ -34,19 +45,6 @@ const ClassroomInformation = (props) => {
   };
   // 切换课堂modal显示状态 ----end-----
 
-
-  // 获取当前正在进行的课堂状态
-  const TEACHER_IN_CLASS = !!localStorage.getItem('TEACHER_IN_CLASS')
-
-  // 获取当前正在进行的课堂信息 redux中的teacherInClassData不存在 拿localStorage里面的
-  const {
-    classHourCode,
-    tchNickname,
-    classHourName,
-    classHourStatusName,
-    classHourId,
-  } = teacherInClassData !== undefined ? teacherInClassData : JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {}
-
   // 结束课堂
   const endClassHour = () => {
     dispatch({
@@ -60,6 +58,15 @@ const ClassroomInformation = (props) => {
   const handleCancelClassOverModal = () => {
     message.error('已取消');
   }
+
+  useEffect(() => {
+    if (!classHourId && TEACHER_IN_CLASS) {
+      dispatch({
+        type: 'teacherClassroom/switchClassroom',
+        payload: TEACHER_IN_CLASS
+      })
+    }
+  }, [classHourId])
 
   return (
     <Card
@@ -82,7 +89,7 @@ const ClassroomInformation = (props) => {
       }
       type='inner'
     >
-      {TEACHER_IN_CLASS && TEACHER_IN_CLASS === true ? (
+      {classHourId ? (
         <Descriptions column={2}>
           <Descriptions.Item label="课堂编号">{classHourCode}</Descriptions.Item>
           <Descriptions.Item label="教师名称">{tchNickname}</Descriptions.Item>

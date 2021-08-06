@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'umi'
-import {Modal, message} from "antd";
-import PublicTable from "@/components/Table";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'umi';
+import { message, Modal } from 'antd';
+import PublicTable from '@/components/Table';
 
 const SwitchClassroomModal = (props) => {
   const {handleSwitchClassroomCancelModal, switchClassroomModalVisible} = props
@@ -17,32 +17,24 @@ const SwitchClassroomModal = (props) => {
   const startClassHour = () => {
     if (selectedRowKeys.length > 0) {
       const [selectedRowsData] = selectedRows
-      if (selectedRowsData.classHourStatusName === '上课中') {
-        // 选中当前行直接展示
-        // 存储localStorage
-        localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(selectedRowsData))
-        localStorage.setItem('STUDENT_IN_CLASS_STATE', '已加入')
-        // 关闭modal
-        handleSwitchClassroomCancelModal()
-        message.success('切换课堂成功')
-      } else {
-        message.error('已下课，不可以切换')
-      }
-
+      // 选中当前行直接展示
+      // 存储localStorage
+      message.success('切换课堂成功')
+      dispatch({
+        type: 'studentClassroom/switchClassroom',
+        payload: selectedRowsData
+      })
+      // 关闭modal
+      handleSwitchClassroomCancelModal()
     } else {
       message.error('未选择课堂')
     }
-
   }
 
   // 获取切换课堂表格数据
   const getSwitchClassroomTableData = () => {
     dispatch({
       type: 'studentClassroom/queryJoinedClassHours',
-      payload: {
-        // page: 0,
-        // size: 20,
-      }
     })
   }
   useEffect(() => {
@@ -64,7 +56,7 @@ const SwitchClassroomModal = (props) => {
     type: 'radio',
     getCheckboxProps: (record) => ({
       // 已下课不能被选中
-      disabled: record.classHourStatusName === '已下课',
+      // disabled: record.classHourStatusName === '已下课',
       // Column configuration not to be checked
       classHourStatusName: record.classHourStatusName,
     }),
@@ -74,27 +66,22 @@ const SwitchClassroomModal = (props) => {
     {
       title: '课堂编号',
       dataIndex: 'classHourCode',
-      key: 'classHourCode',
     },
     {
       title: '课堂名称',
       dataIndex: 'classHourName',
-      key: 'classHourName',
     },
     {
       title: '课堂状态',
       dataIndex: 'classHourStatusName',
-      key: 'classHourStatusName',
     },
     {
       title: '教师名称',
       dataIndex: 'tchNickname',
-      key: 'tchNickname',
     },
     {
       title: '学生状态',
-      dataIndex: 'classHourStatusName',
-      key: 'classHourStatusName',
+      dataIndex: 'stuStatusName',
     },
   ];
   return (
