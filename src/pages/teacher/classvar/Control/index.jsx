@@ -1,10 +1,22 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from "umi";
 import {Button, Card} from "antd";
 import PublicTable from "@/components/Table";
+import UpdateClassVarModal from "@/pages/teacher/classvar/UpdateClassVarModal";
 
 const Control = (props) => {
     const {dispatch, dataSource, loading} = props
+    const [classVarData, setClassVarData] = useState({})
+    // 显示modal
+    const handleUpdateClassVarShowModal = (record) => {
+      setClassVarData(record)
+    };
+
+    // 关闭modal
+    const handleUpdateClassVarCancelModal = () => {
+      setClassVarData({})
+    };
+
     // 获取课堂id
     const {classHourId} = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {}
     const getClassVarData = () => {
@@ -44,9 +56,9 @@ const Control = (props) => {
       {
         title: '操作',
         key: 'opt',
-        render: (_, {varKey,varValue,editable}) => (
+        render: (_, record) => (
 
-          <Button type='primary' size='small' disabled={editable}>
+          <Button type='primary' size='small' disabled={!record.editable} onClick={e => handleUpdateClassVarShowModal(record)}>
             修改
           </Button>
         )
@@ -70,6 +82,10 @@ const Control = (props) => {
               defaultPageSize: 10,
               total: dataSource.length,
             }}
+          />
+          <UpdateClassVarModal
+            handleUpdateClassVarCancelModal={handleUpdateClassVarCancelModal}
+            classVarData={classVarData}
           />
         </Card>
       </>
