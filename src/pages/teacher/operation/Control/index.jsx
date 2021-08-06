@@ -120,7 +120,7 @@ const Control = (props) => {
                       type='primary'
                       disabled={item.buttonDisabled}
                       onClick={item.onClick}
-                      style={{'margin-right':'5px'}}
+                      style={{'marginRight':'5px'}}
               >
                 {item.buttonName}
               </Button>
