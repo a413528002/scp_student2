@@ -223,6 +223,10 @@ export default [
     path: 'teacher/operation',
     component: './teacher/operation',
   },
+  {
+    path: 'teacher/classvar',
+    component: './teacher/classvar',
+  },
 
   {
     component: './404',

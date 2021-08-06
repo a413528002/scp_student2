@@ -1,8 +1,8 @@
 import React from 'react';
 import Control from "@/pages/teacher/operation/Control";
 
+// 经营控制
 const Operation = () => {
-  // const {loading} = props
   return (
     <>
       <Control/>

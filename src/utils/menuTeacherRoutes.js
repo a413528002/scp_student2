@@ -18,6 +18,12 @@ export default [
     // component: './teacher/operation',
   },
   {
+    path: '/teacher/classvar',
+    name: 'teacher-classvar',
+    icon: 'BulbOutlined',
+    // component: './teacher/classvar',
+  },
+  {
     component: './404',
   },
 ];
