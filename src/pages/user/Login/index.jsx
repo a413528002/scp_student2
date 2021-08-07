@@ -80,15 +80,19 @@ const Login = () => {
   };
 
   const {status} = userLoginState;
+  const formRef = React.createRef(null);
   // 获取下拉列表datalist
   const request = async () => {
-    // 返回的select网络请求
-    const tenants = await getQueryTenantOptions();
-    setTenant(tenants.find(() => true)?.id)
-    return tenants.map(item => {return {
-      label: item.name,
-      value: item.id
-    }});
+    return getQueryTenantOptions()
+      .then(tenants => {
+        formRef?.current?.setFieldsValue({
+          tenantId: tenants.find(() => true)?.id,
+        });
+        return tenants.map(item => {return {
+          label: item.name,
+          value: item.id
+        }});
+      });
   }
   return (
     <div className={styles.container}>
@@ -114,6 +118,7 @@ const Login = () => {
 
         <div className={styles.main}>
           <ProForm
+            formRef={formRef}
             initialValues={{
               "username": "student",
               "password": "123456",
@@ -162,9 +167,6 @@ const Login = () => {
                 name="tenantId"
                 fieldProps={{
                   size: 'large',
-                  value: tenant,
-                  onSelect: (e) => setTenant(e),
-                  prefix: <UserOutlined className={styles.prefixIcon}/>,
                 }}
                 request={request}
                 placeholder="请选择租户"
