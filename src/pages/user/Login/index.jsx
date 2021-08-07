@@ -1,13 +1,10 @@
-import {
-  LockOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import {Alert, message, Tabs} from 'antd';
-import React, {useEffect, useState} from 'react';
-import ProForm, {ProFormText, ProFormSelect} from '@ant-design/pro-form';
-import {useIntl, Link, history, FormattedMessage, SelectLang, useModel, connect} from 'umi';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Alert, message, Tabs } from 'antd';
+import React, { useState } from 'react';
+import ProForm, { ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { connect, FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import {getLogin, getQueryTenantOptions} from '@/services/login';
+import { getLogin, getQueryTenantOptions } from '@/services/login';
 import styles from './index.less';
 
 const LoginMessage = ({content}) => (
@@ -24,7 +21,7 @@ const LoginMessage = ({content}) => (
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const [userLoginState, setUserLoginState] = useState({});
-  const [selectDefaultValue, setSelectDefaultValue] = useState(undefined);
+  const [tenant, setTenant] = useState(undefined);
   const {initialState, setInitialState} = useModel('@@initialState');
   const intl = useIntl();
 
@@ -85,19 +82,13 @@ const Login = () => {
   const {status} = userLoginState;
   // 获取下拉列表datalist
   const request = async () => {
-    //返回的select网络请求
-    let params = await getQueryTenantOptions();
-    let res = [];
-    params.map(item => {
-      let temp = {};
-      temp['label'] = item.name;
-      temp['value'] = item.id;
-      res.push(temp)
-    });
-    const {value} = res && res[0]
-    // 设置默认选中项 未生效
-    setSelectDefaultValue(value)
-    return res
+    // 返回的select网络请求
+    const tenants = await getQueryTenantOptions();
+    setTenant(tenants.find(() => true)?.id)
+    return tenants.map(item => {return {
+      label: item.name,
+      value: item.id
+    }});
   }
   return (
     <div className={styles.container}>
@@ -124,7 +115,8 @@ const Login = () => {
         <div className={styles.main}>
           <ProForm
             initialValues={{
-              "tenantId": selectDefaultValue,
+              "username": "student",
+              "password": "123456",
             }}
             submitter={{
               searchConfig: {
@@ -170,11 +162,13 @@ const Login = () => {
                 name="tenantId"
                 fieldProps={{
                   size: 'large',
+                  value: tenant,
+                  onSelect: (e) => setTenant(e),
                   prefix: <UserOutlined className={styles.prefixIcon}/>,
                 }}
                 request={request}
-                placeholder="请选择登录账号"
-                rules={[{required: true, message: '请选择登录账号'}]}
+                placeholder="请选择租户"
+                rules={[{required: true, message: '请选择租户'}]}
               />
               <ProFormText
                 name="username"
