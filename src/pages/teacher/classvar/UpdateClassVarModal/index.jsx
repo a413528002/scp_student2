@@ -23,8 +23,7 @@ const UpdateClassVarModal = (props) => {
    * @param values 表单字段值
    */
   const onFinish = (values) => {
-    console.log(values)
-    updateClassVar(values)
+    updateClassVar({ ...values, varKey: classVarData.varKey })
   }
   // 关闭modal 重置表单
   const handleCancelResetFields = () => {
@@ -49,11 +48,6 @@ const UpdateClassVarModal = (props) => {
         name="NewClassroomModal"
         onFinish={onFinish}
       >
-        <Form.Item
-          hidden={true}
-          name="varKey"
-        >
-        </Form.Item>
         <Form.Item
           name="varValue"
         >
