@@ -170,8 +170,8 @@ const ClassroomModel = {
 
     // 根据银行编码查询银行
     * queryBankByCode({payload}, {call, put, select}) {
-      const bankOpt = yield select(state => state.studentClassroom.bankOpt)
-      if (!bankOpt) {
+      const classOpt = yield select(state => state.studentClassroom.classOpt)
+      if (!classOpt) {
         return;
       }
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)

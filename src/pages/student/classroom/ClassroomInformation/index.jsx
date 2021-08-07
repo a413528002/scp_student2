@@ -92,8 +92,6 @@ const ClassroomInformation = (props) => {
     }
   }, [classHourId])
 
-
-  console.log(classHourId);
   return (
     <Card
       title="课堂信息"

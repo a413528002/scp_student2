@@ -76,7 +76,7 @@ const BankInformation = (props) => {
               enterButton="查询银行"
               loading={searchLoading}
               allowClear
-              disabled={!bankOpt}
+              disabled={!classOpt}
             />
             <Button type="primary" onClick={joinBank} loading={joinLoading} disabled={!classOpt}>加入银行</Button>
             <Button type="primary" onClick={handleNewBankShowModal} disabled={!classOpt}>新建银行</Button>
