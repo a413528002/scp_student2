@@ -3,24 +3,25 @@ export default [
     path: '/',
     redirect: '/teacher/classroom',
   },
-  // 首页
+  // 我的课堂
   {
     path: '/teacher/classroom',
     name: 'teacher-classroom',
     icon: 'BulbOutlined',
     // component: './teacher/classroom',
   },
-  // 我的课堂
+  // 经营控制
   {
     path: '/teacher/operation',
     name: 'teacher-operation',
-    icon: 'BulbOutlined',
+    icon: 'RadarChartOutlined',
     // component: './teacher/operation',
   },
+  // 参数控制
   {
     path: '/teacher/classvar',
     name: 'teacher-classvar',
-    icon: 'BulbOutlined',
+    icon: 'BarChartOutlined',
     // component: './teacher/classvar',
   },
   {

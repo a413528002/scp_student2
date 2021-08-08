@@ -1,6 +1,6 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
-import styles from '@/pages/deal/loans/index.less'
+import styles from '@/pages/student/deal/loans/index.less'
 
 const LoansTabRob = () => {
   const dataSource = [];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card} from "antd";
-import ChannelTable from "@/pages/plan/channel/ChannelTable";
-import ChannelRemark from "@/pages/plan/channel/ChannelRemark";
+import ChannelTable from "@/pages/student/plan/channel/ChannelTable";
+import ChannelRemark from "@/pages/student/plan/channel/ChannelRemark";
 
 const Channel = () => {
   return (

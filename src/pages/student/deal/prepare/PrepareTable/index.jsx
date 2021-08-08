@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card} from "antd";
 import PublicTable from "@/components/Table";
-import PrepareRule from "@/pages/deal/prepare/PrepareRule";
+import PrepareRule from "@/pages/student/deal/prepare/PrepareRule";
 
 const PrepareTable = () => {
   const dataSource = [];

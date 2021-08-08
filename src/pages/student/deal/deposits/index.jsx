@@ -1,5 +1,5 @@
 import React from 'react';
-import DepositsTable from "@/pages/deal/deposits/DepositsTable";
+import DepositsTable from "@/pages/student/deal/deposits/DepositsTable";
 
 const Deposits = () => {
   return (

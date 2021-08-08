@@ -12,8 +12,8 @@ const LoginModel = {
       if (response.status === undefined) {
         yield put({
           type: 'save',
-          payload:{
-            loginQueryTenantOptions:response
+          payload: {
+            loginQueryTenantOptions: response
           }
         })
       }

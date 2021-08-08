@@ -1,5 +1,5 @@
 import React from 'react';
-import ProvisionTable from "@/pages/deal/provision/ProvisionTable";
+import ProvisionTable from "@/pages/student/deal/provision/ProvisionTable";
 
 const Provision = () => {
   return (

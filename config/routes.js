@@ -31,94 +31,91 @@ export default [
     component: './student/classroom',
   },
   // 规划
-  /*{
-    path: '/plan',
+  {
+    path: '/student/plan',
     name: 'plan',
-    icon: 'ProfileOutlined',
     routes: [
       {
-        path: '/plan',
-        redirect: '/plan/tactic',
+        path: '/student/plan',
+        redirect: '/student/plan/tactic',
       },
       {
         // 战略
         name: 'tactic',
-        path: '/plan/tactic',
-        component: './plan/tactic',
+        path: '/student/plan/tactic',
+        component: './student/plan/tactic',
       },
       {
         // 机构
         name: 'organization',
-        path: '/plan/organization',
-        component: './plan/organization',
+        path: '/student/plan/organization',
+        component: './student/plan/organization',
       },
       {
         // 渠道
         name: 'channel',
-        path: '/plan/channel',
-        component: './plan/channel',
+        path: '/student/plan/channel',
+        component: './student/plan/channel',
       },
       {
         // 营销
         name: 'marketing',
-        path: '/plan/marketing',
-        component: './plan/marketing',
+        path: '/student/plan/marketing',
+        component: './student/plan/marketing',
       },
     ],
 
   },
   // 交易
   {
-    path: '/deal',
+    path: '/student/deal',
     name: 'deal',
     icon: 'RetweetOutlined',
     routes: [
       {
-        path: '/deal',
-        redirect: '/deal/deposit',
+        path: '/student/deal',
+        redirect: '/student/deal/deposit',
       },
       {
         // 存款
         name: 'deposit',
-        path: '/deal/deposit',
-        component: './deal/deposit',
+        path: '/student/deal/deposit',
+        component: './student/deal/deposit',
       },
       {
         // 贷款
         name: 'loans',
-        path: '/deal/loans',
-        component: './deal/loans',
+        path: '/student/deal/loans',
+        component: './student/deal/loans',
       },
       {
         // 准备金
         name: 'prepare',
-        path: '/deal/prepare',
-        component: './deal/prepare',
+        path: '/student/deal/prepare',
+        component: './student/deal/prepare',
       },
       {
         // 拨备
         name: 'provision',
-        path: '/deal/provision',
-        component: './deal/provision',
+        path: '/student/deal/provision',
+        component: './student/deal/provision',
       },
       {
         // 存款管理
         name: 'deposits',
-        path: '/deal/deposits',
-        component: './deal/deposits',
+        path: '/student/deal/deposits',
+        component: './student/deal/deposits',
       },
       {
         // 贷款管理
         name: 'loan',
-        path: '/deal/loan',
-        component: './deal/loan',
+        path: '/student/deal/loan',
+        component: './student/deal/loan',
       },
-
     ],
-
   },
   // 金融
-  {
+  /*{
     path: '/financial',
     name: 'financial',
     icon: 'TransactionOutlined',
@@ -140,9 +137,9 @@ export default [
         component: './financial/financing',
       },
     ],
-  },
+  },*/
   // 财务
-  {
+  /*{
     path: '/finance',
     name: 'finance',
     icon: 'AccountBookOutlined',
@@ -176,9 +173,9 @@ export default [
         component: './finance/statement',
       },
     ],
-  },
+  },*/
   // 风险
-  {
+  /*{
     path: '/risk',
     name: 'risk',
     icon: 'AccountBookOutlined',

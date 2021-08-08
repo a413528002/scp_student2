@@ -1,5 +1,5 @@
 import React from 'react';
-import PrepareTable from "@/pages/deal/prepare/PrepareTable";
+import PrepareTable from "@/pages/student/deal/prepare/PrepareTable";
 
 const Prepare = () => {
   return (

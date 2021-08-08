@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card} from "antd";
 import PublicTable from "@/components/Table";
-import ProvisionRule from "@/pages/deal/provision/ProvisionRule";
+import ProvisionRule from "@/pages/student/deal/provision/ProvisionRule";
 
 const ProvisionTable = () => {
   const dataSource = [];

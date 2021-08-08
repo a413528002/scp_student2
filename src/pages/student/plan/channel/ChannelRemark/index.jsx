@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/pages/plan/channel/index.less'
+import styles from '@/pages/student/plan/channel/index.less'
 
 const ChannelRemark = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card} from "antd";
-import LoansTabs from "@/pages/deal/loans/LoansTabs";
+import LoansTabs from "@/pages/student/deal/loans/LoansTabs";
 
 const Loans = () => {
   return (

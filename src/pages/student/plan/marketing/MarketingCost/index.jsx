@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card} from "antd";
 import PublicTable from "@/components/Table";
-import MarketingCostRule from "@/pages/plan/marketing/MarketingCostRule";
+import MarketingCostRule from "@/pages/student/plan/marketing/MarketingCostRule";
 
 const MarketingCost = () => {
   const dataSource = [];

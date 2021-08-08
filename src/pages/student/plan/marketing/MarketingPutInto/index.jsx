@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card} from "antd";
 import PublicTable from "@/components/Table";
-import MarketingPutIntoRemark from "@/pages/plan/marketing/MarketingPutIntoRemark";
+import MarketingPutIntoRemark from "@/pages/student/plan/marketing/MarketingPutIntoRemark";
 
 const MarketingPutInto = () => {
   const dataSource = [];

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Descriptions, Radio, Button,Card } from 'antd';
-import styles from '@/pages/plan/tactic/index.less'
+import styles from '@/pages/student/plan/tactic/index.less'
 
 const TacticList = () => {
   return (

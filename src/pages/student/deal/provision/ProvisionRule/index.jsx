@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/pages/deal/provision/index.less'
+import styles from '@/pages/student/deal/provision/index.less'
 
 const ProvisionRule = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import DepositTabs from "@/pages/deal/deposit/DepositTabs";
+import DepositTabs from "@/pages/student/deal/deposit/DepositTabs";
 import {Card} from "antd";
 
 const Deposit = () => {

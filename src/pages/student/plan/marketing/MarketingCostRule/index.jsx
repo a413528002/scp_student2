@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/pages/plan/marketing/index.less'
+import styles from '@/pages/student/plan/marketing/index.less'
 
 const MarketingCostRule = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/pages/deal/prepare/index.less'
+import styles from '@/pages/student/deal/prepare/index.less'
 
 const PrepareRule = () => {
   return (
