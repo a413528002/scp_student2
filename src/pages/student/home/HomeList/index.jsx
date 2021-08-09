@@ -1,5 +1,8 @@
 import React from 'react';
 import {Card, Col, Image, Row} from 'antd';
+import DepositAndLoanInterestRate from '@/pages/student/home/DepositAndLoanInterestRate';
+import DepositAndLoanAmount from '@/pages/student/home/DepositAndLoanAmount';
+import DepositAndLoanCount from '@/pages/student/home/DepositAndLoanCount';
 
 
 const HomeList = () => {
@@ -14,11 +17,7 @@ const HomeList = () => {
             title="存贷款总量"
             bordered={false}
           >
-            <Image
-              width={'100%'}
-              height={"50%"}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            />
+            <DepositAndLoanInterestRate/>
           </Card>
         </Col>
         <Col {...gutter}>
@@ -28,11 +27,7 @@ const HomeList = () => {
             title="存贷款总量"
             bordered={false}
           >
-            <Image
-              width={'100%'}
-              height={"50%"}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            />
+            <DepositAndLoanAmount/>
           </Card>
         </Col>
         <Col {...gutter}>
@@ -42,11 +37,37 @@ const HomeList = () => {
             title="存贷款总量"
             bordered={false}
           >
-            <Image
-              width={'100%'}
-              height={"50%"}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            />
+            <DepositAndLoanCount/>
+          </Card>
+        </Col>
+        <Col {...gutter}>
+          <Card
+            size='small'
+            type="inner"
+            title="信用风险"
+            bordered={false}
+          >
+            <div>TODO</div>
+          </Card>
+        </Col>
+        <Col {...gutter}>
+          <Card
+            size='small'
+            type="inner"
+            title="投融资市场"
+            bordered={false}
+          >
+            <div>TODO</div>
+          </Card>
+        </Col>
+        <Col {...gutter}>
+          <Card
+            size='small'
+            type="inner"
+            title="债券市场"
+            bordered={false}
+          >
+            <div>TODO</div>
           </Card>
         </Col>
       </Row>

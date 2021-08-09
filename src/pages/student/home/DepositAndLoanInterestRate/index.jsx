@@ -13,18 +13,20 @@ const DepositAndLoanInterestRate = (props) => {
       dataset: {
         source: [
           ['product', '零售存款平均利率', '对公存款平均利率', '贷款平均利率'],
-          ['1', 0.06, 0.05, 0.14],
-          ['2', 0.05, 0.04, 0.14],
-          ['3', 0.06, 0.05, 0.12],
-          ['4', 0.07, 0.06, 0.16],
-          ['5', 0.06, 0.06, 0.15],
-          ['6', 0.06, 0.05, 0.14],
-          ['7', 0.06, 0.05, 0.14],
-          ['8', 0.08, 0.07, 0.00],
+          ['第1期', 0.06, 0.05, 0.14],
+          ['第2期', 0.05, 0.04, 0.14],
+          ['第3期', 0.06, 0.05, 0.12],
+          ['第4期', 0.07, 0.06, 0.16],
+          ['第5期', 0.06, 0.06, 0.15],
+          ['第6期', 0.06, 0.05, 0.14],
+          ['第7期', 0.06, 0.05, 0.14],
+          ['第8期', 0.08, 0.07, 0.00],
         ]
       },
       xAxis: {type: 'category'},
-      yAxis: {},
+      yAxis: {axisLabel: {
+          formatter: (val) => val * 100 + '%'
+        }},
       // Declare several bar series, each will be mapped
       // to a column of dataset.source by default.
       series: [
@@ -45,7 +47,7 @@ const DepositAndLoanInterestRate = (props) => {
 
   return (
     <>
-      <div id = 'dpstAndLoanInstRate' style={{height: 800}}/>
+      <div id = 'dpstAndLoanInstRate' style={{height: 400}}/>
     </>
   );
 }

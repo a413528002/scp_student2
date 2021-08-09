@@ -1,5 +1,5 @@
 import React from 'react';
-import DepositAndLoanInterestRate from '@/pages/student/chart/DepositAndLoanInterestRate';
+import DepositAndLoanInterestRate from '@/pages/student/home/DepositAndLoanInterestRate';
 import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;

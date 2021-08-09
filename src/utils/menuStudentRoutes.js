@@ -15,12 +15,6 @@ export default [
     name: 'student-classroom',
     icon: 'BulbOutlined',
   },
-  // 宏观经济图
-  {
-    path: '/student/chart',
-    name: 'student-chart',
-    icon: 'BulbOutlined',
-  },
   // 规划
   {
     path: '/student/plan',
