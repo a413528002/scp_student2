@@ -30,6 +30,10 @@ export default [
     path: '/student/classroom',
     component: './student/classroom',
   },
+  {
+    path: '/student/chart',
+    component: './student/chart',
+  },
   // 规划
   {
     path: '/student/plan',

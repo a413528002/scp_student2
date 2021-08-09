@@ -1,6 +1,7 @@
 export default {
   'menu.student-home': '首页',
   'menu.student-classroom': '我的课堂',
+  'menu.student-chart': '宏观经济',
   'menu.login': '登录',
   'menu.plan': '规划管理',
   'menu.plan.tactic': '战略规划',
