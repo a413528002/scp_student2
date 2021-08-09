@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/pages/finance/operation/index.less'
+import styles from '@/pages/student/finance/operation/index.less'
 
 const OperationRule = () => {
   return (

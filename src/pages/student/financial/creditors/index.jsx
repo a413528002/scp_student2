@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card} from "antd";
-import CreditorsTabs from "@/pages/financial/creditors/CreditorsTabs";
+import CreditorsTabs from "@/pages/student/financial/creditors/CreditorsTabs";
 
 const Creditors = () => {
   return (

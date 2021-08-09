@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "@/pages/risk/handle/index.less";
+import styles from "@/pages/student/risk/handle/index.less";
 
 const HandleRule = () => {
   return (

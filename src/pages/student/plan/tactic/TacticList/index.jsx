@@ -1,8 +1,20 @@
-import React from 'react';
-import { Descriptions, Radio, Button,Card } from 'antd';
+import React, {useEffect} from 'react';
+import {Descriptions, Radio, Button, Card} from 'antd';
+import {connect} from 'umi'
 import styles from '@/pages/student/plan/tactic/index.less'
 
-const TacticList = () => {
+const TacticList = (props) => {
+  const {dispatch, classData} = props;
+  const {classHourId} = classData
+  console.log(classData)
+  useEffect(() => {
+    dispatch({
+      type: 'studentPlan/queryBankPlan',
+      payload: {
+        classHourId
+      }
+    })
+  }, [])
   return (
     <Card
       bordered={false}
@@ -36,4 +48,6 @@ const TacticList = () => {
   );
 };
 
-export default TacticList;
+export default connect(({studentClassroom,}) => ({
+  classData: studentClassroom.classData,
+}))(TacticList);

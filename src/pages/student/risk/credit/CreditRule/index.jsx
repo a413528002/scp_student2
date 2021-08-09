@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "@/pages/risk/credit/index.less";
+import styles from "@/pages/student/risk/credit/index.less";
 
 const CreditRule = () => {
   return (

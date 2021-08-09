@@ -1,7 +1,7 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
 import {Select, Button} from "antd";
-import styles from '@/pages/finance/operation/index.less'
+import styles from '@/pages/student/finance/operation/index.less'
 
 const OperationTable = () => {
   const dataSource = [];

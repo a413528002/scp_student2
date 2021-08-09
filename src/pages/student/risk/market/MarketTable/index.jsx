@@ -1,8 +1,8 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
-import HandleRule from "@/pages/risk/handle/HandleRule";
+import HandleRule from "@/pages/student/risk/handle/HandleRule";
 import {Card} from "antd";
-import MarketRule from "@/pages/risk/market/MarketRule";
+import MarketRule from "@/pages/student/risk/market/MarketRule";
 
 const MarketTable = () => {
   const dataSource = [];

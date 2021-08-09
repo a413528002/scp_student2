@@ -1,7 +1,7 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
 import {Button,Card} from "antd";
-import BrokeRule from "@/pages/finance/broke/BrokeRule";
+import BrokeRule from "@/pages/student/finance/broke/BrokeRule";
 
 const BrokeTable = () => {
   const dataSource = [];

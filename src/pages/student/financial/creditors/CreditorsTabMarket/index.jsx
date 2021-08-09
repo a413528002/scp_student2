@@ -1,7 +1,7 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
-import styles from '@/pages/financial/creditors/index.less'
-import CreditorsRule from "@/pages/financial/creditors/CreditorsRule";
+import styles from '@/pages/student/financial/creditors/index.less'
+import CreditorsRule from "@/pages/student/financial/creditors/CreditorsRule";
 
 const CreditorsTabMarket = () => {
   const dataSource = [];

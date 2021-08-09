@@ -4,7 +4,10 @@ import {
   RadarChartOutlined,
   BarChartOutlined,
   ProfileOutlined,
-  RetweetOutlined
+  RetweetOutlined,
+  TransactionOutlined,
+  AccountBookOutlined,
+  NodeIndexOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -14,4 +17,8 @@ export default {
   BarChartOutlined: <BarChartOutlined/>,
   ProfileOutlined: <ProfileOutlined/>,
   RetweetOutlined: <RetweetOutlined/>,
+  TransactionOutlined: <TransactionOutlined/>,
+  AccountBookOutlined: <AccountBookOutlined/>,
+  NodeIndexOutlined: <NodeIndexOutlined/>,
+
 };

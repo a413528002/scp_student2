@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card} from "antd";
-import OperationTable from "@/pages/finance/operation/OperationTable";
-import OperationRule from "@/pages/finance/operation/OperationRule";
+import OperationTable from "@/pages/student/finance/operation/OperationTable";
+import OperationRule from "@/pages/student/finance/operation/OperationRule";
 
 const Operation = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
-import FinancingRule from "@/pages/financial/financing/FinancingRule";
+import FinancingRule from "@/pages/student/financial/financing/FinancingRule";
 
 const FinancingTabMarket = () => {
   const dataSource = [];

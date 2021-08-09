@@ -1,5 +1,5 @@
 import React from 'react';
-import TransferTable from "@/pages/finance/transfer/TransferTable";
+import TransferTable from "@/pages/student/finance/transfer/TransferTable";
 
 const Transfer = () => {
   return (

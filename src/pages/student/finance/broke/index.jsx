@@ -1,5 +1,5 @@
 import React from 'react';
-import BrokeTable from "@/pages/finance/broke/BrokeTable";
+import BrokeTable from "@/pages/student/finance/broke/BrokeTable";
 
 const Broke = () => {
   return (

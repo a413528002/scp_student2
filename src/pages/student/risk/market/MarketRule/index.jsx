@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "@/pages/risk/market/index.less";
+import styles from "@/pages/student/risk/market/index.less";
 
 const MarketRule = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from'@/pages/finance/broke/index.less'
+import styles from'@/pages/student/finance/broke/index.less'
 
 const BrokeRule = () => {
   return (

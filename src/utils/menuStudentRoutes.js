@@ -18,7 +18,7 @@ export default [
   // 规划
   {
     path: '/student/plan',
-    name: 'plan',
+    name: 'student-plan',
     icon: 'ProfileOutlined',
     routes: [
       {
@@ -29,25 +29,21 @@ export default [
         // 战略
         name: 'tactic',
         path: '/student/plan/tactic',
-        // component: './student/plan/tactic',
       },
       {
         // 机构
         name: 'organization',
         path: '/student/plan/organization',
-        // component: './student/plan/organization',
       },
       {
         // 渠道
         name: 'channel',
         path: '/student/plan/channel',
-        // component: './student/plan/channel',
       },
       {
         // 营销
         name: 'marketing',
         path: '/student/plan/marketing',
-        // component: './student/plan/marketing',
       },
     ],
 
@@ -55,7 +51,7 @@ export default [
   // 交易
   {
     path: '/student/deal',
-    name: 'deal',
+    name: 'student-deal',
     icon: 'RetweetOutlined',
     routes: [
       {
@@ -66,136 +62,120 @@ export default [
         // 存款
         name: 'deposit',
         path: '/student/deal/deposit',
-        // component: './student/deal/deposit',
       },
       {
         // 贷款
         name: 'loans',
         path: '/student/deal/loans',
-        // component: './student/deal/loans',
       },
       {
         // 准备金
         name: 'prepare',
         path: '/student/deal/prepare',
-        // component: './student/deal/prepare',
       },
       {
         // 拨备
         name: 'provision',
         path: '/student/deal/provision',
-        // component: './student/deal/provision',
       },
       {
         // 存款管理
         name: 'deposits',
         path: '/student/deal/deposits',
-        // component: './student/deal/deposits',
       },
       {
         // 贷款管理
         name: 'loan',
         path: '/student/deal/loan',
-        // component: './student/deal/loan',
       },
     ],
   },
   // 金融
- /* {
-    path: '/financial',
-    name: 'financial',
+  {
+    path: '/student/financial',
+    name: 'student-financial',
     icon: 'TransactionOutlined',
     routes: [
       {
         path: '/financial',
-        redirect: '/financial/creditors',
+        redirect: '/student/financial/creditors',
       },
       {
         // 债权
         name: 'creditors',
-        path: '/financial/creditors',
-        component: './financial/creditors',
+        path: '/student/financial/creditors',
       },
       {
         // 投融资
         name: 'financing',
-        path: '/financial/financing',
-        component: './financial/financing',
+        path: '/student/financial/financing',
       },
     ],
-  },*/
+  },
   // 财务
-  /*{
-    path: '/finance',
-    name: 'finance',
+  {
+    path: '/student/finance',
+    name: 'student-finance',
     icon: 'AccountBookOutlined',
     routes: [
       {
         path: '/finance',
-        redirect: '/finance/operation',
+        redirect: '/student/finance/operation',
       },
       {
         // 运营
         name: 'operation',
-        path: '/finance/operation',
-        component: './finance/operation',
+        path: '/student/finance/operation',
       },
       {
         // 资金
         name: 'transfer',
-        path: '/finance/transfer',
-        component: './finance/transfer',
+        path: '/student/finance/transfer',
       },
       {
         // 破产
         name: 'broke',
-        path: '/finance/broke',
-        component: './finance/broke',
+        path: '/student/finance/broke',
       },
       {
         // 报表
         name: 'statement',
-        path: '/finance/statement',
-        component: './finance/statement',
+        path: '/student/finance/statement',
       },
     ],
-  },*/
+  },
   // 风险
-  /*{
-    path: '/risk',
-    name: 'risk',
-    icon: 'AccountBookOutlined',
+  {
+    path: '/student/risk',
+    name: 'student-risk',
+    icon: 'NodeIndexOutlined',
     routes: [
       {
-        path: '/risk',
-        redirect: '/risk/handle',
+        path: '/student/risk',
+        redirect: '/student/risk/handle',
       },
       {
         // 操作
         name: 'handle',
-        path: '/risk/handle',
-        component: './risk/handle',
+        path: '/student/risk/handle',
       },
       {
         // 信用
         name: 'credit',
-        path: '/risk/credit',
-        component: './risk/credit',
+        path: '/student/risk/credit',
       },
       {
         // 市场
         name: 'market',
-        path: '/risk/market',
-        component: './risk/market',
+        path: '/student/risk/market',
       },
       {
         // 监管
         name: 'regulatory',
-        path: '/risk/regulatory',
-        component: './risk/regulatory',
+        path: '/student/risk/regulatory',
       },
     ]
-  },*/
+  },
   {
     component: './404',
   },

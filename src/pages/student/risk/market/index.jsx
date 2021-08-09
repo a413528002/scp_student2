@@ -1,5 +1,5 @@
 import React from 'react';
-import MarketTable from "@/pages/risk/market/MarketTable";
+import MarketTable from "@/pages/student/risk/market/MarketTable";
 
 const Market = () => {
   return (

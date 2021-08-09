@@ -18,7 +18,6 @@ const SwitchClassroomModal = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([selectedInClassRowKey])
   // 选中当前行的信息
   const [selectedRows, setSelectedRows] = useState([selectedInClassRow])
-
   // 开始课堂
   const startClassHour = () => {
     const [classHourId] = selectedRowKeys

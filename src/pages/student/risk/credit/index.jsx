@@ -1,5 +1,5 @@
 import React from 'react';
-import CreditTable from "@/pages/risk/credit/CreditTable";
+import CreditTable from "@/pages/student/risk/credit/CreditTable";
 
 const Credit = () => {
   return (

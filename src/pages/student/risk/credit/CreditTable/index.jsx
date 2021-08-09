@@ -1,7 +1,7 @@
 import React from 'react';
 import PublicTable from "@/components/Table";
 import {Card} from "antd";
-import CreditRule from "@/pages/risk/credit/CreditRule";
+import CreditRule from "@/pages/student/risk/credit/CreditRule";
 
 const CreditTable = () => {
   const dataSource = [];

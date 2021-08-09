@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Card} from "antd";
 import PublicTable from "@/components/Table";
-import HandleRule from "@/pages/risk/handle/HandleRule";
+import HandleRule from "@/pages/student/risk/handle/HandleRule";
 
 const HandleTable = () => {
   const dataSource = [];
