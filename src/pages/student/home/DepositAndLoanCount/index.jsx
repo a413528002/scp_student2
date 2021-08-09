@@ -24,9 +24,7 @@ const DepositAndLoanCount = (props) => {
         ]
       },
       xAxis: {type: 'category'},
-      yAxis: {axisLabel: {
-          formatter: (val) => val * 100 + '%'
-        }},
+      yAxis: {},
       // Declare several bar series, each will be mapped
       // to a column of dataset.source by default.
       series: [
