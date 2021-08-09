@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Col, Image, Row} from 'antd';
+import { Card, Col, Row } from 'antd';
 import DepositAndLoanInterestRate from '@/pages/student/home/DepositAndLoanInterestRate';
 import DepositAndLoanAmount from '@/pages/student/home/DepositAndLoanAmount';
 import DepositAndLoanCount from '@/pages/student/home/DepositAndLoanCount';
