@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu, Spin } from 'antd';
 import { history, useModel } from 'umi';
-import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import {getLogout} from "@/services/login";
+import { getLogout } from '@/services/login';
 
 /**
  * 退出登录，并且将当前的 url 保存
@@ -24,8 +23,6 @@ const loginOut = async () => {
       }),*/
     });
   }
-  // 刷新页面，清空model里的数据
-  window.location.reload()
   // 退出登录后清空localStorage
   localStorage.clear()
   // 退出登录后清空sessionStorage

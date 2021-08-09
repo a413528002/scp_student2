@@ -64,6 +64,8 @@ const Login = () => {
         } else if (auth && auth === 'TEACHER') {
           history.push('/teacher/classroom');
         }
+        // 刷新页面，清空model里的数据
+        window.location.reload()
         return;
       } // 如果失败去设置用户错误信息
 
