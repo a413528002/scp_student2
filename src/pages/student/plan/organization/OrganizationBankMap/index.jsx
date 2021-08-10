@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import '../../../../../utils/china.js';
 import * as echarts from 'echarts';
 import NewOrganizationModal from '@/pages/student/plan/organization/NewOrganizationModal';
-import SwitchClassroomModal from '@/pages/student/classroom/SwitchClassroomModal';
 // import { TitleComponent, TooltipComponent, VisualMapComponent  } from 'echarts/components';
 // import { EffectScatterChart, ScatterChart, MapChart  } from 'echarts/charts';
 // import { CanvasRenderer } from 'echarts/renderers';
@@ -119,7 +118,7 @@ const OrganizationBackMap = () => {
 
     const option = {
       title: {
-        text: '可建设区域',
+        text: '银行网点分布图',
         subtext: '点击建设银行',
         left: 'center',
       },

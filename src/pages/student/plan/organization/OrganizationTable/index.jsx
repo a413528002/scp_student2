@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import PublicTable from "@/components/Table";
+import PublicTable from '@/components/Table';
 import { connect } from 'umi';
 
 const OrganizationTable = (props) => {
@@ -43,7 +43,6 @@ const OrganizationTable = (props) => {
         })
       }
   }, [classHourId])
-  console.log(dataSource)
   return (
     <>
      <PublicTable
@@ -51,10 +50,7 @@ const OrganizationTable = (props) => {
        columns={columns}
        bordered
        loading={loading}
-       pagination={{
-         defaultPageSize: 10,
-         total: dataSource.length,
-       }}
+       pagination={false}
      />
     </>
   );
