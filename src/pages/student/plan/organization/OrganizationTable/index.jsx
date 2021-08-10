@@ -1,49 +1,66 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PublicTable from "@/components/Table";
+import { connect } from 'umi';
 
-const OrganizationTable = () => {
-  const dataSource = [];
+const OrganizationTable = (props) => {
+  const {dispatch, dataSource} = props
+  const {loading} = props
+
+  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+
   const columns = [
     {
       title: '区域',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'regionName',
     },
     {
       title: '类别',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'typeName',
     },
     {
       title: '建设周期',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'spendPeriods',
     },
     {
       title: '建设方式',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'createTypeName',
     },
     {
       title: '折旧方式',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'depreciationMethodName',
     },
     {
       title: '折旧期限',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'depreciationPeriods',
     },
   ];
+
+  useEffect(() => {
+      if (classHourId) {
+        dispatch({
+          type: 'studentOrganization/queryBankOrganizations',
+          payload: { classHourId }
+        })
+      }
+  }, [classHourId])
+  console.log(dataSource)
   return (
     <>
      <PublicTable
        dataSource={dataSource}
        columns={columns}
        bordered
+       loading={loading}
+       pagination={{
+         defaultPageSize: 10,
+         total: dataSource.length,
+       }}
      />
     </>
   );
 };
 
-export default OrganizationTable;
+export default connect(({studentOrganization, loading}) => ({
+  dataSource: studentOrganization.organizationData,
+  loading:loading.effects['/studentOrganization/queryBankOrganizations']
+}))(OrganizationTable);

@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../../../utils/china.js';
 import * as echarts from 'echarts';
+import NewOrganizationModal from '@/pages/student/plan/organization/NewOrganizationModal';
+import SwitchClassroomModal from '@/pages/student/classroom/SwitchClassroomModal';
 // import { TitleComponent, TooltipComponent, VisualMapComponent  } from 'echarts/components';
 // import { EffectScatterChart, ScatterChart, MapChart  } from 'echarts/charts';
 // import { CanvasRenderer } from 'echarts/renderers';
@@ -50,8 +52,8 @@ import * as echarts from 'echarts';
 //     "香港特别行政区",
 //     "澳门特别行政区",
 // http://datav.aliyun.com/tools/atlas/index.html#&lat=30.332329214580188&lng=106.72278672066881&zoom=3.5
-const regionMap = {
-  'A': [
+const regions = [
+  [
     "北京市",
     "天津市",
     "河北省",
@@ -73,53 +75,57 @@ const regionMap = {
     "重庆市",
     "贵州省",
     "陕西省",
-    "宁夏回族自治区",
     "台湾省",
     "香港特别行政区",
     "澳门特别行政区",
   ],
-  'B': ["青海省","西藏自治区","四川省","云南省"],
-  'C': ["新疆维吾尔自治区","甘肃省","内蒙古自治区","黑龙江省","吉林省"]
-}
+  ["青海省","西藏自治区","四川省","云南省"],
+  ["新疆维吾尔自治区","甘肃省","内蒙古自治区","黑龙江省","吉林省", "宁夏回族自治区"]
+]
 
-function getColor(region) {
-  if (region === 'A') {
-    return 1
-  } else if (region === 'B') {
-    return 11
-  } else if (region === 'C') {
-    return 21
-  }
-  return -1;
-}
-let option;
-const data = [...regionMap.A.map(item => {return {
-  name: item,
-  value: getColor('A')
-}}),...regionMap.B.map(item => {return {
-  name: item,
-  value: getColor('B')
-}}),...regionMap.C.map(item => {return {
-  name: item,
-  value: getColor('C')
-}})];
+const data = regions.flatMap((item, index) => {
+  return item.map(e => {
+    return {
+      name: e,
+      value: index
+    }
+  })
+})
+
 
 
 const OrganizationBackMap = () => {
+
+  // 选中的区域
+  const [region, setRegion] = useState(null);
+  // 新建机构modal显示状态 ----start-----
+  const [newOrganizationModalVisible, setNewOrganizationModalVisible] = useState(false);
+
+  // 显示modal
+  const handleNewOrganizationShowModal = () => {
+    setNewOrganizationModalVisible(true);
+  };
+
+  // 关闭modal
+  const handleNewOrganizationCancelModal = () => {
+    setNewOrganizationModalVisible(false);
+  };
+  // 新建机构modal显示状态 ----end-----
+
   const initEchart = () => {
 
-    const myMain = document.getElementById('testobm');
+    const myMain = document.getElementById('orgRegion');
     const myChart = echarts.init(myMain);
 
-    option = {
-      // title: {
-      //   text: '中国地图',
-      //   subtext: 'data from PM25.in',
-      //   sublink: 'http://www.pm25.in',
-      //   left: 'center',
-      // },
+    const option = {
+      title: {
+        text: '可建设区域',
+        subtext: '点击建设银行',
+        left: 'center',
+      },
       tooltip: {
-        trigger: 'item',
+        show: false,
+        // trigger: 'item',
       },
       dataZoom: {
         zoomLock: true
@@ -128,19 +134,17 @@ const OrganizationBackMap = () => {
         show: true,
         x: 'left',
         y: 'bottom',
-        splitList: [
-          { start: 20, end: 30 },
-          { start: 10, end: 20 },
-          { start: 0, end: 10 },
-        ],
-        color: [
-          '#4D649F',
-          '#57A152',
-          '#441C25'
+        showLabel: true,
+        hoverLink: true,
+        pieces: [
+          { value: 0, label: 'A区', color: '#4D649F'},
+          { value: 1, label: 'B区', color: '#57A152'},
+          { value: 2, label: 'C区', color: '#570618'},
         ],
       },
       series: [
         {
+          selectedMode: false,
           name: '数据',
           type: 'map',
           mapType: 'china202105',
@@ -153,14 +157,35 @@ const OrganizationBackMap = () => {
               show: false,
             },
           },
+          itemStyle: {
+            emphasis: {//鼠标移入高亮显颜色
+              label: {
+                show: false,
+              },
+            }
+          },
           data: data
         },
       ],
     };
-    myChart.setOption(option);
     myChart.on('click', function (params) {
-      console.log(params);
+      if (params.value === 0) {
+        setRegion('A');
+      } else if (params.value === 1) {
+        setRegion('B');
+      } else if (params.value === 2) {
+        setRegion('C');
+      }
+      handleNewOrganizationShowModal()
     });
+    myChart.on("mouseover", function (params){
+      if(params.data.value !== undefined){
+        myChart.dispatchAction({
+          type: 'downplay'
+        });
+      }
+    });
+    myChart.setOption(option);
   }
 
   useEffect(() => {
@@ -168,8 +193,15 @@ const OrganizationBackMap = () => {
   }, [])
 
   return (
-    <div id={'testobm'} style={{height: 400}}>
-    </div>
+    <>
+      <div id={'orgRegion'} style={{height: 400}}>
+      </div>
+      <NewOrganizationModal
+        newOrganizationModalVisible={newOrganizationModalVisible}
+        region={region}
+        handleNewOrganizationCancelModal={handleNewOrganizationCancelModal}
+      />
+    </>
   );
 };
 
