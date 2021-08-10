@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import '../../../../../utils/china.js';
-import * as echarts from 'echarts';
+import * as echarts from 'echarts/core';
 import NewOrganizationModal from '@/pages/student/plan/organization/NewOrganizationModal';
-// import { TitleComponent, TooltipComponent, VisualMapComponent  } from 'echarts/components';
-// import { EffectScatterChart, ScatterChart, MapChart  } from 'echarts/charts';
-// import { CanvasRenderer } from 'echarts/renderers';
+import { TitleComponent, TooltipComponent, VisualMapComponent  } from 'echarts/components';
+import { EffectScatterChart, ScatterChart, MapChart  } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
 
-// echarts.use([
-//   TitleComponent,
-//   TooltipComponent,
-//   VisualMapComponent,
-//   ScatterChart,
-//   MapChart,
-//   EffectScatterChart,
-//   CanvasRenderer,
-// ]);
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  VisualMapComponent,
+  ScatterChart,
+  MapChart,
+  EffectScatterChart,
+  CanvasRenderer,
+]);
 
 // "北京市",
 //     "天津市",
@@ -93,6 +93,7 @@ const data = regions.flatMap((item, index) => {
 
 
 
+
 const OrganizationBackMap = () => {
 
   // 选中的区域
@@ -111,6 +112,9 @@ const OrganizationBackMap = () => {
   };
   // 新建机构modal显示状态 ----end-----
 
+  //
+  const getRegionByValue = (value) => String.fromCharCode(65 + value);
+
   const initEchart = () => {
 
     const myMain = document.getElementById('orgRegion');
@@ -123,8 +127,8 @@ const OrganizationBackMap = () => {
         left: 'center',
       },
       tooltip: {
-        show: false,
-        // trigger: 'item',
+        show: true,
+        formatter: (val) => getRegionByValue(val.value) + '区域'
       },
       dataZoom: {
         zoomLock: true
@@ -168,13 +172,7 @@ const OrganizationBackMap = () => {
       ],
     };
     myChart.on('click', function (params) {
-      if (params.value === 0) {
-        setRegion('A');
-      } else if (params.value === 1) {
-        setRegion('B');
-      } else if (params.value === 2) {
-        setRegion('C');
-      }
+      setRegion(getRegionByValue(params.value));
       handleNewOrganizationShowModal()
     });
     myChart.on("mouseover", function (params){
