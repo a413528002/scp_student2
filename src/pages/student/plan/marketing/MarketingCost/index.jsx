@@ -8,12 +8,15 @@ const MarketingCost = (props) => {
   const {dispatch, dataSource, loading} = props;
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   useEffect(() => {
-    dispatch({
-      type: 'studentPlan/queryBankMarketings',
-      payload: {
-        classHourId
-      }
-    })
+    if (classHourId){
+      dispatch({
+        type: 'studentPlan/queryBankMarketings',
+        payload: {
+          classHourId
+        }
+      })
+    }
+
   }, [])
 
   // 投入营销费用
