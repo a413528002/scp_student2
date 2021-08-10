@@ -11,7 +11,7 @@ const OrganizationModel = {
     * queryBankOrganizations({payload}, {call, put}) {
       const response = yield call(queryBankOrganizations, payload)
       if (response.status === undefined) {
-        const a = response.map((item, index) => {
+        const organizationData = response.map((item, index) => {
           return {
             ...item,
             _key: index
@@ -21,7 +21,7 @@ const OrganizationModel = {
         yield put({
           type: 'save',
           payload: {
-            organizationData: a,
+            organizationData
           }
         })
       }
