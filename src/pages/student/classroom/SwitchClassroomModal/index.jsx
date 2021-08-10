@@ -5,16 +5,15 @@ import PublicTable from '@/components/Table';
 
 const SwitchClassroomModal = (props) => {
   const {handleSwitchClassroomCancelModal, switchClassroomModalVisible} = props
-  const {dispatch, dataSource, switchLoading} = props
-  const selectedInClassRow = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS'))
-  const {classHourId: selectedInClassRowKey = []} = selectedInClassRow || {}
+  const {dispatch, dataSource, selectedRowKey, switchLoading} = props
   // 表格选中的key
-  const [selectedRowKeys, setSelectedRowKeys] = useState([selectedInClassRowKey])
+  const [selectedRowKeys, setSelectedRowKeys] = useState(selectedRowKey ? [selectedRowKey] : [])
   // 选中当前行的信息
-  const [selectedRows, setSelectedRows] = useState([selectedInClassRow])
+  const [selectedRows, setSelectedRows] = useState([])
 
   // 开始课堂
   const startClassHour = () => {
+    console.log(selectedRowKeys)
     if (selectedRowKeys.length > 0) {
       const [selectedRowsData] = selectedRows
       // 选中当前行直接展示
@@ -46,6 +45,7 @@ const SwitchClassroomModal = (props) => {
   const onSelectChange = (selectedRowKeys, selectedRows) => {
     // console.log('selectedRowKeys changed: ', selectedRowKeys);
     // console.log('selectedRows changed: ', selectedRows);
+    console.log(selectedRowKeys)
     setSelectedRowKeys(selectedRowKeys);
     setSelectedRows(selectedRows)
   };
@@ -108,6 +108,7 @@ const SwitchClassroomModal = (props) => {
 };
 
 export default connect(({studentClassroom, loading}) => ({
+  selectedRowKey: studentClassroom.classData?.classHourId,
   dataSource: studentClassroom.studentClassroomQueryJoinedClassHoursData,
   switchLoading: loading.effects['studentClassroom/queryJoinedClassHours']
 }))(SwitchClassroomModal);
