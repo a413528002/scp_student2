@@ -7,14 +7,14 @@ const TacticList = (props) => {
   const {dispatch, classData} = props;
   const {classHourId} = classData
   console.log(classData)
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch({
       type: 'studentPlan/queryBankPlan',
       payload: {
         classHourId
       }
     })
-  }, [])
+  }, [])*/
   return (
     <Card
       bordered={false}

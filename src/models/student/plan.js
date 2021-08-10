@@ -1,28 +1,75 @@
-import {getStudentQueryBankPlan} from "@/services/student/plan";
+import {
+  getStudentCreateBankChannel, getStudentInputMarketingCost,
+  getStudentQueryBankChannels, getStudentQueryBankMarketings,
+  getStudentQueryBankPlan
+} from "@/services/student/plan";
 
 const PlanModel = {
   namespace: 'studentPlan',
-  state: {},
+  state: {
+    bankChannelsData: [],
+    bankMarketingsData: []
+  },
   effects: {
+    // 查询银行战略规划
     * queryBankPlan({payload}, {call, put, select}) {
-      const classData = yield select(state => state.studentClassroom.classData)
-      console.log(classData)
-      const {classHourId, classHourCode} = classData
-      console.log(classHourId)
       const response = yield call(getStudentQueryBankPlan, payload)
-      console.log(response)
       if (response.status === undefined) {
-        /*response.map(item => item._key = item.classHourId)
+
+      }
+    },
+    // 查询银行渠道
+    * queryBankChannels({payload}, {call, put,}) {
+      const response = yield call(getStudentQueryBankChannels, payload)
+      if (response.status === undefined) {
+        const bankChannelsData = response.map((item, index) => {
+          return {
+            ...item,
+            _key: index
+          }
+        });
         yield put({
           type: 'save',
           payload: {
-            studentClassroomQueryJoinedClassHoursData: response,
+            bankChannelsData
           }
-        })*/
+        })
+      }
+    },
+    // 创建银行渠道
+    * createBankChannel({payload}, {call, put,}) {
+      const response = yield call(getStudentCreateBankChannel, payload)
+      if (response.status === undefined) {
+        message.success('建设成功')
+      }
+    },
+    // 根据银行ID查询当前期间银行营销信息
+    * queryBankMarketings({payload}, {call, put,}) {
+      const response = yield call(getStudentQueryBankMarketings, payload)
+      if (response.status === undefined) {
+        const bankMarketingsData = response.map((item, index) => {
+          return {
+            ...item,
+            _key: index
+          }
+        });
+        yield put({
+          type: 'save',
+          payload: {
+            bankMarketingsData
+          }
+        })
+      }
+    },
+    // 投入营销费用
+    * inputMarketingCost({payload}, {call, put,}) {
+      const response = yield call(getStudentInputMarketingCost, payload)
+      if (response.status === undefined) {
+        message.success('提交成功')
       }
     },
   },
-  reduce: {
+  reducers: {
     save(state, {payload}) {
       return {
         ...state,
