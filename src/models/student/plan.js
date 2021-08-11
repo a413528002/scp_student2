@@ -10,7 +10,7 @@ const PlanModel = {
   state: {
     bankChannelsData: [],
     bankMarketingData: [],
-    bankMarketingsData:[]
+    bankMarketingsData: []
   },
   effects: {
     // 查询银行战略规划
@@ -58,10 +58,13 @@ const PlanModel = {
     * queryCurBankMarketing({payload}, {call, put,}) {
       const response = yield call(getStudentQueryCurBankMarketing, payload)
       if (!response.errCode) {
-        const bankMarketingData = response.map((item, index) => {
+        const bankMarketingData = [response]?.map((item, index) => {
           return {
             ...item,
-            _key: index
+            _key: index,
+            // depositMktCost: item.depositMktCost === null ? 0 : item.depositMktCost,
+            // loanMktCost: item.loanMktCost === null ? 0 : item.loanMktCost,
+
           }
         });
         yield put({

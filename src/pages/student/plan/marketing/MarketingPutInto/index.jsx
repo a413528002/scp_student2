@@ -1,46 +1,60 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'umi'
 import {Card} from "antd";
 import PublicTable from "@/components/Table";
 import MarketingPutIntoRemark from "@/pages/student/plan/marketing/MarketingPutIntoRemark";
 
-const MarketingPutInto = () => {
-  const dataSource = [];
+const MarketingPutInto = (props) => {
+  const {dispatch,dataSource,loading} = props;
+  // 获取课堂id
+  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  useEffect(() => {
+    if (classHourId){
+      // 查询往期投入
+      dispatch({
+        type: 'studentPlan/queryBankMarketings',
+        payload: {classHourId}
+      })
+    }
+  }, [])
   const columns = [
     {
       title: '期数',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'period',
+      key: 'period',
+      render:(period)=>`第${period}期`
     },
     {
       title: '存款营销费用(万元)',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'depositMktCost',
+      key: 'depositMktCost',
     },
     {
       title: '贷款营销费用(万元)',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'loanMktCost',
+      key: 'loanMktCost',
     },
     {
       title: '超额补足倍率',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'makeUpRate',
+      key: 'makeUpRate',
     },
     {
       title: '多余营销费用(万元)',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'remainingCost',
+      key: 'remainingCost',
     },
   ];
   return (
     <Card
-    title='往期投入'
-    bordered={false}
-    type='inner'
+      title='往期投入'
+      bordered={false}
+      type='inner'
     >
       <PublicTable
         dataSource={dataSource}
         columns={columns}
+        loading={loading}
         bordered
       />
       <MarketingPutIntoRemark/>
@@ -48,4 +62,7 @@ const MarketingPutInto = () => {
   );
 };
 
-export default MarketingPutInto;
+export default connect(({studentPlan, loading}) => ({
+  dataSource: studentPlan.bankMarketingsData,
+  loading: loading.effects['studentPlan/queryBankMarketings']
+}))(MarketingPutInto);
