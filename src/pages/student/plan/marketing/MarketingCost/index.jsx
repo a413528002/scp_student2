@@ -10,13 +10,12 @@ const MarketingCost = (props) => {
   useEffect(() => {
     if (classHourId){
       dispatch({
-        type: 'studentPlan/queryBankMarketings',
+        type: 'studentPlan/queryCurBankMarketing',
         payload: {
           classHourId
         }
       })
     }
-
   }, [])
 
   // 投入营销费用
@@ -81,6 +80,6 @@ const MarketingCost = (props) => {
 };
 
 export default connect(({studentPlan, loading}) => ({
-  dataSource: studentPlan.bankMarketingsData,
-  loading: loading.effects['studentPlan/queryBankMarketings']
+  dataSource: studentPlan.bankMarketingData,
+  loading: loading.effects['studentPlan/queryCurBankMarketing']
 }))(MarketingCost);

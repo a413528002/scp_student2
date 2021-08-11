@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {connect} from 'umi'
 import PublicTable from "@/components/Table";
-import {Button} from "antd";
+import {Button, message, Popconfirm} from "antd";
 
 const ChannelTable = (props) => {
   const {dispatch, dataSource, loading} = props;
+  // 获取课堂id
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   useEffect(() => {
     if (classHourId) {
@@ -28,6 +29,10 @@ const ChannelTable = (props) => {
         channel
       }
     })
+  }
+  // 取消pop
+  const handleCancelPop = () => {
+    message.error('已取消')
   }
 
   const columns = [
@@ -55,13 +60,18 @@ const ChannelTable = (props) => {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      render: (_, {channel}) => (<Button
-        type="primary"
-        size="small"
-        onClick={() => createBankChannel(channel)}
-      >
-        建设
-      </Button>)
+      render: (_, {channel,createStatus}) => {
+        switch (createStatus){
+          case '已完成':
+            return null
+          default:
+            return (<Popconfirm
+              title="确认建设"
+              onConfirm={() => createBankChannel(channel)}
+              onCancel={handleCancelPop}
+            ><Button type="primary" size="small">建设</Button></Popconfirm>)
+        }
+      }
     },
   ];
   return (
