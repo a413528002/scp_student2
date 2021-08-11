@@ -1,11 +1,12 @@
-import {PageLoading} from '@ant-design/pro-layout';
-import {notification} from 'antd';
-import {history} from 'umi';
+import { PageLoading } from '@ant-design/pro-layout';
+import { notification } from 'antd';
+import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import menuStudentRoutes from "@/utils/menuStudentRoutes";
-import menuTeacherRoutes from "@/utils/menuTeacherRoutes";
-import iconMap from "@/utils/iconMap";
+import menuStudentRoutes from '@/utils/menuStudentRoutes';
+import menuTeacherRoutes from '@/utils/menuTeacherRoutes';
+import iconMap from '@/utils/iconMap';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -103,7 +104,6 @@ export const request = {
   errorHandler: async (error) => {
     const {response} = error;
 
-
     if (response && response.status) {
       const errorText = codeMessage[response.status] || response.statusText;
       const {status} = response;
@@ -115,18 +115,18 @@ export const request = {
         }
       }
       // 错误处理
-      const {errMsg} = await response.json()
+      const body = await response.clone().json()
       notification.error({
-        message: errMsg || errorText,
-        description: errMsg || errorText,
+        message: body?.errMsg || errorText,
+        description: body?.errMsg || errorText,
       });
+      return body;
     } else if (!response) {
       notification.error({
         description: '您的网络发生异常，无法连接服务器',
         message: '网络异常',
       });
     }
-    return response;
     throw error;
   },
 }; // ProLayout 支持的api https://procomponents.ant.design/components/layout

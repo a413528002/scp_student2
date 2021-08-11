@@ -191,7 +191,7 @@ const OrganizationBackMap = () => {
 
   return (
     <>
-      <div id={'orgRegion'} style={{height: 400}}>
+      <div id={'orgRegion'} style={{height: 500}}>
       </div>
       <NewOrganizationModal
         newOrganizationModalVisible={newOrganizationModalVisible}

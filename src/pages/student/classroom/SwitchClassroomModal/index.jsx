@@ -13,7 +13,6 @@ const SwitchClassroomModal = (props) => {
 
   // 开始课堂
   const startClassHour = () => {
-    console.log(selectedRowKeys)
     if (selectedRowKeys.length > 0) {
       const [selectedRowsData] = selectedRows
       // 选中当前行直接展示
@@ -45,7 +44,6 @@ const SwitchClassroomModal = (props) => {
   const onSelectChange = (selectedRowKeys, selectedRows) => {
     // console.log('selectedRowKeys changed: ', selectedRowKeys);
     // console.log('selectedRows changed: ', selectedRows);
-    console.log(selectedRowKeys)
     setSelectedRowKeys(selectedRowKeys);
     setSelectedRows(selectedRows)
   };

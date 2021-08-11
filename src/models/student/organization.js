@@ -10,7 +10,7 @@ const OrganizationModel = {
     // 查询机构
     * queryBankOrganizations({payload}, {call, put}) {
       const response = yield call(queryBankOrganizations, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         const organizationData = response.map((item, index) => {
           return {
             ...item,
@@ -31,7 +31,7 @@ const OrganizationModel = {
     * createBankOrganization({payload, callback}, {call, put}) {
       const response = yield call(createBankOrganization, payload)
       const {classHourId} = payload
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('新建成功')
         callback()
         yield put({

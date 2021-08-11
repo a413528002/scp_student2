@@ -58,5 +58,5 @@ const OrganizationTable = (props) => {
 
 export default connect(({studentOrganization, loading}) => ({
   dataSource: studentOrganization.organizationData,
-  loading:loading.effects['/studentOrganization/queryBankOrganizations']
+  loading:loading.effects['studentOrganization/queryBankOrganizations']
 }))(OrganizationTable);

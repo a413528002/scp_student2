@@ -40,7 +40,7 @@ const Login = () => {
       const response = await getLogin({...values});
       // console.log(response)
 
-      if (response.status === undefined) {
+      if (!response.errCode) {
         const {authorities} = response
         // 当前身份
         const [auth] = authorities

@@ -52,7 +52,7 @@ const ClassroomModel = {
     // 根据课堂编码查询课堂
     * queryClassHourByCode({payload}, {call, put}) {
       const response = yield call(getStudentQueryClassHourByCode, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         if (response) {
           // localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(response))
           // localStorage.setItem('STUDENT_IN_CLASS_STATE', '未加入')
@@ -77,7 +77,7 @@ const ClassroomModel = {
       const classData = yield select(state => state.studentClassroom.classData)
       const {classHourId, classHourCode} = classData
       const response = yield call(getStudentJoinClassHour, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         // localStorage.setItem('STUDENT_IN_CLASS_STATE', '已加入')
         yield put({
           type: 'save',
@@ -102,7 +102,7 @@ const ClassroomModel = {
       }
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const response = yield call(getStudentExitClassHour, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         localStorage.removeItem("STUDENT_IN_CLASS")
         yield put({
           type: 'save',
@@ -118,7 +118,7 @@ const ClassroomModel = {
     // 查询已加入课堂
     * queryJoinedClassHours({payload}, {call, put}) {
       const response = yield call(getStudentQueryJoinedClassHours, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         response.map(item => item._key = item.classHourId)
         yield put({
           type: 'save',
@@ -132,7 +132,7 @@ const ClassroomModel = {
     * createBank({payload, callback}, {call, put, select}) {
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const response = yield call(getStudentCreateBank, {...payload, classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('新建成功')
         callback()
         // 将当前正在进行中的课堂信息保存起来 数据持久化
@@ -152,7 +152,7 @@ const ClassroomModel = {
       }
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const response = yield call(getStudentExitBank, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('退出成功')
         // 退出银行后，将保存的银行清除
         // localStorage.removeItem('BANK_IN_INFO')
@@ -176,7 +176,7 @@ const ClassroomModel = {
       }
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const response = yield call(getStudentQueryBankByCode, {...payload, classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         if (response) {
           // 如果有返回值 将银行信息存储 localStorage ，覆盖之前的银行信息
           // localStorage.setItem('BANK_IN_INFO', JSON.stringify(response))
@@ -204,7 +204,7 @@ const ClassroomModel = {
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const bankId = yield select(state => state.studentClassroom.bankData.bankId)
       const response = yield call(getStudentJoinBank, {bankId, classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         // 如果有返回值 将银行信息存储 localStorage ，覆盖之前的银行信息
         // localStorage.setItem('BANK_IN_INFO', JSON.stringify(response))
         // 如果有返回值 将银行信息存储 redux中 ，覆盖之前的银行信息
@@ -220,7 +220,7 @@ const ClassroomModel = {
     // 查询用户在课堂的详细信息
     * queryClassHourUserDetails({payload}, {call, put}) {
       const response = yield call(getStudentQueryClassHourUserDetails, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         let bankMembersData = []
         // 如果有银行成员，则处理一下数据
         if (response.bankMembers) {
@@ -254,7 +254,7 @@ const ClassroomModel = {
     * kickBankMember({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const response = yield call(getStudentKickBankMember, {...payload, classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('踢出成功')
         // 刷新表格 查询用户在课堂的详细信息
         yield put({
@@ -267,7 +267,7 @@ const ClassroomModel = {
     * acceptBankMember({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const response = yield call(getStudentAcceptBankMember, {...payload, classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('已同意')
         // 刷新表格 查询用户在课堂的详细信息
         yield put({

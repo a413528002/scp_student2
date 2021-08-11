@@ -12,7 +12,7 @@ const ClassVarModel = {
     * queryClassVariables({payload}, {call, put}) {
       const classHourId = payload.classHourId || '';
       const response = yield call(queryClassVariables, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         response.map(item => item._key = item.varKey)
         yield put({
           type: 'save',
@@ -28,7 +28,7 @@ const ClassVarModel = {
       const classHourId = yield select(state => state.teacherClassVar.classHourId)
       Object.assign(payload,{classHourId});
       const response = yield call(updateClassVariable, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('修改成功')
         response._key = response.varKey
         const teacherClassVarData = yield select(state => state.teacherClassVar.teacherClassVarData)

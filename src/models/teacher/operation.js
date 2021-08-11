@@ -17,7 +17,7 @@ const OperationModel = {
   effects: {
     * queryClassInfo({payload}, {call, put}) {
       const response = yield call(queryClassInfo, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         yield put({
           type: 'save',
           payload: {
@@ -30,7 +30,7 @@ const OperationModel = {
     * startPeriod({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(startPeriod, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('开始经营成功')
         yield put({
           type: 'save',
@@ -44,7 +44,7 @@ const OperationModel = {
     * endPeriod({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(endPeriod, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('结束经营成功')
         yield put({
           type: 'save',
@@ -58,7 +58,7 @@ const OperationModel = {
     * nextPeriod({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(nextPeriod, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('转入下期成功')
         yield put({
           type: 'save',
@@ -72,7 +72,7 @@ const OperationModel = {
     * startGrabDeposit({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(startGrabDeposit, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('开始存款抢单成功')
         yield put({
           type: 'save',
@@ -86,7 +86,7 @@ const OperationModel = {
     * endGrabDeposit({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(endGrabDeposit, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('结束存款抢单成功')
         yield put({
           type: 'save',
@@ -100,7 +100,7 @@ const OperationModel = {
     * startGrabLoan({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(startGrabLoan, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('开始贷款抢单成功')
         yield put({
           type: 'save',
@@ -114,7 +114,7 @@ const OperationModel = {
     * endGrabLoan({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.teacherOperation.teacherOperationClassInfoData.classHourId)
       const response = yield call(endGrabLoan, {classHourId})
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('结束贷款抢单成功')
         yield put({
           type: 'save',

@@ -1,14 +1,44 @@
-import React, { useEffect } from 'react';
-import PublicTable from "@/components/Table";
-import styles from '@/pages/student/deal/deposit/index.less'
+import React, { useEffect, useState } from 'react';
+import PublicTable from '@/components/Table';
+import styles from '@/pages/student/deal/deposit/index.less';
 import { connect } from 'umi';
-import { Button, Popconfirm, Space } from 'antd';
+import { Button, Modal } from 'antd';
+import { toPercent } from '@/utils/commonUtils';
 
 const DepositTabRob = (props) => {
   const {dispatch, dataSource, grabStartTime} = props
-  const {loading} = props
+  const {loading, grabLoading} = props
 
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+
+  const [makeUpCostConfirmModelVisible, setMakeUpCostConfirmModelVisible] = useState(false)
+  const [currentFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
+
+
+  // 执行抢单
+  const doGrab = (financialMarketId, makeUpCost) => {
+    setCurrentFinancialMarketId(financialMarketId)
+    dispatch({
+      type: 'studentGrabDeposit/grab',
+      payload: { classHourId, financialMarketId, makeUpCost },
+      callback: (needConfirm) => {
+        if (needConfirm) {
+          setMakeUpCostConfirmModelVisible(true)
+        } else {
+          setCurrentFinancialMarketId(null)
+        }
+      }
+    })
+  }
+
+  const makeUpCostConfirmModelCancel = () => {
+    setMakeUpCostConfirmModelVisible(false)
+  }
+
+  const makeUpCostConfirmModelOk = () => {
+    doGrab(currentFinancialMarketId,true)
+    setMakeUpCostConfirmModelVisible(false)
+  }
 
   const columns = [
     {
@@ -26,6 +56,7 @@ const DepositTabRob = (props) => {
     {
       title: '利率',
       dataIndex: 'expectRate',
+      render: (val) => toPercent(val),
     },
     {
       title: '期限',
@@ -47,7 +78,7 @@ const DepositTabRob = (props) => {
       title: '抢单',
       render: (_, {financialMarketId}) => {
         return (
-          <Button>抢单</Button>
+          <Button type={'primary'} onClick={() => doGrab(financialMarketId, false)} loading={grabLoading}>抢单</Button>
         )
       }
     },
@@ -69,9 +100,21 @@ const DepositTabRob = (props) => {
         columns={columns}
         bordered
         loading={loading}
-        pagination={false}
+        pagination={{
+          defaultPageSize: 10,
+          total: dataSource.length,
+        }}
       />
       <p className={styles.timer}>抢单倒计时：<span>30秒</span></p>
+      <Modal
+        visible={makeUpCostConfirmModelVisible}
+        onCancel={makeUpCostConfirmModelCancel}
+        onOk={makeUpCostConfirmModelOk}
+        title='补足营销费用'
+        width={400}
+      >
+        存款营销费用剩余不足，是否补足营销费用
+      </Modal>
     </>
 
   );
@@ -80,5 +123,6 @@ const DepositTabRob = (props) => {
 export default connect(({studentGrabDeposit, loading}) => ({
   dataSource: studentGrabDeposit.financialMarketData,
   grabStartTime: studentGrabDeposit.grabStartTime,
-  loading:loading.effects['/studentGrabDeposit/queryFinancialMarkets']
+  loading:loading.effects['studentGrabDeposit/queryFinancialMarkets'],
+  grabLoading:loading.effects['studentGrabDeposit/grab']
 }))(DepositTabRob);

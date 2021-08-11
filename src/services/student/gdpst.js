@@ -6,6 +6,9 @@ export async function grab(params) {
     method: 'POST',
     data: params
   })
+    .catch(function(error) {
+      console.log(error);
+    });
 }
 
 

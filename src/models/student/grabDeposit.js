@@ -12,14 +12,14 @@ const GrabDepositModel = {
     // 查询金融市场
     * queryFinancialMarkets({payload}, {call, put}) {
       const response = yield call(queryFinancialMarkets, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         const {grabStartTime} = response
         const financialMarketData = response.data?.map((item, index) => {
           return {
             ...item,
             _key: index
           }
-        });
+        }) ?? [];
 
         yield put({
           type: 'save',
@@ -34,7 +34,7 @@ const GrabDepositModel = {
     // 查询存款抢单记录
     * queryLogs({payload}, {call, put}) {
       const response = yield call(queryLogs, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         const logData = response.map((item, index) => {
           return {
             ...item,
@@ -52,10 +52,20 @@ const GrabDepositModel = {
     },
 
     // 存款抢单
-    * grab({payload}, {call, put}) {
+    * grab({payload, callback}, {call, put}) {
       const response = yield call(grab, payload)
-      if (response.status === undefined) {
+      if (!response.errCode) {
         message.success('抢单成功')
+      } else {
+        if (response.errCode === 31) {
+          if (payload.makeUpCost) {
+            callback(false)
+          } else {
+            callback(true)
+          }
+        } else {
+          callback(false)
+        }
       }
     },
   },

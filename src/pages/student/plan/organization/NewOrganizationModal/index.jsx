@@ -53,5 +53,5 @@ const NewOrganizationModal = (props) => {
 };
 
 export default connect(({loading}) => ({
-  loading:loading.effects['/studentOrganization/createOrganization']
+  loading:loading.effects['studentOrganization/createOrganization']
 }))(NewOrganizationModal);
