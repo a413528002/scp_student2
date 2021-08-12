@@ -108,6 +108,7 @@ const DepositTabRob = (props) => {
         }}
       />
       <p className={styles.timer}>抢单倒计时：<span>30秒</span></p>
+      <p>开始时间（TODO）：<span>{grabStartTime}</span></p>
       <Modal
         visible={makeUpCostConfirmModelVisible}
         onCancel={makeUpCostConfirmModelCancel}
