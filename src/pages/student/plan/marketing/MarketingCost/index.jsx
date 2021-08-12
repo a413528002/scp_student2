@@ -31,9 +31,7 @@ const EditableCell = ({
   // const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const form = useContext(EditableContext);
-  console.log(inputRef)
-  // 获取课堂id
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  console.log(setEditing)
   useEffect(() => {
     if (editing) {
       inputRef.current.focus();
@@ -111,7 +109,7 @@ const MarketingCost = (props) => {
       })
     }
   }, [])
-
+  console.log()
   const columns = [
     {
       title: '期数',
@@ -124,14 +122,14 @@ const MarketingCost = (props) => {
       title: '存款营销费用(万元)',
       dataIndex: 'depositMktCost',
       key: 'depositMktCost',
-      editable: dataSource.depositMktCost === null,
+      editable: dataSource.every((item=>item.depositMktCost === null)),
       // 当前字段值为null时显示提交按钮 且可以编辑
     },
     {
       title: '贷款营销费用(万元)',
       dataIndex: 'loanMktCost',
       key: 'loanMktCost',
-      editable: dataSource.loanMktCost === null,
+      editable: dataSource.every((item=>item.loanMktCost === null)),
       // 当前字段值为null时显示提交按钮 且可以编辑
     },
     {
@@ -152,7 +150,7 @@ const MarketingCost = (props) => {
                 type="primary"
                 size="small"
                 // inputMarketingCost(depositMktCost, loanMktCost)
-                onClick={() => setEditing(!editing)}
+                onClick={() => setEditing(true)}
               >
                 提交
               </Button>) : "不能提交"
