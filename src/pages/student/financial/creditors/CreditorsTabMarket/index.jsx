@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'umi'
 import PublicTable from "@/components/Table";
-import styles from '@/pages/student/financial/creditors/index.less'
 import CreditorsRule from "@/pages/student/financial/creditors/CreditorsRule";
 
-const CreditorsTabMarket = () => {
+const CreditorsTabMarket = (props) => {
+  const {dispatch} = props
+
+  // 获取课堂id
+  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+
+  useEffect(()=>{
+    if (classHourId){
+      dispatch({
+        type:'studentFinancial/queryFinancialMarkets',
+        payload:{
+          classHourId
+        }
+      })
+    }
+  },[])
+
   const dataSource = [];
   const columns = [
     {
@@ -56,4 +72,4 @@ const CreditorsTabMarket = () => {
   );
 };
 
-export default CreditorsTabMarket;
+export default connect()(CreditorsTabMarket);

@@ -28,11 +28,13 @@ const MarketingPutInto = (props) => {
       title: '存款营销费用(万元)',
       dataIndex: 'depositMktCost',
       key: 'depositMktCost',
+      render:(depositMktCost)=>`${depositMktCost/10000}`
     },
     {
       title: '贷款营销费用(万元)',
       dataIndex: 'loanMktCost',
       key: 'loanMktCost',
+      render:(loanMktCost)=>`${loanMktCost/10000}`
     },
     {
       title: '超额补足倍率',
@@ -43,6 +45,7 @@ const MarketingPutInto = (props) => {
       title: '多余营销费用(万元)',
       dataIndex: 'remainingCost',
       key: 'remainingCost',
+      render:(remainingCost)=>`${remainingCost/10000}`
     },
   ];
   return (

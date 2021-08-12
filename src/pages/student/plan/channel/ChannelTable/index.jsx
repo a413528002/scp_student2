@@ -50,6 +50,7 @@ const ChannelTable = (props) => {
       title: '每期建设费用(万元)',
       dataIndex: 'createCost',
       key: 'createCost',
+      render:(createCost)=>`${createCost/10000}`
     },
     {
       title: '建设状态',
