@@ -117,7 +117,7 @@ export const request = {
       // 错误处理
       const body = await response.clone().json()
       notification.error({
-        message: body?.errMsg || errorText,
+        message: '操作失败',
         description: body?.errMsg || errorText,
       });
       return body;

@@ -56,17 +56,8 @@ const GrabDepositModel = {
       const response = yield call(grab, payload)
       if (!response.errCode) {
         message.success('抢单成功')
-      } else {
-        if (response.errCode === 31) {
-          if (payload.makeUpCost) {
-            callback(false)
-          } else {
-            callback(true)
-          }
-        } else {
-          callback(false)
-        }
       }
+      callback(response)
     },
   },
 

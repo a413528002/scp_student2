@@ -13,6 +13,7 @@ const DepositTabRob = (props) => {
 
   const [makeUpCostConfirmModelVisible, setMakeUpCostConfirmModelVisible] = useState(false)
   const [currentFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
+  const [makeUpCostConfirmModelText, setMakeUpCostConfirmModelText] = useState("")
 
 
   // 执行抢单
@@ -21,8 +22,9 @@ const DepositTabRob = (props) => {
     dispatch({
       type: 'studentGrabDeposit/grab',
       payload: { classHourId, financialMarketId, makeUpCost },
-      callback: (needConfirm) => {
-        if (needConfirm) {
+      callback: (response) => {
+        if (response.errCode === 31 && !makeUpCostConfirmModelVisible) {
+          setMakeUpCostConfirmModelText(response.errMsg)
           setMakeUpCostConfirmModelVisible(true)
         } else {
           setCurrentFinancialMarketId(null)
@@ -76,9 +78,9 @@ const DepositTabRob = (props) => {
     },
     {
       title: '抢单',
-      render: (_, {financialMarketId}) => {
+      render: (_, {financialMarketId, status}) => {
         return (
-          <Button type={'primary'} onClick={() => doGrab(financialMarketId, false)} loading={grabLoading}>抢单</Button>
+          <Button type={'primary'} onClick={() => doGrab(financialMarketId, false)} loading={grabLoading} disabled={status !== 'NORMAL'}>抢单</Button>
         )
       }
     },
@@ -110,10 +112,10 @@ const DepositTabRob = (props) => {
         visible={makeUpCostConfirmModelVisible}
         onCancel={makeUpCostConfirmModelCancel}
         onOk={makeUpCostConfirmModelOk}
-        title='补足营销费用'
+        title='是否补足营销费用'
         width={400}
       >
-        存款营销费用剩余不足，是否补足营销费用
+        {makeUpCostConfirmModelText}
       </Modal>
     </>
 

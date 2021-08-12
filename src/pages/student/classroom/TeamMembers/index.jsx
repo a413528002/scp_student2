@@ -98,6 +98,7 @@ const TeamMembers = (props) => {
         columns={columns}
         bordered
         loading={loading}
+        pagination={false}
       />
     </Card>
   );
