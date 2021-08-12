@@ -9,7 +9,7 @@ const originData = [];
 for (let i = 0; i < 20; i++) {
   originData.push({
     _key: i.toString(),
-    period: `Edrward ${i}`,
+    period: `${i}`,
     openingBalance: 32,
     typeName: '假数据',
     amount: null,
@@ -55,6 +55,7 @@ const PrepareTable = (props) => {
       title: '期数',
       dataIndex: 'period',
       key: 'period',
+      render:(period)=>`第${period}期`
     },
     {
       title: '交易类型',
