@@ -2,14 +2,15 @@ import React from 'react';
 import {connect} from 'umi';
 import {Button, Form, InputNumber, Modal, Space} from 'antd';
 
-const RecallOrPaymentModal = (props) => {
-  const {recallOrPaymentModalVisible, handleRecallOrPaymentCancelModal, dispatch, typeModal} = props
+const ProvisionOrPrepareModal = (props) => {
+  const {modalVisible, handleCancelModal, dispatch, typeModal} = props
   const {type, title} = typeModal || {}
   const {loading} = props
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   const [form] = Form.useForm();
   // 更新
-  const updateBankDepositReserve = ({amount}) => {
+  const update = ({amount}) => {
+    console.log(type)
     if (classHourId) {
       // 调回取amount负值
       if (type === 'RECALL') {
@@ -21,7 +22,7 @@ const RecallOrPaymentModal = (props) => {
           },
           // 新建成功后的回调
           callback: () => {
-            handleRecallOrPaymentCancelModal()
+            handleCancelModal()
           },
         })
       } else if (type === 'PAYMENT') {
@@ -34,11 +35,37 @@ const RecallOrPaymentModal = (props) => {
           },
           // 新建成功后的回调
           callback: () => {
-            handleRecallOrPaymentCancelModal()
+            handleCancelModal()
+          },
+        })
+      } else if (type === 'BACK') {
+        // 拨回取amount负值
+        dispatch({
+          type: 'studentProvision/updateBankLoanProvision',
+          payload: {
+            classHourId,
+            amount: -amount,
+          },
+          callback: () => {
+            handleCancelModal()
+          },
+        })
+      }
+      else if (type === 'PROVISION') {
+        // 计提取amount正值
+        dispatch({
+          type: 'studentProvision/updateBankLoanProvision',
+          payload: {
+            classHourId,
+            amount
+          },
+          callback: () => {
+            handleCancelModal()
           },
         })
       }
     }
+
 
 
   }
@@ -47,18 +74,18 @@ const RecallOrPaymentModal = (props) => {
    * @param values 表单字段值
    */
   const onFinish = (values) => {
-    updateBankDepositReserve(values)
+    update(values)
   }
   // 关闭modal 重置表单
   const handleCancelResetFields = () => {
     // 关闭modal
-    handleRecallOrPaymentCancelModal()
+    handleCancelModal()
     // 重置表单
     form.resetFields()
   }
   return (
     <Modal
-      visible={recallOrPaymentModalVisible}
+      visible={modalVisible}
       onCancel={handleCancelResetFields}
       closable={false}
       footer={null}
@@ -98,4 +125,4 @@ const RecallOrPaymentModal = (props) => {
 
 export default connect(({loading}) => ({
   loading: loading.effects['studentPrepare/updateBankDepositReserve']
-}))(RecallOrPaymentModal);
+}))(ProvisionOrPrepareModal);

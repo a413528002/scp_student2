@@ -3,7 +3,7 @@ import {Button, Card, Space} from "antd";
 import {connect} from 'umi'
 import PublicTable from "@/components/Table";
 import PrepareRule from "@/pages/student/deal/prepare/PrepareRule";
-import RecallOrPaymentModal from "@/pages/student/deal/prepare/recallOrPaymentModal";
+import ProvisionOrPrepareModal from "@/pages/student/deal/components/provisionOrPrepareModal";
 
 const originData = [];
 for (let i = 0; i < 20; i++) {
@@ -31,21 +31,21 @@ const PrepareTable = (props) => {
   }, [])
 
   // modal显示状态 ----start-----
-  const [recallOrPaymentModalVisible, setRecallOrPaymentModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [typeModal, setTypeModal] = useState({})
   // 显示modal
-  const handleRecallOrPaymentShowModal = (type) => {
+  const handleShowModal = (type) => {
     if (type === 'RECALL') {
       setTypeModal({type, 'title': '调回'})
     } else if (type === 'PAYMENT') {
       setTypeModal({type, 'title': '缴纳'})
     }
-    setRecallOrPaymentModalVisible(true);
+    setModalVisible(true);
   };
 
   // 关闭modal
-  const handleRecallOrPaymentCancelModal = () => {
-    setRecallOrPaymentModalVisible(false);
+  const handleCancelModal = () => {
+    setModalVisible(false);
   };
   // modal显示状态 ----end-----
 
@@ -85,9 +85,9 @@ const PrepareTable = (props) => {
               !amount ? (
                 <Space>
                   <Button type="primary" size="small"
-                          onClick={() => handleRecallOrPaymentShowModal('RECALL')}>调回</Button>
+                          onClick={() => handleShowModal('RECALL')}>调回</Button>
                   <Button type="primary" size="small"
-                          onClick={() => handleRecallOrPaymentShowModal('PAYMENT')}>缴纳</Button>
+                          onClick={() => handleShowModal('PAYMENT')}>缴纳</Button>
                 </Space>
               ) : null
             }
@@ -112,9 +112,9 @@ const PrepareTable = (props) => {
       />
       <PrepareRule/>
       {/*调回缴纳modal*/}
-      <RecallOrPaymentModal
-        recallOrPaymentModalVisible={recallOrPaymentModalVisible}
-        handleRecallOrPaymentCancelModal={handleRecallOrPaymentCancelModal}
+      <ProvisionOrPrepareModal
+        modalVisible={modalVisible}
+        handleCancelModal={handleCancelModal}
         typeModal={typeModal}
       />
     </Card>

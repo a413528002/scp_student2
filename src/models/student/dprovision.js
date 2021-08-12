@@ -1,40 +1,43 @@
 import {message} from "antd";
-import {queryBankDepositReserves, updateBankDepositReserve} from "@/services/student/dprepare";
+import {queryBankLoanProvisions, updateBankLoanProvision} from "@/services/student/dprovision";
 
-const PrepareModel = {
-  namespace: 'studentPrepare',
-  state: {bankDepositReservesData: [],},
+
+const ProvisionModel = {
+  namespace: 'studentProvision',
+  state: {bankLoanProvisionsData: [],},
   effects: {
 
     // 查询列表
-    * queryBankDepositReserves({payload}, {call, put,}) {
-      const response = yield call(queryBankDepositReserves, payload)
+    * queryBankLoanProvisions({payload}, {call, put,}) {
+      const response = yield call(queryBankLoanProvisions, payload)
       if (!response.errCode) {
-        const bankDepositReservesData = response.map((item, index) => {
+        const bankLoanProvisionsData = response.map((item, index) => {
           return {
             ...item,
             _key: index
           }
         });
+
+        // 建设成功后刷新表格
         yield put({
           type: 'save',
           payload: {
-            bankDepositReservesData
+            bankLoanProvisionsData
           }
         })
       }
     },
 
     // 更新
-    * updateBankDepositReserve({payload, callback}, {call, put}) {
-      const response = yield call(updateBankDepositReserve, payload)
+    * updateBankLoanProvision({payload, callback}, {call, put}) {
+      const response = yield call(updateBankLoanProvision, payload)
       if (!response.errCode) {
         message.success('更新成功')
         callback()
         // 刷新表格
         const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
         yield put({
-          type: 'queryBankDepositReserves',
+          type: 'queryBankLoanProvisions',
           payload: {classHourId}
         })
       }
@@ -49,4 +52,4 @@ const PrepareModel = {
     }
   }
 }
-export default PrepareModel
+export default ProvisionModel
