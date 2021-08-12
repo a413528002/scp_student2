@@ -124,13 +124,15 @@ const MarketingCost = (props) => {
       title: '存款营销费用(万元)',
       dataIndex: 'depositMktCost',
       key: 'depositMktCost',
-      editable: true,
+      editable: dataSource.depositMktCost === null,
+      // 当前字段值为null时显示提交按钮 且可以编辑
     },
     {
       title: '贷款营销费用(万元)',
       dataIndex: 'loanMktCost',
       key: 'loanMktCost',
-      editable: true,
+      editable: dataSource.loanMktCost === null,
+      // 当前字段值为null时显示提交按钮 且可以编辑
     },
     {
       title: '超额补足倍率',
@@ -150,10 +152,10 @@ const MarketingCost = (props) => {
                 type="primary"
                 size="small"
                 // inputMarketingCost(depositMktCost, loanMktCost)
-                onClick={() => setEditing(true)}
+                onClick={() => setEditing(!editing)}
               >
                 提交
-              </Button>) : null
+              </Button>) : "不能提交"
             }
           </>
         )
@@ -174,15 +176,12 @@ const MarketingCost = (props) => {
 
   }
   const handleSave = (row) => {
-    console.log(row)
+    // 提交保存的数据
+    inputMarketingCost(row)
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, {...item, ...row});
-    /*this.setState({
-      dataSource: newData,
-    });*/
-    console.log(newData)
   };
   const components = {
     body: {
@@ -190,6 +189,7 @@ const MarketingCost = (props) => {
       cell: EditableCell,
     },
   };
+  // 表头
   const columnsData = columns.map((col) => {
     if (!col.editable) {
       return col;

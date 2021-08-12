@@ -76,10 +76,16 @@ const PlanModel = {
       }
     },
     // 投入营销费用
-    * inputMarketingCost({payload}, {call}) {
+    * inputMarketingCost({payload}, {call,put}) {
       const response = yield call(getStudentInputMarketingCost, payload)
       if (!response.errCode) {
         message.success('提交成功')
+        // 获取课堂id
+        const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+        yield put({
+          type:'queryCurBankMarketing',
+          payload:{classHourId}
+        })
       }
     },
     // 查询往期投入
