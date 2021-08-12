@@ -50,8 +50,7 @@ const ProvisionOrPrepareModal = (props) => {
             handleCancelModal()
           },
         })
-      }
-      else if (type === 'PROVISION') {
+      } else if (type === 'PROVISION') {
         // 计提取amount正值
         dispatch({
           type: 'studentProvision/updateBankLoanProvision',
@@ -65,7 +64,6 @@ const ProvisionOrPrepareModal = (props) => {
         })
       }
     }
-
 
 
   }
@@ -124,5 +122,5 @@ const ProvisionOrPrepareModal = (props) => {
 };
 
 export default connect(({loading}) => ({
-  loading: loading.effects['studentPrepare/updateBankDepositReserve']
+  loading: loading.models.studentProvision || loading.models.studentPrepare,
 }))(ProvisionOrPrepareModal);

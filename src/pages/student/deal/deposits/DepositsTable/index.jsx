@@ -1,14 +1,35 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'umi'
 import {Button, Card} from "antd";
 import PublicTable from "@/components/Table";
 
-const DepositsTable = () => {
-  const dataSource = [];
+const originData = [];
+for (let i = 0; i < 20; i++) {
+  originData.push({
+    _key: i.toString(),
+    period: `${i}`,
+    rateTypeName: '假数据',
+    amount: Math.random() * 100000000,
+  });
+}
+const DepositsTable = (props) => {
+  const {dispatch, dataSource, loading} = props;
+  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  useEffect(() => {
+    if (classHourId) {
+      dispatch({
+        type: 'studentDeposits/queryDeposits',
+        payload: {classHourId}
+      })
+    }
+  }, [])
+  // const dataSource = [];
   const columns = [
     {
       title: '序号',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'notation',
+      key: 'notation',
+      render: (text, record, index) => `${index + 1}`
     },
     {
       title: '业务类型',
@@ -17,43 +38,47 @@ const DepositsTable = () => {
     },
     {
       title: '金额(万元)',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (amount) => !amount ? null : `${amount / 10000}`
     },
     {
       title: '利率',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'expectRate',
+      key: 'expectRate',
     },
     {
       title: '存款期数',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'term',
+      key: 'term',
     },
     {
       title: '所属期数',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'period',
+      key: 'period',
     },
     {
       title: '利率类型',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'rateTypeName',
+      key: 'rateTypeName',
     },
     {
       title: '渠道类型',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'channelName',
+      key: 'channelName',
     },
     {
       title: '区域',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'regionName',
+      key: 'regionName',
     },
     {
       title: '利息',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'interest',
+      key: 'interest',
+      render: () => {
+        return <Button type="primary" size="small">计息</Button>
+      }
     },
   ];
   return (
@@ -61,15 +86,19 @@ const DepositsTable = () => {
       title='存款管理'
       bordered={false}
       type='inner'
-      extra={<Button type='primary'>保存</Button>}
     >
       <PublicTable
-        dataSource={dataSource}
+        // dataSource={dataSource}
+        dataSource={originData}
         columns={columns}
+        loading={loading}
         bordered
       />
     </Card>
   );
 };
 
-export default DepositsTable;
+export default connect(({studentDeposits, loading}) => ({
+  dataSource: studentDeposits.queryDepositsData,
+  loading: loading.effects['studentDeposits/queryDeposits']
+}))(DepositsTable);
