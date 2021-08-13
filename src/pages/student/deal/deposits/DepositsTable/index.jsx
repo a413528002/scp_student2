@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'umi'
 import {Button, Card} from "antd";
 import PublicTable from "@/components/Table";
+import InterestSettlementModal from "@/pages/student/deal/deposits/InterestSettlementModal";
+import {queryDepositInterests} from "@/services/student/ddeposits";
 
 const originData = [];
 for (let i = 0; i < 20; i++) {
@@ -15,6 +17,7 @@ for (let i = 0; i < 20; i++) {
 const DepositsTable = (props) => {
   const {dispatch, dataSource, loading} = props;
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+
   useEffect(() => {
     if (classHourId) {
       dispatch({
@@ -23,7 +26,35 @@ const DepositsTable = (props) => {
       })
     }
   }, [])
-  // const dataSource = [];
+
+  // 利息结算modal显示状态 ----start-----
+  const [modalVisible, setModalVisible] = useState(false);
+  const [bankFinancialBusinessInstId, setBankFinancialBusinessInstId] = useState(undefined);
+
+  // 显示modal
+  const handleShowModal = (id) => {
+    queryDepositInterests(id)
+    setBankFinancialBusinessInstId(id)
+    setModalVisible(true);
+  };
+
+  // 关闭modal
+  const handleCancelModal = () => {
+    setModalVisible(false);
+  };
+  // 利息结算modal显示状态 ----end-----
+
+  // 查询存款利息
+  const queryDepositInterests = (bankFinancialBusinessInstId) => {
+    if (classHourId && bankFinancialBusinessInstId) {
+      dispatch({
+        type: 'studentDeposits/queryDepositInterests',
+        payload: {
+          classHourId, bankFinancialBusinessInstId
+        }
+      })
+    }
+  }
   const columns = [
     {
       title: '序号',
@@ -33,8 +64,8 @@ const DepositsTable = (props) => {
     },
     {
       title: '业务类型',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'customerTypeName',
+      key: 'customerTypeName',
     },
     {
       title: '金额(万元)',
@@ -76,8 +107,8 @@ const DepositsTable = (props) => {
       title: '利息',
       dataIndex: 'interest',
       key: 'interest',
-      render: () => {
-        return <Button type="primary" size="small">计息</Button>
+      render: (_, {bankFinancialBusinessInstId}) => {
+        return <Button type="primary" size="small" onClick={() => handleShowModal(bankFinancialBusinessInstId)}>计息</Button>
       }
     },
   ];
@@ -94,6 +125,14 @@ const DepositsTable = (props) => {
         loading={loading}
         bordered
       />
+      {
+        modalVisible && <InterestSettlementModal
+          modalVisible={modalVisible}
+          handleCancelModal={handleCancelModal}
+          bankFinancialBusinessInstId={bankFinancialBusinessInstId}
+        />
+      }
+
     </Card>
   );
 };

@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'umi'
 import {Button, Card} from "antd";
 import PublicTable from "@/components/Table";
+import InterestSettlementModal from "@/pages/student/deal/loan/InterestSettlementModal";
 
 
 const originData = [];
@@ -28,6 +29,34 @@ const LoanTable = (props) => {
       })
     }
   }, [])
+  // 利息结算modal显示状态 ----start-----
+  const [modalVisible, setModalVisible] = useState(false);
+  const [bankFinancialBusinessId, setBankFinancialBusinessId] = useState(undefined);
+
+  // 显示modal
+  const handleShowModal = (id) => {
+    queryLoanInterests(id)
+    setBankFinancialBusinessId(id)
+    setModalVisible(true);
+  };
+
+  // 关闭modal
+  const handleCancelModal = () => {
+    setModalVisible(false);
+  };
+  // 利息结算modal显示状态 ----end-----
+
+  // 查询存款利息
+  const queryLoanInterests = (bankFinancialBusinessId) => {
+    if (classHourId && bankFinancialBusinessId) {
+      dispatch({
+        type: 'studentLoan/queryLoanInterests',
+        payload: {
+          classHourId, bankFinancialBusinessId
+        }
+      })
+    }
+  }
   const columns = [
     {
       title: '序号',
@@ -37,8 +66,8 @@ const LoanTable = (props) => {
     },
     {
       title: '业务类型',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'customerTypeName',
+      key: 'customerTypeName',
     },
     {
       title: '金额(万元)',
@@ -91,8 +120,8 @@ const LoanTable = (props) => {
       title: '利息',
       dataIndex: 'interest',
       key: 'interest',
-      render: () => {
-        return <Button type="primary" size="small">计息</Button>
+      render: (_,{bankFinancialBusinessId}) => {
+        return <Button type="primary" size="small" onClick={()=>handleShowModal(bankFinancialBusinessId)}>计息</Button>
       }
     },
   ];
@@ -109,6 +138,14 @@ const LoanTable = (props) => {
         loading={loading}
         bordered
       />
+      {
+        modalVisible && <InterestSettlementModal
+          modalVisible={modalVisible}
+          handleCancelModal={handleCancelModal}
+          bankFinancialBusinessId={bankFinancialBusinessId}
+        />
+      }
+
     </Card>
   );
 };

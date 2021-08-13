@@ -2,8 +2,8 @@ import React from 'react';
 import {Table} from "antd";
 
 const PublicTable = (props) => {
-  const {dataSource, columns, bordered, rowSelection, pagination, loading, rowClassName,components} = props;
-  // console.log(rowClassName)
+  const {dataSource, columns, bordered, rowSelection, pagination, loading, rowClassName, components, scroll} = props;
+  // console.log(scroll)
   // console.log(components)
   return (
     <Table
@@ -21,7 +21,7 @@ const PublicTable = (props) => {
       // 表格大小
       size='small'
       // x方向滚动距离
-      scroll={{x: 750}}
+      scroll={scroll || {x: 750}}
       // 分页 defaultPageSize 默认每页显示数量
       pagination={pagination}
       loading={loading}

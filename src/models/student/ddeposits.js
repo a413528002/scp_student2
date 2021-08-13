@@ -1,9 +1,12 @@
 import {message} from "antd";
-import {queryDepositInterests, queryDeposits} from "@/services/student/ddeposits";
+import {queryDepositInterests, queryDeposits, updateDepositInterest} from "@/services/student/ddeposits";
 
 const DepositsModel = {
   namespace: 'studentDeposits',
-  state: {queryDepositsData: [],},
+  state: {
+    queryDepositsData: [],
+    queryDepositInterestsData: [],
+  },
   effects: {
 
     // 查询存款
@@ -29,7 +32,26 @@ const DepositsModel = {
     * queryDepositInterests({payload, callback}, {call, put}) {
       const response = yield call(queryDepositInterests, payload)
       if (!response.errCode) {
-
+        const queryDepositInterestsData = response.map((item, index) => {
+          return {
+            ...item,
+            _key: item.index
+          }
+        });
+        yield put({
+          type: 'save',
+          payload: {
+            queryDepositInterestsData
+          }
+        })
+      }
+    },
+    // 查询存款利息
+    * updateDepositInterest({payload, callback}, {call, put}) {
+      const response = yield call(updateDepositInterest, payload)
+      if (!response.errCode) {
+        message.success('保存成功')
+        callback()
       }
     },
   },
