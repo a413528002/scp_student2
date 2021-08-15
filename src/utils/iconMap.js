@@ -8,6 +8,10 @@ import {
   TransactionOutlined,
   AccountBookOutlined,
   NodeIndexOutlined,
+  FireOutlined,
+  RiseOutlined,
+  PieChartOutlined,
+  RocketOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -20,5 +24,9 @@ export default {
   TransactionOutlined: <TransactionOutlined/>,
   AccountBookOutlined: <AccountBookOutlined/>,
   NodeIndexOutlined: <NodeIndexOutlined/>,
+  FireOutlined: <FireOutlined/>,
+  RiseOutlined: <RiseOutlined/>,
+  PieChartOutlined: <PieChartOutlined/>,
+  RocketOutlined: <RocketOutlined/>,
 
 };
