@@ -18,7 +18,8 @@ const LoginMessage = ({content}) => (
   />
 );
 
-const Login = () => {
+const Login = (props) => {
+  const { dispatch } = props
   const [submitting, setSubmitting] = useState(false);
   const [userLoginState, setUserLoginState] = useState({});
   const {initialState, setInitialState} = useModel('@@initialState');
@@ -31,6 +32,13 @@ const Login = () => {
       await setInitialState((s) => ({...s, currentUser: userInfo}));
     }
   };
+
+  const clearData = () => {
+    // 考虑意外退出的情况 登录成功后将存储的localStorage清除
+    localStorage.clear()
+    dispatch({type: 'studentClassroom/reset'})
+    dispatch({type: 'teacherClassroom/reset'})
+  }
 
   const handleSubmit = async (values) => {
     setSubmitting(true);
@@ -45,8 +53,8 @@ const Login = () => {
           defaultMessage: '登录成功！',
         });
         message.success(defaultloginSuccessMessage);
-        // 考虑意外退出的情况 登录成功后将存储的localStorage清除
-        localStorage.clear()
+        // 清除一些数据
+        clearData()
 
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */

@@ -281,6 +281,17 @@ const ClassroomModel = {
         ...state,
         ...payload,
       }
+    },
+    reset() {
+      return {
+        studentClassroomQueryJoinedClassHoursData: [], // 查询当前学生已加入的课堂
+        classOpt: false, // 课堂相关操作
+        bankOpt: false, // 银行相关操作
+        classData: {}, // 课堂信息
+        classUserData: {}, // 学生在课堂的信息
+        bankData: {}, // 银行信息
+        bankMembersData: [] // 成员信息
+      }
     }
   },
 }

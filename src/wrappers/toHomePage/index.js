@@ -14,5 +14,7 @@ export default (props) => {
     return <Redirect to="/student" />;
   } else if (authorities.includes('TEACHER')) {
     return <Redirect to="/teacher" />;
+  } else {
+    return <div>{ props.children }</div>;
   }
 }

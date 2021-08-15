@@ -238,6 +238,10 @@ export default [
     access: 'teacherRouteFilter',
     routes: [
       {
+        path: './',
+        redirect: './classroom',
+      },
+      {
         path: './classroom',
         name: 'classroom',
         icon: 'BulbOutlined',

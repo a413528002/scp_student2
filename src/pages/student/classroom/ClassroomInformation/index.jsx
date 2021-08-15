@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'umi';
-import { Button, Card, Descriptions, Empty, Input, message, Space } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'umi';
+import {Button, Card, Descriptions, Empty, Input, message, Space} from 'antd';
 import SwitchClassroomModal from '@/pages/student/classroom/SwitchClassroomModal';
 
 
@@ -17,7 +17,6 @@ const ClassroomInformation = (props) => {
   const {joinLoading, exitLoading, searchLoading} = props
   // 获取当前正在进行的课堂状态
   const STUDENT_IN_CLASS = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS'))
-
   const {
     classHourCode,
     tchNickname,

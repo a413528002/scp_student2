@@ -134,9 +134,15 @@ const ClassroomModel = {
         ...state,
         ...payload,
       }
+    },
+    reset() {
+      return {
+        teacherClassroomTeacherInClassData: {},
+        teacherClassroomQueryMyClassHoursData: {},
+        teacherClassroomQueryClassHourUsersData: [],
+      }
     }
   },
-
 }
 
 export default ClassroomModel
