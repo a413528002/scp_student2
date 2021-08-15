@@ -18,10 +18,8 @@ export default [
 
   {
     path: '/',
-    component: null,
-    wrappers: [
-      '@/wrappers/toHomePage',
-    ],
+    component: './404',
+    wrappers: ['@/wrappers/toHomePage'],
   },
 
   // 学生菜单
@@ -227,11 +225,10 @@ export default [
             name: 'regulatory',
             component: './student/risk/regulatory',
           },
-        ]
+        ],
       },
     ],
   },
-
 
   // 老师菜单
   {
@@ -265,4 +262,3 @@ export default [
     component: './404',
   },
 ];
-
