@@ -14,7 +14,7 @@ const HomeList = () => {
           <Card
             size='small'
             type="inner"
-            title="存贷款总量"
+            title="存贷款利率"
             bordered={false}
           >
             <DepositAndLoanInterestRate/>
@@ -34,7 +34,7 @@ const HomeList = () => {
           <Card
             size='small'
             type="inner"
-            title="存贷款总量"
+            title="存贷款单量"
             bordered={false}
           >
             <DepositAndLoanCount/>

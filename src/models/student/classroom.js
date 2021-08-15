@@ -224,14 +224,12 @@ const ClassroomModel = {
         let bankMembersData = []
         // 如果有银行成员，则处理一下数据
         if (response.bankMembers) {
-          // 获取当前用户ID
-          const {id: currentUserId} = JSON.parse(sessionStorage.getItem('AUTHORITIES_INFO'));
           bankMembersData = response.bankMembers
             .map(item => {
               return {
                 ...item,
                 _key: item.stuUserId,
-                _kickOpt: response.isPresident && currentUserId !== item.stuUserId, // 可踢出操作判断逻辑  是行长并且非自己
+                _kickOpt: response.isPresident && item.stuUserId !== response.stuUserId, // 可踢出操作判断逻辑  是行长并且非自己
                 _acceptOpt: item.bankStatus === 'PENDING'           // 同意操作判断逻辑 银行状态为等待接受
               };
             })

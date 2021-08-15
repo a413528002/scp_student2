@@ -1,7 +1,6 @@
 import component from './zh-CN/component';
 import globalHeader from './zh-CN/globalHeader';
-import studentMenu from './zh-CN/studentMenu';
-import teacherMenu from "@/locales/zh-CN/teacherMenu";
+import menus from './zh-CN/menus';
 import pwa from './zh-CN/pwa';
 import settingDrawer from './zh-CN/settingDrawer';
 import settings from './zh-CN/settings';
@@ -17,8 +16,7 @@ export default {
   'app.welcome.link.block-list': '基于 block 开发，快速构建标准页面',
   ...pages,
   ...globalHeader,
-  ...studentMenu,
-  ...teacherMenu,
+  ...menus,
   ...settingDrawer,
   ...settings,
   ...pwa,

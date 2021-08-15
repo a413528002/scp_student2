@@ -1,11 +1,9 @@
-import { PageLoading } from '@ant-design/pro-layout';
-import { notification } from 'antd';
-import { history } from 'umi';
+import {PageLoading} from '@ant-design/pro-layout';
+import {notification} from 'antd';
+import {history} from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import menuStudentRoutes from '@/utils/menuStudentRoutes';
-import menuTeacherRoutes from '@/utils/menuTeacherRoutes';
-import iconMap from '@/utils/iconMap';
+import {queryCurrentUser} from "@/services/user";
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -20,13 +18,17 @@ export const initialStateConfig = {
  * */
 
 export async function getInitialState() {
+
   const fetchUserInfo = async () => {
     try {
-      return JSON.parse(sessionStorage.getItem('AUTHORITIES_INFO'));
+      const response = await queryCurrentUser();
+      if (response.errCode) {
+        history.push(loginPath);
+      }
+      return response;
     } catch (error) {
       history.push(loginPath);
     }
-
     return undefined;
   }; // 如果是登录页面，不执行
 
@@ -133,50 +135,7 @@ export const request = {
 
 
 export const layout = ({initialState}) => {
-  /*const IconMap = {
-    smile: <SmileOutlined />,
-    heart: <HeartOutlined />,
-  };*/
-  const __rest = (this && this.__rest) || function (s, e) {
-    let t = {};
-    for (let p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-      t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-      for (let i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-        if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-          t[p[i]] = s[p[i]];
-      }
-    return t;
-  };
-
-  // 映射icon
-  const loopMenuItem = (menus) => menus.map((_a) => {
-    let { icon, children } = _a, item = __rest(_a, ["icon", "children"]);
-    return (Object.assign(Object.assign({}, item), { icon: icon && iconMap[icon], children: children && loopMenuItem(children) }));
-  });
-
   return {
-    menu: {
-      // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
-      params: {
-        userId: initialState?.currentUser?.authorities,
-      },
-      request: async ({userId}, defaultMenuData) => {
-        const [access] = userId
-        // 登录返回的权限名称
-        switch (access) {
-          case 'TEACHER':
-            return loopMenuItem(menuTeacherRoutes);
-          case 'STUDENT':
-            return loopMenuItem(menuStudentRoutes)
-        }
-
-        // return access==='TEACHER'?menuTData:menuSData;
-        // const defaultMenus = access==='TEACHER'?menuTData:menuSData;
-        // return loopMenuItem(defaultMenus);
-      },
-    },
-
     rightContentRender: () => <RightContent/>,
     disableContentMargin: false,
     waterMarkProps: {
@@ -184,8 +143,7 @@ export const layout = ({initialState}) => {
     },
     footerRender: () => <Footer/>,
     onPageChange: () => {
-      const {location} = history; // 如果没有登录，重定向到 login
-
+      const { location } = history; // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
         history.push(loginPath);
       }

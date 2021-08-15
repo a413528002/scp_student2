@@ -1,10 +1,10 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
-import ProForm, { ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { connect, FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import {Alert, message, Tabs} from 'antd';
+import React, {useState} from 'react';
+import ProForm, {ProFormSelect, ProFormText} from '@ant-design/pro-form';
+import {connect, FormattedMessage, history, Link, SelectLang, useIntl, useModel} from 'umi';
 import Footer from '@/components/Footer';
-import { getLogin, getQueryTenantOptions } from '@/services/login';
+import {getLogin, getQueryTenantOptions} from '@/services/login';
 import styles from './index.less';
 
 const LoginMessage = ({content}) => (
@@ -21,7 +21,6 @@ const LoginMessage = ({content}) => (
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const [userLoginState, setUserLoginState] = useState({});
-  const [tenant, setTenant] = useState(undefined);
   const {initialState, setInitialState} = useModel('@@initialState');
   const intl = useIntl();
 
@@ -41,9 +40,6 @@ const Login = () => {
       // console.log(response)
 
       if (!response.errCode) {
-        const {authorities} = response
-        // 当前身份
-        const [auth] = authorities
         const defaultloginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -51,21 +47,16 @@ const Login = () => {
         message.success(defaultloginSuccessMessage);
         // 考虑意外退出的情况 登录成功后将存储的localStorage清除
         localStorage.clear()
-        sessionStorage.setItem('AUTHORITIES_INFO', JSON.stringify(response))
+
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
         if (!history) return;
-        // const {query} = history.location;
-        // const {redirect} = query;
-        // history.push(redirect || '/');
-        if (auth && auth === 'STUDENT') {
-          history.push('/student/home');
-        } else if (auth && auth === 'TEACHER') {
-          history.push('/teacher/classroom');
-        }
+        const {query} = history.location;
+        const {redirect} = query;
+        history.push(redirect || '/');
         // 刷新页面，清空model里的数据
-        window.location.reload()
+        // window.location.reload()
         return;
       } // 如果失败去设置用户错误信息
 

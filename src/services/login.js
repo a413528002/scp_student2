@@ -8,7 +8,7 @@ export async function getLogin(params) {
   })
 }
 
-// 获取用户信息
+// 获取租户选项
 export async function getQueryTenantOptions(options) {
   return request(`${NODE_API}/queryTenantOptions`, {
     method: 'GET',
