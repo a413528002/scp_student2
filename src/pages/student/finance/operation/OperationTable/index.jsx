@@ -59,8 +59,8 @@ const EditableCell = ({
 };
 
 const OperationTable = (props) => {
-  const { dispatch } = props;
-  const { dataSource, loading } = props;
+  const { dispatch, loading, saveLoading } = props;
+  const { dataSource } = props;
   const [form] = Form.useForm();
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -102,7 +102,7 @@ const OperationTable = (props) => {
   };
 
   // 初始化查询期数
-  const [period, setPeriod] = useState('1');
+  const [period, setPeriod] = useState(null);
 
   useEffect(() => {
     if (classHourId) {
@@ -149,7 +149,12 @@ const OperationTable = (props) => {
         const editable = isEditing(record);
         return editable ? (
           <Space>
-            <Button type="primary" size="small" onClick={() => updateBankExpense(record._key)}>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => updateBankExpense(record._key)}
+              loading={saveLoading}
+            >
               保存
             </Button>
             <Popconfirm title="确认取消?" onConfirm={handleCancelPop}>
@@ -160,7 +165,7 @@ const OperationTable = (props) => {
           </Space>
         ) : (
           <Button
-            type="link"
+            type="primary"
             size="small"
             disabled={editingKey !== ''}
             onClick={() => handleEdit(record)}
@@ -219,4 +224,5 @@ const OperationTable = (props) => {
 export default connect(({ studentOperation, loading }) => ({
   dataSource: studentOperation.queryBankExpensesData,
   loading: loading.effects['studentOperation/queryBankExpenses'],
+  saveLoading: loading.effects['studentOperation/updateBankExpense'],
 }))(OperationTable);
