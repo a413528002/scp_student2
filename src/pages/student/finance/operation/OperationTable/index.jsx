@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import { Select, Button, Form, InputNumber, Popconfirm, Space } from 'antd';
@@ -26,7 +26,14 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = <InputNumber min={0} />;
+  // 获取当前行编辑的焦点状态
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (editing) {
+      inputRef.current.focus();
+    }
+  }, [editing]);
+  const inputNode = <InputNumber ref={inputRef} min={0} />;
   return (
     <td {...restProps}>
       {editing ? (
@@ -53,7 +60,10 @@ const EditableCell = ({
 
 const OperationTable = (props) => {
   const { dispatch } = props;
+  const { dataSource, loading } = props;
   const [form] = Form.useForm();
+  // 获取课堂id
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
   // 当前编辑row key
   const [editingKey, setEditingKey] = useState('');
   // 是否可编辑
@@ -73,22 +83,36 @@ const OperationTable = (props) => {
   const updateBankExpense = async (bankExpenseId) => {
     try {
       const amount = await form.validateFields();
-      console.log(row);
-      console.log(key);
-      /*dispatch({
-        type: '',
-        payload: {
-          classHourId,
-          bankExpenseId,
-          amount,
-        },
-      });*/
-
-      setEditingKey('');
+      if (classHourId && bankExpenseId) {
+        // 更新费用
+        dispatch({
+          type: 'studentOperation/updateBankExpense',
+          payload: {
+            classHourId,
+            bankExpenseId,
+            amount,
+            period,
+          },
+          callback: () => setEditingKey(''),
+        });
+      }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
   };
+
+  // 初始化查询期数
+  const [period, setPeriod] = useState('1');
+
+  useEffect(() => {
+    if (classHourId) {
+      // 查询薪资/费用
+      dispatch({
+        type: 'studentOperation/queryBankExpenses',
+        payload: { classHourId, period },
+      });
+    }
+  }, []);
   const columns = [
     {
       title: '期数',
@@ -181,8 +205,10 @@ const OperationTable = (props) => {
             },
           }}
           rowClassName="editable-row"
+          // dataSource={dataSource}
           dataSource={originData}
           columns={columnsData}
+          loading={loading}
           bordered
         />
       </Form>
@@ -190,4 +216,7 @@ const OperationTable = (props) => {
   );
 };
 
-export default connect()(OperationTable);
+export default connect(({ studentOperation, loading }) => ({
+  dataSource: studentOperation.queryBankExpensesData,
+  loading: loading.effects['studentOperation/queryBankExpenses'],
+}))(OperationTable);
