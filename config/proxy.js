@@ -11,6 +11,7 @@ export default {
     '/api/': {
       target: 'http://47.119.142.92:8081',
       changeOrigin: true,
+      ws: true,
       pathRewrite: {
         '^/api/': '',
       },

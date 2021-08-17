@@ -203,20 +203,16 @@ const ClassroomModel = {
     * joinBank({payload}, {call, put, select}) {
       const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
       const bankId = yield select(state => state.studentClassroom.bankData.bankId)
+      if (!bankId) {
+        message.error('请查询银行')
+        return
+      }
       const response = yield call(getStudentJoinBank, {bankId, classHourId})
       if (!response.errCode) {
-        // 如果有返回值 将银行信息存储 localStorage ，覆盖之前的银行信息
-        // localStorage.setItem('BANK_IN_INFO', JSON.stringify(response))
-        // 如果有返回值 将银行信息存储 redux中 ，覆盖之前的银行信息
-        // yield put({
-        //   type: 'save',
-        //   payload: {
-        //     studentClassroomBankInInfoData: response,
-        //   }
-        // })
         message.success('加入成功，等待行长接受')
       }
     },
+
     // 查询用户在课堂的详细信息
     * queryClassHourUserDetails({payload}, {call, put}) {
       const response = yield call(getStudentQueryClassHourUserDetails, payload)

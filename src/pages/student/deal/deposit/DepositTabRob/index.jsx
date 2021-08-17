@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import PublicTable from '@/components/Table';
 import styles from '@/pages/student/deal/deposit/index.less';
-import { connect } from 'umi';
+import { connect, useModel } from 'umi';
 import { Button, Modal } from 'antd';
 import { toPercent } from '@/utils/commonUtils';
+import { useSubscription } from 'react-stomp-hooks';
 
 const DepositTabRob = (props) => {
-  const {dispatch, dataSource, grabStartTime} = props
+  const {dispatch, dataSource, startDuration} = props
   const {loading, grabLoading} = props
+
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState
 
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
 
@@ -15,6 +19,26 @@ const DepositTabRob = (props) => {
   const [currentFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
   const [makeUpCostConfirmModelText, setMakeUpCostConfirmModelText] = useState("")
 
+  /**
+   * 处理消息
+   * @param message
+   */
+  const handleMsg = (message) => {
+    const msgBody = JSON.parse(message.body);
+    if (msgBody.msgType === 'FINMKT_GRAB_INFO') {
+      dispatch({
+        type: 'studentGrabDeposit/setGrabInfo',
+        payload: { ...msgBody.data, currentUserId: currentUser?.id }
+      })
+    } else if (msgBody.msgType === 'FINMKT_GRABBED') {
+      dispatch({
+        type: 'studentGrabDeposit/setGrabbedData',
+        payload: msgBody.data
+      })
+    }
+  }
+
+  useSubscription('/app/clshr/' + classHourId + '/finMkt/dpst', handleMsg);
 
   // 执行抢单
   const doGrab = (financialMarketId, makeUpCost) => {
@@ -78,25 +102,25 @@ const DepositTabRob = (props) => {
     },
     {
       title: '抢单',
-      render: (_, {financialMarketId, status}) => {
+      render: (_, {classFinancialMarketId, status}) => {
         return (
-          <Button type={'primary'} onClick={() => doGrab(financialMarketId, false)} loading={grabLoading} disabled={status !== 'NORMAL'}>抢单</Button>
+          <Button type={'primary'} onClick={() => doGrab(classFinancialMarketId, false)} loading={grabLoading} disabled={status !== 'NORMAL'}>抢单</Button>
         )
       }
     },
   ];
 
   useEffect(() => {
-    if (classHourId) {
-      dispatch({
-        type: 'studentGrabDeposit/queryFinancialMarkets',
-        payload: { classHourId }
-      })
+    if (classHourId && startDuration) {
+        dispatch({
+          type: 'studentGrabDeposit/countdown',
+        })
     }
-  }, [classHourId])
+  }, [classHourId, startDuration > 0])
 
   return (
     <>
+      <p className={styles.timer}>抢单倒计时：<span>{startDuration ? startDuration + '秒' : null}</span></p>
       <PublicTable
         dataSource={dataSource}
         columns={columns}
@@ -107,8 +131,6 @@ const DepositTabRob = (props) => {
           total: dataSource.length,
         }}
       />
-      <p className={styles.timer}>抢单倒计时：<span>30秒</span></p>
-      <p>开始时间（TODO）：<span>{grabStartTime}</span></p>
       <Modal
         visible={makeUpCostConfirmModelVisible}
         onCancel={makeUpCostConfirmModelCancel}
@@ -124,8 +146,8 @@ const DepositTabRob = (props) => {
 };
 
 export default connect(({studentGrabDeposit, loading}) => ({
-  dataSource: studentGrabDeposit.financialMarketData,
-  grabStartTime: studentGrabDeposit.grabStartTime,
-  loading:loading.effects['studentGrabDeposit/queryFinancialMarkets'],
+  dataSource: studentGrabDeposit.startDuration && studentGrabDeposit.startDuration > 0 ? [] : studentGrabDeposit.financialMarketData,
+  startDuration: studentGrabDeposit.startDuration,
+  loading:loading.effects['studentGrabDeposit/countdown'],
   grabLoading:loading.effects['studentGrabDeposit/grab']
 }))(DepositTabRob);
