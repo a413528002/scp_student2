@@ -45,14 +45,6 @@ const OperationModel = {
         });
       }
     },
-    // 保存存款利息
-    *updateLoanInterest({ payload, callback }, { call, put }) {
-      const response = yield call(updateLoanInterest, payload);
-      if (!response.errCode) {
-        message.success('保存成功');
-        callback();
-      }
-    },
   },
   reducers: {
     save(state, { payload }) {
