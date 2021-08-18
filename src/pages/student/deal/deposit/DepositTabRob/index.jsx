@@ -16,7 +16,7 @@ const DepositTabRob = (props) => {
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
 
   const [makeUpCostConfirmModelVisible, setMakeUpCostConfirmModelVisible] = useState(false)
-  const [currentFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
+  const [currentClassFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
   const [makeUpCostConfirmModelText, setMakeUpCostConfirmModelText] = useState("")
 
   /**
@@ -41,11 +41,11 @@ const DepositTabRob = (props) => {
   useSubscription('/app/clshr/' + classHourId + '/finMkt/dpst', handleMsg);
 
   // 执行抢单
-  const doGrab = (financialMarketId, makeUpCost) => {
-    setCurrentFinancialMarketId(financialMarketId)
+  const doGrab = (classFinancialMarketId, makeUpCost) => {
+    setCurrentFinancialMarketId(classFinancialMarketId)
     dispatch({
       type: 'studentGrabDeposit/grab',
-      payload: { classHourId, financialMarketId, makeUpCost },
+      payload: { classHourId, classFinancialMarketId, makeUpCost },
       callback: (response) => {
         if (response.errCode === 31 && !makeUpCostConfirmModelVisible) {
           setMakeUpCostConfirmModelText(response.errMsg)
@@ -62,7 +62,7 @@ const DepositTabRob = (props) => {
   }
 
   const makeUpCostConfirmModelOk = () => {
-    doGrab(currentFinancialMarketId,true)
+    doGrab(currentClassFinancialMarketId,true)
     setMakeUpCostConfirmModelVisible(false)
   }
 
