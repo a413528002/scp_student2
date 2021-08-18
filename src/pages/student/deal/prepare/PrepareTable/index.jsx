@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Space } from 'antd';
+import {Button, Card, Space, Tag} from 'antd';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import PrepareRule from '@/pages/student/deal/prepare/PrepareRule';
@@ -49,6 +49,7 @@ const PrepareTable = (props) => {
       title: '交易类型',
       dataIndex: 'typeName',
       key: 'typeName',
+      render: (typeName) => <Tag color="#009933">{typeName}</Tag>,
     },
     {
       title: '准备金账户余额(万元)',

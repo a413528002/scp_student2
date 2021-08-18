@@ -35,7 +35,7 @@ const DepositsModel = {
         const queryDepositInterestsData = response.map((item, index) => {
           return {
             ...item,
-            _key: item.index
+            _key: index
           }
         });
         yield put({
