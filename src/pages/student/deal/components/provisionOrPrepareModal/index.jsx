@@ -22,7 +22,7 @@ const ProvisionOrPrepareModal = (props) => {
           },
           // 新建成功后的回调
           callback: () => {
-            handleCancelModal()
+            handleCancelResetFields()
           },
         })
       } else if (type === 'PAYMENT') {
@@ -35,7 +35,7 @@ const ProvisionOrPrepareModal = (props) => {
           },
           // 新建成功后的回调
           callback: () => {
-            handleCancelModal()
+            handleCancelResetFields()
           },
         })
       } else if (type === 'BACK') {
@@ -47,7 +47,7 @@ const ProvisionOrPrepareModal = (props) => {
             amount: -amount,
           },
           callback: () => {
-            handleCancelModal()
+            handleCancelResetFields()
           },
         })
       } else if (type === 'PROVISION') {
@@ -59,7 +59,7 @@ const ProvisionOrPrepareModal = (props) => {
             amount
           },
           callback: () => {
-            handleCancelModal()
+            handleCancelResetFields()
           },
         })
       }
