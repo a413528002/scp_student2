@@ -112,15 +112,15 @@ const DepositTabRob = (props) => {
 
   useEffect(() => {
     if (classHourId && startDuration) {
-        dispatch({
-          type: 'studentGrabDeposit/countDown',
-        })
+      dispatch({
+        type: 'studentGrabDeposit/countDown',
+      })
     }
   }, [classHourId, startDuration > 0])
 
   return (
     <>
-      <p className={styles.timer}>抢单倒计时：<span>{startDuration ? startDuration + '秒' : null}</span></p>
+      <p className={styles.timer}>抢单倒计时：<span>{startDuration ?? 0}秒</span></p>
       <PublicTable
         dataSource={dataSource}
         columns={columns}

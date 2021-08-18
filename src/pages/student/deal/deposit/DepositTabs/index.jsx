@@ -15,12 +15,12 @@ const DepositTabs = () => {
   }
 
   return (
-    <Tabs defaultActiveKey="1" onChange={changeTabs}>
+    <Tabs defaultActiveKey={curTabKey} onChange={changeTabs}>
       <TabPane tab="存款抢单" key="1">
         <DepositTabRob/>
       </TabPane>
       <TabPane tab="抢单记录" key="2">
-        {curTabKey ==='2' ?  <DepositTabRecord/> : <div></div> }
+        { curTabKey === '2' ?  <DepositTabRecord/> : <div></div> }
       </TabPane>
     </Tabs>
   );
