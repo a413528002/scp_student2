@@ -113,7 +113,7 @@ const DepositTabRob = (props) => {
   useEffect(() => {
     if (classHourId && startDuration) {
         dispatch({
-          type: 'studentGrabDeposit/countdown',
+          type: 'studentGrabDeposit/countDown',
         })
     }
   }, [classHourId, startDuration > 0])
@@ -148,6 +148,6 @@ const DepositTabRob = (props) => {
 export default connect(({studentGrabDeposit, loading}) => ({
   dataSource: studentGrabDeposit.startDuration && studentGrabDeposit.startDuration > 0 ? [] : studentGrabDeposit.financialMarketData,
   startDuration: studentGrabDeposit.startDuration,
-  loading:loading.effects['studentGrabDeposit/countdown'],
+  loading:loading.effects['studentGrabDeposit/countDown'],
   grabLoading:loading.effects['studentGrabDeposit/grab']
 }))(DepositTabRob);

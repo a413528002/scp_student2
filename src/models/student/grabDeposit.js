@@ -1,6 +1,6 @@
 import { grab, queryLogs } from '@/services/student/gdpst.js';
 import { message } from 'antd';
-import { delay } from '@/utils/commonUtils';
+import { delay, getCountDownSec } from '@/utils/commonUtils';
 
 
 const GrabDepositModel = {
@@ -13,7 +13,7 @@ const GrabDepositModel = {
   effects: {
 
     // 倒计时
-    * countdown({payload}, {call, put, select}) {
+    * countDown({payload}, {call, put, select}) {
       while (true) {
         const startDuration = yield select(state => state.studentGrabDeposit.startDuration);
         if (startDuration <= 0) {
@@ -70,33 +70,28 @@ const GrabDepositModel = {
     // 设置已被抢单的数据
     setGrabbedData(state, {payload}) {
       const classFinancialMarketId = payload
+      // 将该条金融数据状态改为已被抢单
+      const financialMarketData = state.financialMarketData.map(item => {
+        if (item.classFinancialMarketId === classFinancialMarketId) {
+          return {
+            ...item,
+            status: 'GRABBED'
+          }
+        }
+        return item
+      })
+
       return {
         ...state,
-        financialMarketData: state.financialMarketData.map(item => {
-          if (item.classFinancialMarketId === classFinancialMarketId) {
-            return {
-              ...item,
-              status: 'GRABBED'
-            }
-          }
-          return item
-        })
+        financialMarketData,
       }
     },
 
     // 设置抢单信息
     setGrabInfo(state, {payload}) {
       const { startTimes, data, currentUserId } = payload;
-      // 相差的秒数
-      let startDuration;
-      if (startTimes) {
-        const startTimestamp = startTimes[currentUserId];
-        const second = Math.trunc((startTimestamp - Date.now()) / 1000);
-        startDuration = second < 0 ? 0 : second
-      } else {
-        startDuration = 0
-      }
-
+      // 距离开始时间
+      const startDuration = getCountDownSec(startTimes && startTimes[currentUserId])
       const financialMarketData = data?.map((item, index) => {
         return {
           ...item,
