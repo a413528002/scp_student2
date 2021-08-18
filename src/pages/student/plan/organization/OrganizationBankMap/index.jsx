@@ -176,11 +176,12 @@ const OrganizationBackMap = () => {
       handleNewOrganizationShowModal()
     });
     myChart.on("mouseover", function (params){
-      if(params.data.value !== undefined){
+      console.log(params)
+      // if(params.data?.value !== undefined){
         myChart.dispatchAction({
           type: 'downplay'
         });
-      }
+      // }
     });
     myChart.setOption(option);
   }
