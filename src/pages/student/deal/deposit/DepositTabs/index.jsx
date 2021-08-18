@@ -1,18 +1,26 @@
-import React from 'react';
-import {Tabs} from 'antd';
-import DepositTabRob from "@/pages/student/deal/deposit/DepositTabRob";
-import DepositTabRecord from "@/pages/student/deal/deposit/DepositTabRecord";
+import React, { useState } from 'react';
+import { Tabs } from 'antd';
+import DepositTabRob from '@/pages/student/deal/deposit/DepositTabRob';
+import DepositTabRecord from '@/pages/student/deal/deposit/DepositTabRecord';
 
 const {TabPane} = Tabs;
 
 const DepositTabs = () => {
+
+  const [curTabKey,setCurTabKey] = useState('1')
+
+  // 切换tab的回调
+  const changeTabs = (activeKey)=>{
+    setCurTabKey(activeKey)
+  }
+
   return (
-    <Tabs defaultActiveKey="1" >
+    <Tabs defaultActiveKey="1" onChange={changeTabs}>
       <TabPane tab="存款抢单" key="1">
         <DepositTabRob/>
       </TabPane>
       <TabPane tab="抢单记录" key="2">
-        <DepositTabRecord/>
+        {curTabKey ==='2' ?  <DepositTabRecord/> : <div></div> }
       </TabPane>
     </Tabs>
   );

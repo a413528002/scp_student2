@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import '../../../../../utils/china.js';
 import * as echarts from 'echarts/core';
 import NewOrganizationModal from '@/pages/student/plan/organization/NewOrganizationModal';
-import { TitleComponent, TooltipComponent, VisualMapComponent  } from 'echarts/components';
-import { EffectScatterChart, ScatterChart, MapChart  } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, VisualMapComponent } from 'echarts/components';
+import { EffectScatterChart, MapChart, ScatterChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 
 echarts.use([
@@ -175,13 +175,11 @@ const OrganizationBackMap = () => {
       setRegion(getRegionByValue(params.value));
       handleNewOrganizationShowModal()
     });
+    // 这里是设置鼠标移到到某区域不高亮
     myChart.on("mouseover", function (params){
-      console.log(params)
-      // if(params.data?.value !== undefined){
-        myChart.dispatchAction({
-          type: 'downplay'
-        });
-      // }
+      myChart.dispatchAction({
+        type: 'downplay'
+      });
     });
     myChart.setOption(option);
   }
