@@ -6,6 +6,7 @@ import { delay } from '@/utils/commonUtils';
 const GrabDepositModel = {
   namespace: 'studentGrabDeposit',
   state: {
+    grabStatus: undefined, // 抢单状态
     startDuration: undefined, // 抢单开始倒计时
     financialMarketData: [], // 金融市场数据
     logData: [], // 抢单日志数据
@@ -89,7 +90,7 @@ const GrabDepositModel = {
 
     // 设置抢单信息
     setGrabInfo(state, {payload}) {
-      const { serverTime, startTimes, data, currentUserId } = payload;
+      const { grabStatus, serverTime, startTimes, data, currentUserId } = payload;
       // 距离开始时间=当前用户对应的银行开始时间-服务器时间
       const startDuration = serverTime && startTimes && startTimes[currentUserId]
         && Math.max(0, Math.trunc((startTimes[currentUserId] - serverTime) / 1000))
@@ -101,6 +102,7 @@ const GrabDepositModel = {
       }) ?? [];
       return {
         ...state,
+        grabStatus,
         startDuration,
         financialMarketData,
       }

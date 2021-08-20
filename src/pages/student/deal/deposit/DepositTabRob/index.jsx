@@ -7,7 +7,7 @@ import { toPercent } from '@/utils/commonUtils';
 import { useSubscription } from 'react-stomp-hooks';
 
 const DepositTabRob = (props) => {
-  const {dispatch, dataSource, startDuration} = props
+  const {dispatch, dataSource, grabStatus, startDuration} = props
   const {loading, grabLoading} = props
 
   const { initialState } = useModel('@@initialState');
@@ -118,9 +118,25 @@ const DepositTabRob = (props) => {
     }
   }, [classHourId, startDuration > 0])
 
+
+  const renderGrabStatus = () => {
+    if (grabStatus === 'NONE') {
+      return <p className={styles.timer}><span>抢单未开始</span></p>
+    }
+    if (grabStatus === 'STARTED') {
+      return <p className={styles.timer}>抢单倒计时：<span>{startDuration ?? 0}秒</span></p>
+    }
+    if (grabStatus === 'ENDED') {
+      return <p className={styles.timer}><span>抢单已结束</span></p>
+    }
+    return <div></div>
+  }
+
   return (
     <>
-      <p className={styles.timer}>抢单倒计时：<span>{startDuration ?? 0}秒</span></p>
+      {
+        renderGrabStatus()
+      }
       <PublicTable
         dataSource={dataSource}
         columns={columns}
@@ -147,6 +163,7 @@ const DepositTabRob = (props) => {
 
 export default connect(({studentGrabDeposit, loading}) => ({
   dataSource: studentGrabDeposit.startDuration && studentGrabDeposit.startDuration > 0 ? [] : studentGrabDeposit.financialMarketData,
+  grabStatus: studentGrabDeposit.grabStatus,
   startDuration: studentGrabDeposit.startDuration,
   loading:loading.effects['studentGrabDeposit/countDown'],
   grabLoading:loading.effects['studentGrabDeposit/grab']
