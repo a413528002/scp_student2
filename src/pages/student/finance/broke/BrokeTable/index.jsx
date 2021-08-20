@@ -60,6 +60,7 @@ const EditableCell = ({
 
 const BrokeTable = (props) => {
   const { dispatch, loading, saveLoading } = props;
+  console.log(loading);
   const { dataSource } = props;
   const [form] = Form.useForm();
   // 获取课堂id

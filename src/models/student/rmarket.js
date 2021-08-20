@@ -1,36 +1,34 @@
 import { message } from 'antd';
-import { applyForInject, queryBankruptcies } from '@/services/student/bb';
+import {queryBankRwaMarkets, updateBankRwaMarket} from "@/services/student/mrwa";
 
-const BrokeModel = {
-  namespace: 'studentBroke',
+const MarketModel = {
+  namespace: 'studentMarket',
   state: {
-    queryBankruptciesData: [],
+    queryBankRwaMarketsData: [],
   },
   effects: {
     // 查询列表
-    *queryBankruptcies({ payload }, { call, put }) {
-      const response = yield call(queryBankruptcies, payload)||[];
+    *queryBankRwaMarkets({ payload }, { call, put }) {
+      const response = yield call(queryBankRwaMarkets, payload)||[];
       if (!response.errCode) {
-        console.log(1)
-        const queryBankruptciesData = Array.isArray(response).map((item) => {
+        const queryBankRwaMarketsData = response.map((item) => {
           return {
             ...item,
-            _key: item.bankExpenseId,
+            _key: item.bankRwaMarketId,
           };
         });
         yield put({
           type: 'save',
           payload: {
-            queryBankruptciesData,
+            queryBankRwaMarketsData,
           },
         });
       }
     },
 
-    // 注资申请
-    *applyForInject({ payload, callback }, { call, put }) {
-      const response = yield call(applyForInject, payload);
-      const { period } = payload;
+    // 保存操作风险
+    *updateBankRwaMarket({ payload, callback }, { call, put }) {
+      const response = yield call(updateBankRwaMarket, payload);
       if (!response.errCode) {
         message.success('保存成功');
         callback();
@@ -38,7 +36,7 @@ const BrokeModel = {
         const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
         // 刷新表格
         yield put({
-          type: 'queryBankruptcies',
+          type: 'queryBankRwaMarkets',
           payload: {
             classHourId,
           },
@@ -55,4 +53,4 @@ const BrokeModel = {
     },
   },
 };
-export default BrokeModel;
+export default MarketModel;

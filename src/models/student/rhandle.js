@@ -1,36 +1,34 @@
 import { message } from 'antd';
-import { applyForInject, queryBankruptcies } from '@/services/student/bb';
+import {queryBankRwaOperationals, updateBankRwaOperational} from "@/services/student/orwa";
 
-const BrokeModel = {
-  namespace: 'studentBroke',
+const HandleModel = {
+  namespace: 'studentHandle',
   state: {
-    queryBankruptciesData: [],
+    queryBankRwaOperationalsData: [],
   },
   effects: {
     // 查询列表
-    *queryBankruptcies({ payload }, { call, put }) {
-      const response = yield call(queryBankruptcies, payload)||[];
+    *queryBankRwaOperationals({ payload }, { call, put }) {
+      const response = yield call(queryBankRwaOperationals, payload)||[];
       if (!response.errCode) {
-        console.log(1)
-        const queryBankruptciesData = Array.isArray(response).map((item) => {
+        const queryBankRwaOperationalsData = response.map((item) => {
           return {
             ...item,
-            _key: item.bankExpenseId,
+            _key: item.bankRwaOperationalId,
           };
         });
         yield put({
           type: 'save',
           payload: {
-            queryBankruptciesData,
+            queryBankRwaOperationalsData,
           },
         });
       }
     },
 
-    // 注资申请
-    *applyForInject({ payload, callback }, { call, put }) {
-      const response = yield call(applyForInject, payload);
-      const { period } = payload;
+    // 保存操作风险
+    *updateBankRwaOperational({ payload, callback }, { call, put }) {
+      const response = yield call(updateBankRwaOperational, payload);
       if (!response.errCode) {
         message.success('保存成功');
         callback();
@@ -38,7 +36,7 @@ const BrokeModel = {
         const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
         // 刷新表格
         yield put({
-          type: 'queryBankruptcies',
+          type: 'queryBankRwaOperationals',
           payload: {
             classHourId,
           },
@@ -55,4 +53,4 @@ const BrokeModel = {
     },
   },
 };
-export default BrokeModel;
+export default HandleModel;

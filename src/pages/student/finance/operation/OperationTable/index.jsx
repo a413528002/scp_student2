@@ -4,18 +4,6 @@ import PublicTable from '@/components/Table';
 import { Select, Button, Form, InputNumber, Popconfirm, Space } from 'antd';
 import styles from '@/pages/student/finance/operation/index.less';
 
-const originData = [];
-for (let i = 0; i < 8; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    typeName: '假数据',
-    amount: null,
-    bankRegion: 'A',
-    status: true,
-  });
-}
-
 const EditableCell = ({
   editing,
   dataIndex,
@@ -118,7 +106,7 @@ const OperationTable = (props) => {
       title: '期数',
       dataIndex: 'period',
       key: 'period',
-      render: (period) => `第${period}期`,
+      render: (period) => (!period ? null : `第${period}期`),
     },
     {
       title: '类别',
@@ -140,6 +128,7 @@ const OperationTable = (props) => {
       dataIndex: 'amount',
       key: 'amount',
       editable: true,
+      render: (amount) => `${amount / 1000}`,
     },
     {
       title: '操作',
@@ -210,8 +199,7 @@ const OperationTable = (props) => {
             },
           }}
           rowClassName="editable-row"
-          // dataSource={dataSource}
-          dataSource={originData}
+          dataSource={dataSource}
           columns={columnsData}
           loading={loading}
           bordered

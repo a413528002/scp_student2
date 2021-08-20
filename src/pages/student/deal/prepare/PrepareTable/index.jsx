@@ -1,44 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, Space} from "antd";
-import {connect} from 'umi'
-import PublicTable from "@/components/Table";
-import PrepareRule from "@/pages/student/deal/prepare/PrepareRule";
-import ProvisionOrPrepareModal from "@/pages/student/deal/components/provisionOrPrepareModal";
-
-const originData = [];
-for (let i = 0; i < 20; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    openingBalance: 32,
-    typeName: '假数据',
-    amount: null,
-  });
-}
+import React, { useEffect, useState } from 'react';
+import {Button, Card, Space, Tag} from 'antd';
+import { connect } from 'umi';
+import PublicTable from '@/components/Table';
+import PrepareRule from '@/pages/student/deal/prepare/PrepareRule';
+import ProvisionOrPrepareModal from '@/pages/student/deal/components/provisionOrPrepareModal';
 
 const PrepareTable = (props) => {
-  const {dispatch, dataSource, loading} = props;
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  const { dispatch, dataSource, loading } = props;
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
   useEffect(() => {
     if (classHourId) {
       // 查询列表
       dispatch({
         type: 'studentPrepare/queryBankDepositReserves',
-        payload: {classHourId}
-      })
+        payload: { classHourId },
+      });
     }
-  }, [])
+  }, []);
 
   // modal显示状态 ----start-----
   const [modalVisible, setModalVisible] = useState(false);
-  const [typeModal, setTypeModal] = useState({})
+  const [typeModal, setTypeModal] = useState({});
   // 显示modal
   const handleShowModal = (type) => {
     if (type === 'RECALL') {
-      setTypeModal({type, 'title': '调回'})
+      setTypeModal({ type, title: '调回' });
     } else if (type === 'PAYMENT') {
-      setTypeModal({type, 'title': '缴纳'})
+      setTypeModal({ type, title: '缴纳' });
     }
     setModalVisible(true);
   };
@@ -49,68 +38,59 @@ const PrepareTable = (props) => {
   };
   // modal显示状态 ----end-----
 
-
   const columns = [
     {
       title: '期数',
       dataIndex: 'period',
       key: 'period',
-      render:(period)=>`第${period}期`
+      render: (period) => `第${period}期`,
     },
     {
       title: '交易类型',
       dataIndex: 'typeName',
       key: 'typeName',
+      render: (typeName) => <Tag color="#009933">{typeName}</Tag>,
     },
     {
       title: '准备金账户余额(万元)',
       dataIndex: 'openingBalance',
       key: 'openingBalance',
-      render: (openingBalance) => !openingBalance ? null : `${openingBalance / 10000}`
+      render: (openingBalance) => `${openingBalance / 10000}`,
     },
     {
       title: '当期准备金调整(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => !amount ? null : `${amount / 10000}`
+      render: (amount) => `${amount / 10000}`,
     },
     {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      render: (_, {amount}) => {
+      render: () => {
         return (
-          <>
-            {
-              !amount ? (
-                <Space>
-                  <Button type="primary" size="small"
-                          onClick={() => handleShowModal('RECALL')}>调回</Button>
-                  <Button type="primary" size="small"
-                          onClick={() => handleShowModal('PAYMENT')}>缴纳</Button>
-                </Space>
-              ) : null
-            }
-          </>
-        )
-      }
+          <Space>
+            <Button type="primary" size="small" onClick={() => handleShowModal('RECALL')}>
+              调回
+            </Button>
+            <Button type="primary" size="small" onClick={() => handleShowModal('PAYMENT')}>
+              缴纳
+            </Button>
+          </Space>
+        );
+      },
     },
   ];
   return (
-    <Card
-      title='准备金管理'
-      bordered={false}
-      type='inner'
-    >
+    <Card title="准备金管理" bordered={false} type="inner">
       <PublicTable
-        // dataSource={dataSource}
-        dataSource={originData}
+        dataSource={dataSource}
         columns={columns}
         loding={loading}
         bordered
         // pagination={true}
       />
-      <PrepareRule/>
+      <PrepareRule />
       {/*调回缴纳modal*/}
       <ProvisionOrPrepareModal
         modalVisible={modalVisible}
@@ -121,7 +101,7 @@ const PrepareTable = (props) => {
   );
 };
 
-export default connect(({studentPrepare, loading}) => ({
+export default connect(({ studentPrepare, loading }) => ({
   dataSource: studentPrepare.bankDepositReservesData,
-  loading: loading.effects['studentPrepare/queryBankDepositReserves']
+  loading: loading.effects['studentPrepare/queryBankDepositReserves'],
 }))(PrepareTable);
