@@ -71,7 +71,7 @@ const SwitchClassroomModal = (props) => {
     // console.log('selectedRows changed: ', selectedRows);
     setSelectedRows(selectedRows)
   };
-  console.log(dataSource.content)
+
   // 表格单选配置项
   const rowSelection = {
     selectedRowKeys: selectedRows?.map(item => item.classHourId),
