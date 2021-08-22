@@ -12,47 +12,41 @@ const SwitchClassroomModal = (props) => {
    */
   const {dispatch, dataSource, switchLoading, startLoading} = props
   const selectedInClassRow = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'))
-  // 当前选中的课堂id
-  const {classHourId: selectedInClassRowKey = []} = selectedInClassRow || {}
-  // 表格选中的key
-  const [selectedRowKeys, setSelectedRowKeys] = useState([selectedInClassRowKey])
   // 选中当前行的信息
   const [selectedRows, setSelectedRows] = useState([selectedInClassRow])
-  // 开始课堂
-  const startClassHour = () => {
-    const [classHourId] = selectedRowKeys
-    if (selectedRowKeys.length > 0) {
+
+  const switchClassroom = (classHour) => {
+    setSelectedRows([classHour])
+    dispatch({
+      type: 'teacherClassroom/switchClassroom',
+      payload:{
+        ...classHour
+      }
+    })
+    handleSwitchClassroomCancelModal()
+  }
+
+  // 开始课堂并且选择课堂
+  const startClassHourAndSwitchClassroom = () => {
+    if (selectedRows.length > 0) {
       const [selectedRowsData] = selectedRows
+      // 只有未开始的课堂才调用开始课堂接口
       if (selectedRowsData.classHourStatus === 'INIT') {
         // 课堂为初始状态才调用开始课堂
         dispatch({
           type: 'teacherClassroom/startClassHour',
           payload: {
-            classHourId
+            classHourId: selectedRowsData.classHourId
           },
-          callback: () => handleSwitchClassroomCancelModal()
+          callback: (response) => switchClassroom(response)
         })
       } else {
-        // 选中当前行直接展示
-        handleSwitchClassroomCancelModal()
-        dispatch({
-          type: 'teacherClassroom/switchClassroom',
-          payload:{
-            ...selectedRowsData
-          }
-        })
+        switchClassroom(selectedRowsData)
       }
-      // 切换后刷新成员信息
-      dispatch({
-        type: 'teacherClassroom/queryClassHourUsers',
-        payload: {
-          classHourId
-        }
-      })
+
     } else {
       message.error('未选择课堂')
     }
-
   }
 
   // 获取切换课堂表格数据 sort 写死 按照id倒序  把新的数据排在前面
@@ -75,12 +69,12 @@ const SwitchClassroomModal = (props) => {
   const onSelectChange = (selectedRowKeys, selectedRows) => {
     // console.log('selectedRowKeys changed: ', selectedRowKeys);
     // console.log('selectedRows changed: ', selectedRows);
-    setSelectedRowKeys(selectedRowKeys);
     setSelectedRows(selectedRows)
   };
+  console.log(dataSource.content)
   // 表格单选配置项
   const rowSelection = {
-    selectedRowKeys,
+    selectedRowKeys: selectedRows?.map(item => item.classHourId),
     onChange: onSelectChange,
     type: 'radio',
     getCheckboxProps: (record) => ({
@@ -122,7 +116,7 @@ const SwitchClassroomModal = (props) => {
     <Modal
       visible={switchClassroomModalVisible}
       onCancel={handleSwitchClassroomCancelModal}
-      onOk={startClassHour}
+      onOk={startClassHourAndSwitchClassroom}
       title='切换课堂'
       width={800}
       confirmLoading={startLoading}

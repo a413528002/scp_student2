@@ -82,7 +82,7 @@ const ClassroomModel = {
           }
         })
         // 切换课程成功的回调 用于关闭modal
-        callback()
+        callback(response)
       }
     },
 
