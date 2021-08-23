@@ -50,7 +50,10 @@ const OrganizationTable = (props) => {
        columns={columns}
        bordered
        loading={loading}
-       pagination={false}
+       pagination={{
+         defaultPageSize: 10,
+         total: dataSource.length,
+       }}
      />
     </>
   );
