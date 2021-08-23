@@ -2,29 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Card, Tag } from 'antd';
 import PublicTable from '@/components/Table';
-import InterestSettlementModal from '@/pages/student/deal/deposits/InterestSettlementModal';
+import InterestSettlementModal from '@/pages/student/deal/loanMng/InterestSettlementModal';
 
-const DepositsTable = (props) => {
+const LoanTable = (props) => {
   const { dispatch, dataSource, loading } = props;
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
-
   useEffect(() => {
     if (classHourId) {
+      // 查询贷款
       dispatch({
-        type: 'studentDeposits/queryDeposits',
-        payload: { classHourId },
+        type: 'studentLoan/queryLoans',
+        payload: {
+          classHourId,
+        },
       });
     }
   }, []);
-
   // 利息结算modal显示状态 ----start-----
   const [modalVisible, setModalVisible] = useState(false);
-  const [bankFinancialBusinessInstId, setBankFinancialBusinessInstId] = useState(undefined);
+  const [bankFinancialBusinessId, setBankFinancialBusinessId] = useState(undefined);
 
   // 显示modal
   const handleShowModal = (id) => {
-    queryDepositInterests(id);
-    setBankFinancialBusinessInstId(id);
+    queryLoanInterests(id);
+    setBankFinancialBusinessId(id);
     setModalVisible(true);
   };
 
@@ -35,10 +36,10 @@ const DepositsTable = (props) => {
   // 利息结算modal显示状态 ----end-----
 
   // 查询存款利息
-  const queryDepositInterests = (bankFinancialBusinessId) => {
+  const queryLoanInterests = (bankFinancialBusinessId) => {
     if (classHourId && bankFinancialBusinessId) {
       dispatch({
-        type: 'studentDeposits/queryDepositInterests',
+        type: 'studentLoan/queryLoanInterests',
         payload: {
           classHourId,
           bankFinancialBusinessId,
@@ -72,21 +73,31 @@ const DepositsTable = (props) => {
       render: (expectRate) => `${expectRate * 100}%`,
     },
     {
-      title: '存款期数',
+      title: '贷款期数',
       dataIndex: 'term',
       key: 'term',
     },
     {
-      title: '所属期数',
+      title: '所属期限',
       dataIndex: 'period',
       key: 'period',
-      render: (period) => `第${period}期`,
+    },
+    {
+      title: '信用评级',
+      dataIndex: 'creditRating',
+      key: 'creditRating',
     },
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
       key: 'rateTypeName',
       render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+    },
+    {
+      title: '质押/担保金额(万元)',
+      dataIndex: 'mgMoney',
+      key: 'mgMoney',
+      render: (mgMoney) => `${mgMoney / 10000}`,
     },
     {
       title: '渠道类型',
@@ -116,20 +127,26 @@ const DepositsTable = (props) => {
     },
   ];
   return (
-    <Card title="存款管理" bordered={false} type="inner">
-      <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
+    <Card title="贷款管理" bordered={false} type="inner">
+      <PublicTable
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        scroll={{ x: 1000 }}
+        bordered
+      />
       {modalVisible && (
         <InterestSettlementModal
           modalVisible={modalVisible}
           handleCancelModal={handleCancelModal}
-          bankFinancialBusinessInstId={bankFinancialBusinessInstId}
+          bankFinancialBusinessId={bankFinancialBusinessId}
         />
       )}
     </Card>
   );
 };
 
-export default connect(({ studentDeposits, loading }) => ({
-  dataSource: studentDeposits.queryDepositsData,
-  loading: loading.effects['studentDeposits/queryDeposits'],
-}))(DepositsTable);
+export default connect(({ studentLoan, loading }) => ({
+  dataSource: studentLoan.queryLoansData,
+  loading: loading.effects['studentLoan/queryLoans'],
+}))(LoanTable);

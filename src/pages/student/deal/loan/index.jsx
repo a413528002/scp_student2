@@ -1,13 +1,13 @@
 import React from 'react';
-// import DepositsTable from "@/pages/deal/deposits/DepositsTable";
-import LoanTable from "@/pages/student/deal/loan/LoanTable";
+import {Card} from "antd";
+import LoansTabs from "@/pages/student/deal/loan/LoansTabs";
 
-const Loan = () => {
+const Loans = () => {
   return (
-    <div>
-      <LoanTable/>
-    </div>
+    <Card>
+      <LoansTabs/>
+    </Card>
   );
 };
 
-export default Loan;
+export default Loans;

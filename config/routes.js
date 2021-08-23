@@ -101,9 +101,9 @@ export default [
           },
           {
             // 贷款
-            path: './loans',
-            name: 'loans',
-            component: './student/deal/loans',
+            path: './loan',
+            name: 'loan',
+            component: './student/deal/loan',
           },
           {
             // 准备金
@@ -119,15 +119,15 @@ export default [
           },
           {
             // 存款管理
-            path: './deposits',
-            name: 'deposits',
-            component: './student/deal/deposits',
+            path: './depositMng',
+            name: 'depositMng',
+            component: './student/deal/depositMng',
           },
           {
             // 贷款管理
-            path: './loan',
-            name: 'loan',
-            component: './student/deal/loan',
+            path: './loanMng',
+            name: 'loanMng',
+            component: './student/deal/loanMng',
           },
         ],
       },

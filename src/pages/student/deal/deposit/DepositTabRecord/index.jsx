@@ -21,6 +21,7 @@ const DepositTabRecord = (props) => {
     {
       title: '金额(万元)',
       dataIndex: 'amount',
+      render: (amount) => `${amount / 10000}`,
     },
     {
       title: '利率',

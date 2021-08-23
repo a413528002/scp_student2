@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PublicTable from '@/components/Table';
 import styles from '@/pages/student/deal/deposit/index.less';
 import { connect, useModel } from 'umi';
-import { Button, Modal } from 'antd';
+import { Button, Card, Modal } from 'antd';
 import { toPercent } from '@/utils/commonUtils';
 import { useSubscription } from 'react-stomp-hooks';
 
@@ -35,6 +35,8 @@ const DepositTabRob = (props) => {
         type: 'studentGrabDeposit/setGrabbedData',
         payload: msgBody.data
       })
+    } else {
+      console.log("未处理的MESSAGE：" + msgBody)
     }
   }
 
@@ -78,6 +80,7 @@ const DepositTabRob = (props) => {
     {
       title: '金额(万元)',
       dataIndex: 'amount',
+      render: (amount) => `${amount / 10000}`,
     },
     {
       title: '利率',
@@ -121,22 +124,26 @@ const DepositTabRob = (props) => {
 
   const renderGrabStatus = () => {
     if (grabStatus === 'NONE') {
-      return <p className={styles.timer}><span>抢单未开始</span></p>
+      return <div className={styles.timer}><span>抢单未开始</span></div>
     }
     if (grabStatus === 'STARTED') {
-      return <p className={styles.timer}>抢单倒计时：<span>{startDuration ?? 0}秒</span></p>
+      return <div className={styles.timer}>抢单倒计时：<span>{startDuration ?? 0}秒</span></div>
     }
     if (grabStatus === 'ENDED') {
-      return <p className={styles.timer}><span>抢单已结束</span></p>
+      return <div className={styles.timer}><span>抢单已结束</span></div>
     }
     return <div></div>
   }
 
   return (
     <>
-      {
-        renderGrabStatus()
-      }
+      <Card
+        size={'small'}
+        type="inner"
+      >
+        {renderGrabStatus()}
+      </Card>
+
       <PublicTable
         dataSource={dataSource}
         columns={columns}
