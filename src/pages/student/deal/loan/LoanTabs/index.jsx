@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tabs} from 'antd';
-import LoansTabRob from "@/pages/student/deal/loan/LoansTabRob";
-import LoansTabRecord from "@/pages/student/deal/loan/LoansTabRecord";
+import LoansTabRob from "@/pages/student/deal/loan/LoanTabRob";
+import LoansTabRecord from "@/pages/student/deal/loan/LoanTabRecord";
 
 const {TabPane} = Tabs;
 

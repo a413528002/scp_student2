@@ -13,8 +13,7 @@ const SwitchClassroomModal = (props) => {
   const {dispatch, dataSource, switchLoading, startLoading} = props
   const selectedInClassRow = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'))
   // 选中当前行的信息
-  const [selectedRows, setSelectedRows] = useState([selectedInClassRow])
-
+  const [selectedRows, setSelectedRows] = useState(selectedInClassRow ? [selectedInClassRow] : [])
   const switchClassroom = (classHour) => {
     setSelectedRows([classHour])
     dispatch({

@@ -50,7 +50,7 @@ export async function endGrabDeposit(params) {
 
 // 开始贷款抢单
 export async function startGrabLoan(params) {
-  return request(`${NODE_API}/teacher/oc/startGrabDeposit`, {
+  return request(`${NODE_API}/teacher/oc/startGrabLoan`, {
     method: 'POST',
     data: {classHourId: params.classHourId}
   })

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import PublicTable from '@/components/Table';
-import styles from '@/pages/student/deal/deposit/index.less';
-import { connect, useModel } from 'umi';
+import PublicTable from "@/components/Table";
+import styles from '@/pages/student/deal/loan/index.less'
 import { Button, Card, Modal } from 'antd';
-import { toPercent } from '@/utils/commonUtils';
+import { connect, useModel } from 'umi';
 import { useSubscription } from 'react-stomp-hooks';
+import { toPercent } from '@/utils/commonUtils';
 
-const DepositTabRob = (props) => {
+const LoansTabRob = (props) => {
   const {dispatch, dataSource, grabStatus, startDuration} = props
   const {loading, grabLoading} = props
 
@@ -27,12 +27,12 @@ const DepositTabRob = (props) => {
     const msgBody = JSON.parse(message.body);
     if (msgBody.msgType === 'FINMKT_GRAB_INFO') {
       dispatch({
-        type: 'studentGrabDeposit/setGrabInfo',
+        type: 'studentGrabLoan/setGrabInfo',
         payload: { ...msgBody.data, currentUserId: currentUser?.id }
       })
     } else if (msgBody.msgType === 'FINMKT_GRABBED') {
       dispatch({
-        type: 'studentGrabDeposit/setGrabbedData',
+        type: 'studentGrabLoan/setGrabbedData',
         payload: msgBody.data
       })
     } else {
@@ -40,16 +40,16 @@ const DepositTabRob = (props) => {
     }
   }
 
-  useSubscription('/app/clshr/' + classHourId + '/finMkt/dpst', handleMsg);
+  useSubscription('/app/clshr/' + classHourId + '/finMkt/loan', handleMsg);
 
   // 执行抢单
   const doGrab = (classFinancialMarketId, makeUpCost) => {
     setCurrentFinancialMarketId(classFinancialMarketId)
     dispatch({
-      type: 'studentGrabDeposit/grab',
+      type: 'studentGrabLoan/grab',
       payload: { classHourId, classFinancialMarketId, makeUpCost },
       callback: (response) => {
-        if (response.errCode === 31 && !makeUpCostConfirmModelVisible) {
+        if (response.errCode === 32 && !makeUpCostConfirmModelVisible) {
           setMakeUpCostConfirmModelText(response.errMsg)
           setMakeUpCostConfirmModelVisible(true)
         } else {
@@ -75,7 +75,7 @@ const DepositTabRob = (props) => {
     },
     {
       title: '业务类型',
-      dataIndex: 'customerTypeName',
+      dataIndex: 'loanTypeName',
     },
     {
       title: '金额(万元)',
@@ -92,8 +92,17 @@ const DepositTabRob = (props) => {
       dataIndex: 'term',
     },
     {
+      title: '贷款分类',
+      dataIndex: 'creditRating',
+    },
+    {
       title: '利率类型',
       dataIndex: 'rateTypeName',
+    },
+    {
+      title: '质押/担保金额(万元)',
+      dataIndex: 'mgMoney',
+      render: (amount) => `${amount / 10000}`,
     },
     {
       title: '渠道类型',
@@ -116,11 +125,10 @@ const DepositTabRob = (props) => {
   useEffect(() => {
     if (classHourId && startDuration) {
       dispatch({
-        type: 'studentGrabDeposit/countDown',
+        type: 'studentGrabLoan/countDown',
       })
     }
   }, [classHourId, startDuration > 0])
-
 
   const renderGrabStatus = () => {
     if (grabStatus === 'NONE') {
@@ -164,14 +172,13 @@ const DepositTabRob = (props) => {
         {makeUpCostConfirmModelText}
       </Modal>
     </>
-
   );
 };
 
-export default connect(({studentGrabDeposit, loading}) => ({
-  dataSource: studentGrabDeposit.startDuration && studentGrabDeposit.startDuration > 0 ? [] : studentGrabDeposit.financialMarketData,
-  grabStatus: studentGrabDeposit.grabStatus,
-  startDuration: studentGrabDeposit.startDuration,
-  loading:loading.effects['studentGrabDeposit/countDown'],
-  grabLoading:loading.effects['studentGrabDeposit/grab']
-}))(DepositTabRob);
+export default connect(({studentGrabLoan, loading}) => ({
+  dataSource: studentGrabLoan.startDuration && studentGrabLoan.startDuration > 0 ? [] : studentGrabLoan.financialMarketData,
+  grabStatus: studentGrabLoan.grabStatus,
+  startDuration: studentGrabLoan.startDuration,
+  loading:loading.effects['studentGrabLoan/countDown'],
+  grabLoading:loading.effects['studentGrabLoan/grab']
+}))(LoansTabRob);
