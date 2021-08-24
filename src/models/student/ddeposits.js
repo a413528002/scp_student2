@@ -1,8 +1,8 @@
 import {message} from "antd";
-import {queryDepositInterests, queryDeposits, updateDepositInterest} from "@/services/student/ddeposits";
+import {queryDepositInterests, queryDeposits, updateDepositInterest} from "@/services/student/dm";
 
 const DepositsModel = {
-  namespace: 'studentDeposits',
+  namespace: 'studentDepositMng',
   state: {
     queryDepositsData: [],
     queryDepositInterestsData: [],

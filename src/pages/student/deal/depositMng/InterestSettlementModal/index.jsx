@@ -17,7 +17,8 @@ const InterestSettlementModal = (props) => {
           return accumulator + currentValue;
         }, 0);
       dispatch({
-        type: 'studentDeposits/updateDepositInterest',
+        type: 'studentDepositMng/updateDepositInterest',
+        // bankFinancialBusinessInstId取值有点疑问？
         payload: { classHourId, bankFinancialBusinessInstId, interest },
         callback: () => handleCancelModal(),
       });
@@ -35,6 +36,7 @@ const InterestSettlementModal = (props) => {
       title: '利息支出(万元)',
       dataIndex: 'interest',
       key: 'interest',
+      render: (interest) => `${interest / 10000}`,
     },
   ];
   return (
@@ -56,8 +58,8 @@ const InterestSettlementModal = (props) => {
   );
 };
 
-export default connect(({ studentDeposits, loading }) => ({
-  dataSource: studentDeposits.queryDepositInterestsData,
-  confirmLoading: loading.effects['studentDeposits/updateDepositInterest'],
-  loading: loading.effects['studentDeposits/queryDepositInterests'],
+export default connect(({ studentDepositMng, loading }) => ({
+  dataSource: studentDepositMng.queryDepositInterestsData,
+  confirmLoading: loading.effects['studentDepositMng/updateDepositInterest'],
+  loading: loading.effects['studentDepositMng/queryDepositInterests'],
 }))(InterestSettlementModal);

@@ -73,18 +73,14 @@ const ProvisionTable = (props) => {
       key: 'operation',
       render: (_, { amount }) => {
         return (
-          <>
-            {!amount ? (
-              <Space>
-                <Button type="primary" size="small" onClick={() => handleShowModal('BACK')}>
-                  拨回
-                </Button>
-                <Button type="primary" size="small" onClick={() => handleShowModal('PROVISION')}>
-                  计提
-                </Button>
-              </Space>
-            ) : null}
-          </>
+          <Space>
+            <Button type="primary" size="small" onClick={() => handleShowModal('BACK')}>
+              拨回
+            </Button>
+            <Button type="primary" size="small" onClick={() => handleShowModal('PROVISION')}>
+              计提
+            </Button>
+          </Space>
         );
       },
     },

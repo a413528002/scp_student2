@@ -1,9 +1,9 @@
 import {message} from "antd";
 
-import {queryLoanInterests, queryLoans, updateLoanInterest} from "@/services/student/dloan";
+import {queryLoanInterests, queryLoans, updateLoanInterest} from "@/services/student/lm";
 
 const LoanModel = {
-  namespace: 'studentLoan',
+  namespace: 'studentLoanMng',
   state: {
     queryLoansData: [],
     queryLoanInterestsData: []

@@ -3,14 +3,6 @@ import {connect} from 'umi'
 import PublicTable from "@/components/Table";
 import {Modal} from "antd";
 
-const originData = [];
-for (let i = 0; i < 20; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    interest: Math.random() * 10000,
-  });
-}
 const InterestSettlementModal = (props) => {
   const {modalVisible, handleCancelModal, loading, dispatch, confirmLoading} = props;
   const {bankFinancialBusinessId, dataSource} = props;
@@ -23,8 +15,9 @@ const InterestSettlementModal = (props) => {
         return accumulator + currentValue;
       }, 0);
       dispatch({
-        type: 'studentLoan/updateLoanInterest',
-        payload: {classHourId, bankFinancialBusinessId, interest},
+        type: 'studentLoanMng/updateLoanInterest',
+        // bankFinancialBusinessInstId 取值有点疑问
+        payload: {classHourId, bankFinancialBusinessInstId, interest},
         callback: () => handleCancelModal()
       })
     }
@@ -40,7 +33,8 @@ const InterestSettlementModal = (props) => {
     {
       title: '利息支出(万元)',
       dataIndex: 'interest',
-      key: 'interest'
+      key: 'interest',
+      render: (interest) => `${interest / 10000}`,
     }
   ];
   return (
@@ -52,8 +46,7 @@ const InterestSettlementModal = (props) => {
       confirmLoading={confirmLoading}
     >
       <PublicTable
-        // dataSource={dataSource}
-        dataSource={originData}
+        dataSource={dataSource}
         columns={columns}
         bordered
         scroll={{x: null}}
@@ -63,8 +56,8 @@ const InterestSettlementModal = (props) => {
   );
 };
 
-export default connect(({studentDeposits, loading}) => ({
-  dataSource: studentDeposits.queryLoanInterestsData,
-  confirmLoading: loading.effects['studentLoan/updateLoanInterest'],
-  loading: loading.effects['studentLoan/queryLoans']
+export default connect(({studentLoanMng, loading}) => ({
+  dataSource: studentLoanMng.queryLoanInterestsData,
+  confirmLoading: loading.effects['studentLoanMng/updateLoanInterest'],
+  loading: loading.effects['studentLoanMng/queryLoans']
 }))(InterestSettlementModal);

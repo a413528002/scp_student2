@@ -11,7 +11,7 @@ const LoanMngTable = (props) => {
     if (classHourId) {
       // 查询贷款
       dispatch({
-        type: 'studentLoan/queryLoans',
+        type: 'studentLoanMng/queryLoans',
         payload: {
           classHourId,
         },
@@ -39,7 +39,7 @@ const LoanMngTable = (props) => {
   const queryLoanInterests = (bankFinancialBusinessId) => {
     if (classHourId && bankFinancialBusinessId) {
       dispatch({
-        type: 'studentLoan/queryLoanInterests',
+        type: 'studentLoanMng/queryLoanInterests',
         payload: {
           classHourId,
           bankFinancialBusinessId,
@@ -146,7 +146,7 @@ const LoanMngTable = (props) => {
   );
 };
 
-export default connect(({ studentLoan, loading }) => ({
-  dataSource: studentLoan.queryLoansData,
-  loading: loading.effects['studentLoan/queryLoans'],
+export default connect(({ studentLoanMng, loading }) => ({
+  dataSource: studentLoanMng.queryLoansData,
+  loading: loading.effects['studentLoanMng/queryLoans'],
 }))(LoanMngTable);

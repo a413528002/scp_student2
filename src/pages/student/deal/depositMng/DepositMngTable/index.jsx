@@ -11,7 +11,7 @@ const DepositMngTable = (props) => {
   useEffect(() => {
     if (classHourId) {
       dispatch({
-        type: 'studentDeposits/queryDeposits',
+        type: 'studentDepositMng/queryDeposits',
         payload: { classHourId },
       });
     }
@@ -38,7 +38,7 @@ const DepositMngTable = (props) => {
   const queryDepositInterests = (bankFinancialBusinessId) => {
     if (classHourId && bankFinancialBusinessId) {
       dispatch({
-        type: 'studentDeposits/queryDepositInterests',
+        type: 'studentDepositMng/queryDepositInterests',
         payload: {
           classHourId,
           bankFinancialBusinessId,
@@ -129,7 +129,7 @@ const DepositMngTable = (props) => {
   );
 };
 
-export default connect(({ studentDeposits, loading }) => ({
-  dataSource: studentDeposits.queryDepositsData,
-  loading: loading.effects['studentDeposits/queryDeposits'],
+export default connect(({ studentDepositMng, loading }) => ({
+  dataSource: studentDepositMng.queryDepositsData,
+  loading: loading.effects['studentDepositMng/queryDeposits'],
 }))(DepositMngTable);
