@@ -1,7 +1,7 @@
-import {message} from "antd";
-import {queryBankLoanProvisions, updateBankLoanProvision} from "@/services/student/dprovision";
+import { message } from 'antd';
+import { queryBankLoanProvisions, updateBankLoanProvision } from '@/services/student/dprovision';
 
-
+// 拨备管理
 const ProvisionModel = {
   namespace: 'studentProvision',
   state: {bankLoanProvisionsData: [],},

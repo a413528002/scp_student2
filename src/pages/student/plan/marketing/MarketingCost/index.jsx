@@ -56,7 +56,7 @@ const MarketingCost = (props) => {
       if (row) {
         // 投入营销费用
         dispatch({
-          type: 'studentPlan/inputMarketingCost',
+          type: 'studentMarketing/inputMarketingCost',
           payload: {
             classHourId,
             ...row
@@ -84,7 +84,7 @@ const MarketingCost = (props) => {
   useEffect(() => {
     if (classHourId) {
       dispatch({
-        type: 'studentPlan/queryCurBankMarketing',
+        type: 'studentMarketing/queryCurBankMarketing',
         payload: {
           classHourId
         }
@@ -188,9 +188,9 @@ const MarketingCost = (props) => {
   );
 };
 
-export default connect(({studentPlan, loading}) => ({
-  dataSource: studentPlan.bankMarketingData,
-  loading: loading.effects['studentPlan/queryCurBankMarketing'],
-  submitLoading: loading.effects['studentPlan/inputMarketingCost'],
+export default connect(({studentMarketing, loading}) => ({
+  dataSource: studentMarketing.bankMarketingData,
+  loading: loading.effects['studentMarketing/queryCurBankMarketing'],
+  submitLoading: loading.effects['studentMarketing/inputMarketingCost'],
 
 }))(MarketingCost)

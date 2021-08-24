@@ -2,8 +2,9 @@ import {message} from "antd";
 
 import {queryLoanInterests, queryLoans, updateLoanInterest} from "@/services/student/dloan";
 
-const LoanModel = {
-  namespace: 'studentLoan',
+// 贷款管理
+const LoanMngModel = {
+  namespace: 'studentLoanMng',
   state: {
     queryLoansData: [],
     queryLoanInterestsData: []
@@ -65,4 +66,4 @@ const LoanModel = {
     }
   }
 }
-export default LoanModel
+export default LoanMngModel

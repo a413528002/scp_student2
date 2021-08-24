@@ -12,7 +12,7 @@ const MarketingPutInto = (props) => {
     if (classHourId){
       // 查询往期投入
       dispatch({
-        type: 'studentPlan/queryBankMarketings',
+        type: 'studentMarketing/queryBankMarketings',
         payload: {classHourId}
       })
     }
@@ -65,7 +65,7 @@ const MarketingPutInto = (props) => {
   );
 };
 
-export default connect(({studentPlan, loading}) => ({
-  dataSource: studentPlan.bankMarketingsData,
-  loading: loading.effects['studentPlan/queryBankMarketings']
+export default connect(({studentMarketing, loading}) => ({
+  dataSource: studentMarketing.bankMarketingsData,
+  loading: loading.effects['studentMarketing/queryBankMarketings']
 }))(MarketingPutInto);

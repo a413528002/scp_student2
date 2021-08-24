@@ -17,7 +17,7 @@ const InterestSettlementModal = (props) => {
           return accumulator + currentValue;
         }, 0);
       dispatch({
-        type: 'studentDeposits/updateDepositInterest',
+        type: 'studentDepositMng/updateDepositInterest',
         payload: { classHourId, bankFinancialBusinessInstId, interest },
         callback: () => handleCancelModal(),
       });
@@ -56,8 +56,8 @@ const InterestSettlementModal = (props) => {
   );
 };
 
-export default connect(({ studentDeposits, loading }) => ({
-  dataSource: studentDeposits.queryDepositInterestsData,
-  confirmLoading: loading.effects['studentDeposits/updateDepositInterest'],
-  loading: loading.effects['studentDeposits/queryDepositInterests'],
+export default connect(({ studentDepositMng, loading }) => ({
+  dataSource: studentDepositMng.queryDepositInterestsData,
+  confirmLoading: loading.effects['studentDepositMng/updateDepositInterest'],
+  loading: loading.effects['studentDepositMng/queryDepositInterests'],
 }))(InterestSettlementModal);

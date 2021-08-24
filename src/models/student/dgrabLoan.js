@@ -2,7 +2,7 @@ import { grab, queryLogs } from '@/services/student/gloan.js';
 import { message } from 'antd';
 import { delay } from '@/utils/commonUtils';
 
-
+// 贷款抢单
 const GrabLoanModel = {
   namespace: 'studentGrabLoan',
   state: {

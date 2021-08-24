@@ -2,7 +2,7 @@ import { grab, queryLogs } from '@/services/student/gdpst.js';
 import { message } from 'antd';
 import { delay } from '@/utils/commonUtils';
 
-
+// 存款抢单
 const GrabDepositModel = {
   namespace: 'studentGrabDeposit',
   state: {

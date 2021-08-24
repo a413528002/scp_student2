@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'umi'
-import PublicTable from "@/components/Table";
-import {Modal} from "antd";
+import { connect } from 'umi';
+import PublicTable from '@/components/Table';
+import { Modal } from 'antd';
 
 const originData = [];
 for (let i = 0; i < 20; i++) {
@@ -23,7 +23,7 @@ const InterestSettlementModal = (props) => {
         return accumulator + currentValue;
       }, 0);
       dispatch({
-        type: 'studentLoan/updateLoanInterest',
+        type: 'studentLoanMng/updateLoanInterest',
         payload: {classHourId, bankFinancialBusinessId, interest},
         callback: () => handleCancelModal()
       })
@@ -63,8 +63,8 @@ const InterestSettlementModal = (props) => {
   );
 };
 
-export default connect(({studentDeposits, loading}) => ({
-  dataSource: studentDeposits.queryLoanInterestsData,
-  confirmLoading: loading.effects['studentLoan/updateLoanInterest'],
-  loading: loading.effects['studentLoan/queryLoans']
+export default connect(({studentLoanMng, loading}) => ({
+  dataSource: studentLoanMng.queryLoanInterestsData,
+  confirmLoading: loading.effects['studentLoanMng/updateLoanInterest'],
+  loading: loading.effects['studentLoanMng/queryLoans']
 }))(InterestSettlementModal);

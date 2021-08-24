@@ -1,59 +1,17 @@
 import {
-  getStudentCreateBankChannel, getStudentInputMarketingCost,
-  getStudentQueryBankChannels, getStudentQueryBankMarketings,
-  getStudentQueryBankPlan, getStudentQueryCurBankMarketing
-} from "@/services/student/plan";
-import {message} from "antd";
+  getStudentInputMarketingCost,
+  getStudentQueryBankMarketings,
+  getStudentQueryCurBankMarketing,
+} from '@/services/student/bm';
+import { message } from 'antd';
 
-const PlanModel = {
-  namespace: 'studentPlan',
+const MarketingModel = {
+  namespace: 'studentMarketing',
   state: {
-    bankChannelsData: [],
-    bankMarketingData: [],
-    bankMarketingsData: []
+    bankMarketingData: [], // 当前数据
+    bankMarketingsData: [] // 往期数据
   },
   effects: {
-    // 查询银行战略规划
-    * queryBankPlan({payload}, {call, put, select}) {
-      const response = yield call(getStudentQueryBankPlan, payload)
-      if (!response.errCode) {
-
-      }
-    },
-    // 查询银行渠道
-    * queryBankChannels({payload}, {call, put,}) {
-      const response = yield call(getStudentQueryBankChannels, payload)
-      if (!response.errCode) {
-        const bankChannelsData = response.map((item, index) => {
-          return {
-            ...item,
-            _key: index
-          }
-        });
-        yield put({
-          type: 'save',
-          payload: {
-            bankChannelsData
-          }
-        })
-      }
-    },
-    // 创建银行渠道
-    * createBankChannel({payload}, {call, put,}) {
-      const response = yield call(getStudentCreateBankChannel, payload)
-      if (!response.errCode) {
-        message.success('建设成功')
-        // 获取课堂id
-        const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
-        // 建设成功后刷新表格
-        yield put({
-          type: 'queryBankChannels',
-          payload: {
-            classHourId
-          }
-        })
-      }
-    },
     // 根据银行ID查询当前期间银行营销信息
     * queryCurBankMarketing({payload}, {call, put,}) {
       const response = yield call(getStudentQueryCurBankMarketing, payload)
@@ -116,4 +74,4 @@ const PlanModel = {
     }
   }
 }
-export default PlanModel
+export default MarketingModel

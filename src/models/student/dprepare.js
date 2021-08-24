@@ -1,6 +1,7 @@
 import {message} from "antd";
 import {queryBankDepositReserves, updateBankDepositReserve} from "@/services/student/dprepare";
 
+// 存款准备金
 const PrepareModel = {
   namespace: 'studentPrepare',
   state: {bankDepositReservesData: [],},

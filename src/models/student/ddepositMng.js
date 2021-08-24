@@ -1,8 +1,9 @@
 import {message} from "antd";
 import {queryDepositInterests, queryDeposits, updateDepositInterest} from "@/services/student/ddeposits";
 
-const DepositsModel = {
-  namespace: 'studentDeposits',
+// 存款管理
+const DepositsMngModel = {
+  namespace: 'studentDepositMng',
   state: {
     queryDepositsData: [],
     queryDepositInterestsData: [],
@@ -64,4 +65,4 @@ const DepositsModel = {
     }
   }
 }
-export default DepositsModel
+export default DepositsMngModel

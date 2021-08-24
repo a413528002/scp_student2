@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
-import {connect} from 'umi'
-import PublicTable from "@/components/Table";
-import {Button, message, Popconfirm} from "antd";
+import React, { useEffect } from 'react';
+import { connect } from 'umi';
+import PublicTable from '@/components/Table';
+import { Button, message, Popconfirm } from 'antd';
 
 const ChannelTable = (props) => {
   const {dispatch, dataSource, loading} = props;
@@ -11,7 +11,7 @@ const ChannelTable = (props) => {
     if (classHourId) {
       // 查询银行渠道
       dispatch({
-        type: 'studentPlan/queryBankChannels',
+        type: 'studentChannel/queryBankChannels',
         payload: {
           classHourId
         }
@@ -23,7 +23,7 @@ const ChannelTable = (props) => {
   // 创建银行渠道
   const createBankChannel = (channel) => {
     dispatch({
-      type: 'studentPlan/createBankChannel',
+      type: 'studentChannel/createBankChannel',
       payload: {
         classHourId,
         channel
@@ -85,7 +85,7 @@ const ChannelTable = (props) => {
   );
 };
 
-export default connect(({studentPlan, loading}) => ({
-  dataSource: studentPlan.bankChannelsData,
-  loading: loading.effects['studentPlan/queryBankChannels']
+export default connect(({studentChannel, loading}) => ({
+  dataSource: studentChannel.bankChannelsData,
+  loading: loading.effects['studentChannel/queryBankChannels']
 }))(ChannelTable);
