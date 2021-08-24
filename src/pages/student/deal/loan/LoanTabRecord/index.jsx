@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PublicTable from '@/components/Table';
 import { toPercent } from '@/utils/commonUtils';
 import { connect } from 'umi';
+import { Tag } from 'antd';
 
 const LoanTabRecord = (props) => {
   const {dispatch, dataSource} = props
@@ -16,6 +17,7 @@ const LoanTabRecord = (props) => {
     {
       title: '业务类型',
       dataIndex: 'loanTypeName',
+      render: (loanTypeName) => <Tag color="#009933">{loanTypeName}</Tag>,
     },
     {
       title: '金额(万元)',
@@ -38,6 +40,7 @@ const LoanTabRecord = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
+      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
     },
     {
       title: '质押/担保金额(万元)',

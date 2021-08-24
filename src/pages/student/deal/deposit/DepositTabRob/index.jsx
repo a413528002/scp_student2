@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PublicTable from '@/components/Table';
 import styles from '@/pages/student/deal/deposit/index.less';
 import { connect, useModel } from 'umi';
-import { Button, Card, Modal } from 'antd';
+import { Button, Card, Modal, Tag } from 'antd';
 import { toPercent } from '@/utils/commonUtils';
 import { useSubscription } from 'react-stomp-hooks';
 
@@ -76,6 +76,7 @@ const DepositTabRob = (props) => {
     {
       title: '业务类型',
       dataIndex: 'customerTypeName',
+      render: (customerTypeName) => <Tag color="#009933">{customerTypeName}</Tag>,
     },
     {
       title: '金额(万元)',
@@ -94,6 +95,7 @@ const DepositTabRob = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
+      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
     },
     {
       title: '渠道类型',

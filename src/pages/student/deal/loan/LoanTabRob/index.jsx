@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PublicTable from "@/components/Table";
 import styles from '@/pages/student/deal/loan/index.less'
-import { Button, Card, Modal } from 'antd';
+import { Button, Card, Modal, Tag } from 'antd';
 import { connect, useModel } from 'umi';
 import { useSubscription } from 'react-stomp-hooks';
 import { toPercent } from '@/utils/commonUtils';
@@ -76,6 +76,7 @@ const LoanTabRob = (props) => {
     {
       title: '业务类型',
       dataIndex: 'loanTypeName',
+      render: (loanTypeName) => <Tag color="#009933">{loanTypeName}</Tag>,
     },
     {
       title: '金额(万元)',
@@ -98,6 +99,7 @@ const LoanTabRob = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
+      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
     },
     {
       title: '质押/担保金额(万元)',

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PublicTable from '@/components/Table';
 import { connect } from 'umi';
 import { toPercent } from '@/utils/commonUtils';
+import { Tag } from 'antd';
 
 const DepositTabRecord = (props) => {
   const {dispatch, dataSource} = props
@@ -17,6 +18,7 @@ const DepositTabRecord = (props) => {
     {
       title: '业务类型',
       dataIndex: 'customerTypeName',
+      render: (customerTypeName) => <Tag color="#009933">{customerTypeName}</Tag>,
     },
     {
       title: '金额(万元)',
@@ -35,6 +37,7 @@ const DepositTabRecord = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
+      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
     },
     {
       title: '渠道类型',
