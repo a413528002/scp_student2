@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card } from 'antd';
-import LoansTabs from '@/pages/student/deal/loan/LoanTabs';
+import LoanTabs from '@/pages/student/deal/loan/LoanTabs';
 import { getWsUrl } from '@/utils/ws';
 import { StompSessionProvider } from 'react-stomp-hooks';
 
-const Loans = () => {
+const Loan = () => {
   return (
     <StompSessionProvider
       url={getWsUrl()}
@@ -14,10 +14,10 @@ const Loans = () => {
         bordered={false}
         type='inner'
       >
-        <LoansTabs/>
+        <LoanTabs/>
       </Card>
     </StompSessionProvider>
   );
 };
 
-export default Loans;
+export default Loan;

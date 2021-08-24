@@ -1,10 +1,10 @@
 import React from 'react';
-import DepositsTable from "@/pages/student/deal/depositMng/DepositsTable";
+import DepositMngTable from '@/pages/student/deal/depositMng/DepositMngTable';
 
 const DepositMng = () => {
   return (
     <div>
-      <DepositsTable/>
+      <DepositMngTable/>
     </div>
   );
 };

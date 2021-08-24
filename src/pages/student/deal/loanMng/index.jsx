@@ -1,11 +1,11 @@
 import React from 'react';
-// import DepositsTable from "@/pages/deal/depositMng/DepositsTable";
-import LoanTable from "@/pages/student/deal/loanMng/LoanTable";
+// import DepositMngTable from "@/pages/deal/depositMng/DepositMngTable";
+import LoanMngTable from "@/pages/student/deal/loanMng/LoanMngTable";
 
 const Loan = () => {
   return (
     <div>
-      <LoanTable/>
+      <LoanMngTable/>
     </div>
   );
 };

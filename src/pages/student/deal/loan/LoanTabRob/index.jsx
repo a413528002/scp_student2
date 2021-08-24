@@ -6,7 +6,7 @@ import { connect, useModel } from 'umi';
 import { useSubscription } from 'react-stomp-hooks';
 import { toPercent } from '@/utils/commonUtils';
 
-const LoansTabRob = (props) => {
+const LoanTabRob = (props) => {
   const {dispatch, dataSource, grabStatus, startDuration} = props
   const {loading, grabLoading} = props
 
@@ -181,4 +181,4 @@ export default connect(({studentGrabLoan, loading}) => ({
   startDuration: studentGrabLoan.startDuration,
   loading:loading.effects['studentGrabLoan/countDown'],
   grabLoading:loading.effects['studentGrabLoan/grab']
-}))(LoansTabRob);
+}))(LoanTabRob);
