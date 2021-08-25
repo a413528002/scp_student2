@@ -1,20 +1,19 @@
 import { message } from 'antd';
+import { queryDepositInterests, queryDeposits, updateDepositInterest } from '@/services/student/dm';
 
-import { queryLoanInterests, queryLoans, updateLoanInterest } from '@/services/student/lm';
-
-const LoanModel = {
-  namespace: 'studentLoanMng',
+const DepositsModel = {
+  namespace: 'studentDepositMng',
   state: {
-    queryLoansData: [],
-    queryLoanInterestsData: [],
+    queryDepositsData: [],
+    queryDepositInterestsData: [],
     editBankFinancialBusinessInstId: undefined,
   },
   effects: {
-    // 查询贷款
-    *queryLoans({ payload }, { call, put }) {
-      const response = yield call(queryLoans, payload);
+    // 查询存款
+    *queryDeposits({ payload }, { call, put }) {
+      const response = yield call(queryDeposits, payload);
       if (!response.errCode) {
-        const queryLoansData = response.map((item) => {
+        const queryDepositsData = response.map((item, index) => {
           return {
             ...item,
             _key: item.bankFinancialBusinessId,
@@ -23,21 +22,22 @@ const LoanModel = {
         yield put({
           type: 'save',
           payload: {
-            queryLoansData,
+            queryDepositsData,
           },
         });
       }
     },
 
-    // 查询贷款利息
-    *queryLoanInterests({ payload, callback }, { call, put }) {
-      const response = yield call(queryLoanInterests, payload);
+    // 查询存款利息
+    *queryDepositInterests({ payload, callback }, { call, put }) {
+      const response = yield call(queryDepositInterests, payload);
       if (!response.errCode) {
         // 获取可以编辑的bankFinancialBusinessInstId
         const editBankFinancialBusinessInstId = response
           .filter((item) => item._disable === false)
           .map((item) => item.bankFinancialBusinessInstId).toString();
-        const queryLoanInterestsData = response.map((item) => {
+        console.log(editBankFinancialBusinessInstId);
+        const queryDepositInterestsData = response.map((item) => {
           return {
             ...item,
             _key: item.bankFinancialBusinessInstId,
@@ -46,15 +46,15 @@ const LoanModel = {
         yield put({
           type: 'save',
           payload: {
-            queryLoanInterestsData,
+            queryDepositInterestsData,
             editBankFinancialBusinessInstId,
           },
         });
       }
     },
-    // 保存存款利息
-    *updateLoanInterest({ payload, callback }, { call, put }) {
-      const response = yield call(updateLoanInterest, payload);
+    // 查询存款利息
+    *updateDepositInterest({ payload, callback }, { call, put }) {
+      const response = yield call(updateDepositInterest, payload);
       if (!response.errCode) {
         message.success('保存成功');
         callback();
@@ -70,4 +70,4 @@ const LoanModel = {
     },
   },
 };
-export default LoanModel;
+export default DepositsModel;

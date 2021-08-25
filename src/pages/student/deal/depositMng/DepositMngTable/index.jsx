@@ -19,12 +19,10 @@ const DepositMngTable = (props) => {
 
   // 利息结算modal显示状态 ----start-----
   const [modalVisible, setModalVisible] = useState(false);
-  const [bankFinancialBusinessInstId, setBankFinancialBusinessInstId] = useState(undefined);
 
   // 显示modal
   const handleShowModal = (id) => {
     queryDepositInterests(id);
-    setBankFinancialBusinessInstId(id);
     setModalVisible(true);
   };
 
@@ -122,7 +120,6 @@ const DepositMngTable = (props) => {
         <InterestSettlementModal
           modalVisible={modalVisible}
           handleCancelModal={handleCancelModal}
-          bankFinancialBusinessInstId={bankFinancialBusinessInstId}
         />
       )}
     </Card>
