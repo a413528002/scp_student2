@@ -4,36 +4,35 @@ import {
   gdebtQueryLogs,
 } from '@/services/student/fcreditors';
 import { message } from 'antd';
+import {delay} from "@/utils/commonUtils";
 
 const CreditorsModel = {
   namespace: 'studentCreditors',
   state: {
-    gdebtQueryFinancialMarketsDate: {},
+    grabStatus: undefined, // 抢单状态
+    startDuration: undefined, // 抢单开始倒计时
+    financialMarketData: [], // 金融市场数据
     gdebtQueryLogsDate: [],
   },
   effects: {
-    // 查询金融市场数据
-    *gdebtQueryFinancialMarkets({ payload }, { call, put }) {
-      const response = yield call(gdebtQueryFinancialMarkets, payload);
-      if (!response.errCode) {
-        const data = response['data'];
-        const gdebtQueryFinancialMarketsDate = {
-          ...response,
-          data: data?.map((item) => {
-            return {
-              ...item,
-              _key: item.classFinancialMarketId,
-            };
-          }),
-        };
+
+    // 倒计时
+    * countDown({payload}, {call, put, select}) {
+      while (true) {
+        const startDuration = yield select(state => state.studentGrabDeposit.startDuration);
+        if (startDuration <= 0) {
+          break;
+        }
+        yield call(delay, 1000);
         yield put({
           type: 'save',
-          payload: {
-            gdebtQueryFinancialMarketsDate,
-          },
-        });
+          payload:{
+            startDuration: startDuration - 1
+          }
+        })
       }
     },
+
     // 查询债券抢单记录
     *gdebtQueryLogs({ payload }, { call, put }) {
       const response = yield call(gdebtQueryLogs, payload);
@@ -97,6 +96,7 @@ const CreditorsModel = {
 
     // 设置抢单信息
     setGrabInfo(state, {payload}) {
+      console.log(payload)
       const { grabStatus, serverTime, startTimes, data, currentUserId } = payload;
       // 距离开始时间=当前用户对应的银行开始时间-服务器时间
       const startDuration = serverTime && startTimes && startTimes[currentUserId]
