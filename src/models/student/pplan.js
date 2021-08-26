@@ -1,12 +1,13 @@
 import { queryBankPlan, submitBankPlan } from '@/services/student/bp';
 import { message } from 'antd';
 
+// 战略规划
 const PlanModel = {
   namespace: 'studentPlan',
   state: {
-    periodTtl: undefined,
-    period: undefined,
-    periodCur: undefined,
+    periodTtl: 0,
+    period: 0,
+    periodCur: 0,
     planData: [], // 计划数据
   },
   effects: {
@@ -14,31 +15,26 @@ const PlanModel = {
     * queryBankPlan({payload}, {call, put}) {
       const response = yield call(queryBankPlan, payload)
       if (!response.errCode) {
-        const organizationData = response.map((item, index) => {
-          return {
-            ...item,
-            _key: index
-          }
-        });
+        const { planData } = response
+        const state = {
+          ...response,
+          planData: Object.keys(planData).map(item => {return {name: item, value: planData[item]}})
+        }
 
         yield put({
           type: 'save',
-          payload: {
-            organizationData
-          }
+          payload: state
         })
       }
-
     },
-    // 创建机构
-    * submitBankPlan({payload, callback}, {call, put}) {
-      const response = yield call(submitBankPlan, payload)
+    // 提交计划
+    * submitBankPlan({payload}, {call, put}) {
+      const response = yield call(submitBankPlan, { ...payload })
       const {classHourId} = payload
       if (!response.errCode) {
-        message.success('新建成功')
-        callback()
+        message.success('保存成功')
         yield put({
-          type: 'queryBankOrganizations',
+          type: 'queryBankPlan',
           payload: {classHourId}
         })
       }
