@@ -1,28 +1,23 @@
-import React, {useEffect} from 'react';
-import {connect} from 'umi'
-import PublicTable from "@/components/Table";
-import CreditorsRule from "@/pages/student/financial/creditors/CreditorsRule";
-import {Button} from "antd";
+import React, { useEffect } from 'react';
+import {connect, useModel} from 'umi';
+import PublicTable from '@/components/Table';
+import CreditorsRule from '@/pages/student/financial/creditors/CreditorsRule';
+import { Button } from 'antd';
+import { useSubscription } from 'react-stomp-hooks';
+import { toPercent } from '@/utils/commonUtils';
 
-const originData = [];
-for (let i = 0; i < 8; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    customerTypeName: '假数据',
-    amount: Math.random() * 100000000,
-    regionName: 'A',
-    status: true,
-  });
-}
+
 const CreditorsTabMarket = (props) => {
-  const {dispatch, loading, grabLoading} = props
-  const {dataSource} = props
+  const { dispatch, loading, grabLoading } = props;
+  const { dataSource } = props;
+
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState
 
   // 获取课堂id
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (classHourId) {
       // 查询金融市场数据
       dispatch({
@@ -32,7 +27,31 @@ const CreditorsTabMarket = (props) => {
         }
       })
     }
-  }, [])
+  }, [])*/
+
+  /**
+   * 处理消息
+   * @param message
+   */
+  const handleMsg = (message) => {
+    console.log(currentUser)
+    const msgBody = JSON.parse(message.body);
+    if (msgBody.msgType === 'FINMKT_GRAB_INFO') {
+      dispatch({
+        type: 'studentCreditors/setGrabInfo',
+        payload: { ...msgBody.data, currentUserId: currentUser?.id },
+      });
+    } else if (msgBody.msgType === 'FINMKT_GRABBED') {
+      dispatch({
+        type: 'studentGrabLoan/setGrabbedData',
+        payload: msgBody.data,
+      });
+    } else {
+      console.log('未处理的MESSAGE：' + msgBody);
+    }
+  };
+
+  useSubscription('/app/clshr/' + classHourId + '/finMkt/debt', handleMsg);
 
   /**
    * 债券抢单
@@ -42,16 +61,16 @@ const CreditorsTabMarket = (props) => {
     if (classHourId && financialMarketId) {
       dispatch({
         type: 'studentCreditors/gdebtGrab',
-        payload: {classHourId,financialMarketId}
-      })
+        payload: { classHourId, financialMarketId },
+      });
     }
-  }
+  };
   const columns = [
     {
       title: '序号',
       dataIndex: 'notation',
       key: 'notation',
-      render: (text, record, index) => `${index + 1}`
+      render: (text, record, index) => `${index + 1}`,
     },
     {
       title: '业务类型',
@@ -67,7 +86,7 @@ const CreditorsTabMarket = (props) => {
       title: '金额(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => !amount ? null : `${amount / 10000}`
+      render: (amount) => (!amount ? null : `${amount / 10000}`),
     },
 
     {
@@ -84,40 +103,39 @@ const CreditorsTabMarket = (props) => {
       title: '抢单',
       dataIndex: 'grab',
       key: 'grab',
-      render: (_, {status, classFinancialMarketId}) => {
+      render: (_, { status, classFinancialMarketId }) => {
         return (
           <>
-            {
-              status ? <Button
+            {status ? (
+              <Button
                 type="primary"
                 size="small"
                 onClick={() => gdebtGrab(classFinancialMarketId)}
                 loading={grabLoading}
-              >抢单</Button> : null
-            }
+              >
+                抢单
+              </Button>
+            ) : null}
           </>
-        )
-
-      }
+        );
+      },
     },
   ];
   return (
     <>
       <PublicTable
-        // dataSource={dataSource}
-        dataSource={originData}
+        dataSource={dataSource}
         columns={columns}
         loading={loading}
         bordered
       />
-      <CreditorsRule/>
+      <CreditorsRule />
     </>
-
   );
 };
 
-export default connect(({studentCreditors, loading}) => ({
+export default connect(({ studentCreditors, loading }) => ({
   dataSource: studentCreditors.gdebtQueryFinancialMarketsDate.data,
   loading: loading.effects['studentCreditors/gdebtQueryFinancialMarkets'],
-  grabLoading: loading.effects['studentCreditors/gdebtGrab']
+  grabLoading: loading.effects['studentCreditors/gdebtGrab'],
 }))(CreditorsTabMarket);
