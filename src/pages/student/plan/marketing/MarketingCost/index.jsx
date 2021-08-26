@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'umi';
-import {Button, Card, Form, InputNumber} from "antd";
-import PublicTable from "@/components/Table";
-import MarketingCostRule from "@/pages/student/plan/marketing/MarketingCostRule";
-import Million from "@/components/Million";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'umi';
+import { Button, Card, Form, InputNumber } from 'antd';
+import PublicTable from '@/components/Table';
+import MarketingCostRule from '@/pages/student/plan/marketing/MarketingCostRule';
+import Million from '@/components/Million';
 
 const EditableCell = ({
-                        editing,
-                        dataIndex,
-                        title,
-                        inputType,
-                        record,
-                        index,
-                        children,
-                        ...restProps
-                      }) => {
-  const inputNode = <InputNumber min={0}/>;
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}) => {
+  const inputNode = <InputNumber min={0} />;
   return (
     <td {...restProps}>
       {editing ? (
@@ -40,13 +40,11 @@ const EditableCell = ({
   );
 };
 
-
 const MarketingCost = (props) => {
-  const {dispatch, dataSource, loading, submitLoading} = props;
+  const { dispatch, dataSource, loading, submitLoading } = props;
   const [form] = Form.useForm();
   // 获取课堂id
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
-  const [data, setData] = useState(dataSource);
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
   // 初始编辑row
   const [editingKey, setEditingKey] = useState(0);
   const isEditing = (record) => record._key === editingKey;
@@ -60,22 +58,10 @@ const MarketingCost = (props) => {
           type: 'studentMarketing/inputMarketingCost',
           payload: {
             classHourId,
-            ...row
-          }
-        })
-      }
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {...item, ...row});
-        setData(newData);
-        setEditingKey(null);
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey(null);
+            ...row,
+          },
+          callback: () => setEditingKey(null),
+        });
       }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
@@ -87,11 +73,11 @@ const MarketingCost = (props) => {
       dispatch({
         type: 'studentMarketing/queryCurBankMarketing',
         payload: {
-          classHourId
-        }
-      })
+          classHourId,
+        },
+      });
     }
-  }, [])
+  }, []);
   const columns = [
     {
       title: '期数',
@@ -165,11 +151,7 @@ const MarketingCost = (props) => {
     };
   });
   return (
-    <Card
-      title='营销费用'
-      bordered={false}
-      type='inner'
-    >
+    <Card title="营销费用" bordered={false} type="inner">
       {/*表单提交*/}
       <Form form={form} component={false}>
         <PublicTable
@@ -186,14 +168,13 @@ const MarketingCost = (props) => {
           pagination={false}
         />
       </Form>
-      <MarketingCostRule/>
+      <MarketingCostRule />
     </Card>
   );
 };
 
-export default connect(({studentMarketing, loading}) => ({
+export default connect(({ studentMarketing, loading }) => ({
   dataSource: studentMarketing.bankMarketingData,
   loading: loading.effects['studentMarketing/queryCurBankMarketing'],
   submitLoading: loading.effects['studentMarketing/inputMarketingCost'],
-
-}))(MarketingCost)
+}))(MarketingCost);
