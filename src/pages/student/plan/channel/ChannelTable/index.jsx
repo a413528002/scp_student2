@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import { connect } from 'umi';
-import PublicTable from '@/components/Table';
-import { Button, message, Popconfirm } from 'antd';
+import React, {useEffect} from 'react';
+import {connect} from 'umi'
+import PublicTable from "@/components/Table";
+import {Button, message, Popconfirm} from "antd";
+import Million from '@/components/Million';
 
 const ChannelTable = (props) => {
   const {dispatch, dataSource, loading} = props;
@@ -50,7 +51,7 @@ const ChannelTable = (props) => {
       title: '每期建设费用(万元)',
       dataIndex: 'createCost',
       key: 'createCost',
-      render:(createCost)=>`${createCost/10000}`
+      render:(createCost)=><Million>{createCost}</Million>
     },
     {
       title: '建设状态',

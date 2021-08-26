@@ -1,5 +1,5 @@
 import {message} from "antd";
-import {queryDepositInterests, queryDeposits, updateDepositInterest} from "@/services/student/ddeposits";
+import {queryDepositInterests, queryDeposits, updateDepositInterest} from "@/services/student/dm";
 
 // 存款管理
 const DepositsMngModel = {

@@ -3,6 +3,9 @@ import { connect } from 'umi';
 import { Button, Card, Tag } from 'antd';
 import PublicTable from '@/components/Table';
 import InterestSettlementModal from '@/pages/student/deal/loanMng/InterestSettlementModal';
+import Million from '@/components/Million';
+import Tags from "@/components/Tags";
+import {toPercent} from "@/utils/commonUtils";
 
 const LoanMngTable = (props) => {
   const { dispatch, dataSource, loading } = props;
@@ -20,12 +23,10 @@ const LoanMngTable = (props) => {
   }, []);
   // 利息结算modal显示状态 ----start-----
   const [modalVisible, setModalVisible] = useState(false);
-  const [bankFinancialBusinessId, setBankFinancialBusinessId] = useState(undefined);
 
   // 显示modal
   const handleShowModal = (id) => {
     queryLoanInterests(id);
-    setBankFinancialBusinessId(id);
     setModalVisible(true);
   };
 
@@ -58,19 +59,19 @@ const LoanMngTable = (props) => {
       title: '业务类型',
       dataIndex: 'customerTypeName',
       key: 'customerTypeName',
-      render: (customerTypeName) => <Tag color="#009933">{customerTypeName}</Tag>,
+      render: (customerTypeName) => <Tags>{customerTypeName}</Tags>,
     },
     {
       title: '金额(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '利率',
       dataIndex: 'expectRate',
       key: 'expectRate',
-      render: (expectRate) => `${expectRate * 100}%`,
+      render: (expectRate) => toPercent(expectRate),
     },
     {
       title: '贷款期数',
@@ -91,13 +92,13 @@ const LoanMngTable = (props) => {
       title: '利率类型',
       dataIndex: 'rateTypeName',
       key: 'rateTypeName',
-      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+      render: (rateTypeName) => <Tags>{rateTypeName}</Tags>,
     },
     {
       title: '质押/担保金额(万元)',
       dataIndex: 'mgMoney',
       key: 'mgMoney',
-      render: (mgMoney) => `${mgMoney / 10000}`,
+      render: (mgMoney) => <Million>{mgMoney}</Million>,
     },
     {
       title: '渠道类型',
@@ -139,7 +140,6 @@ const LoanMngTable = (props) => {
         <InterestSettlementModal
           modalVisible={modalVisible}
           handleCancelModal={handleCancelModal}
-          bankFinancialBusinessId={bankFinancialBusinessId}
         />
       )}
     </Card>

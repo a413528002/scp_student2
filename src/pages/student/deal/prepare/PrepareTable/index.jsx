@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {Button, Card, Space, Tag} from 'antd';
+import { Button, Card, Space, Tag } from 'antd';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import PrepareRule from '@/pages/student/deal/prepare/PrepareRule';
 import ProvisionOrPrepareModal from '@/pages/student/deal/components/provisionOrPrepareModal';
+import Tags from '@/components/Tags';
+import Million from '@/components/Million';
 
 const PrepareTable = (props) => {
   const { dispatch, dataSource, loading } = props;
@@ -49,19 +51,19 @@ const PrepareTable = (props) => {
       title: '交易类型',
       dataIndex: 'typeName',
       key: 'typeName',
-      render: (typeName) => <Tag color="#009933">{typeName}</Tag>,
+      render: (typeName) => <Tags>{typeName}</Tags>,
     },
     {
       title: '准备金账户余额(万元)',
       dataIndex: 'openingBalance',
       key: 'openingBalance',
-      render: (openingBalance) => `${openingBalance / 10000}`,
+      render: (openingBalance) => <Million>{openingBalance}</Million>,
     },
     {
       title: '当期准备金调整(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '操作',

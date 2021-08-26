@@ -1,6 +1,6 @@
 import {message} from "antd";
 
-import {queryLoanInterests, queryLoans, updateLoanInterest} from "@/services/student/dloan";
+import {queryLoanInterests, queryLoans, updateLoanInterest} from "@/services/student/lm";
 
 // 贷款管理
 const LoanMngModel = {

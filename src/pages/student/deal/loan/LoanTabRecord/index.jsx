@@ -3,6 +3,8 @@ import PublicTable from '@/components/Table';
 import { toPercent } from '@/utils/commonUtils';
 import { connect } from 'umi';
 import { Tag } from 'antd';
+import Tags from "@/components/Tags";
+import Million from "@/components/Million";
 
 const LoanTabRecord = (props) => {
   const {dispatch, dataSource} = props
@@ -17,12 +19,12 @@ const LoanTabRecord = (props) => {
     {
       title: '业务类型',
       dataIndex: 'loanTypeName',
-      render: (loanTypeName) => <Tag color="#009933">{loanTypeName}</Tag>,
+      render: (loanTypeName) => <Tags>{loanTypeName}</Tags>,
     },
     {
       title: '金额(万元)',
       dataIndex: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '利率',
@@ -40,12 +42,12 @@ const LoanTabRecord = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
-      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+      render: (rateTypeName) => <Tags>{rateTypeName}</Tags>,
     },
     {
       title: '质押/担保金额(万元)',
       dataIndex: 'mgMoney',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '渠道类型',
