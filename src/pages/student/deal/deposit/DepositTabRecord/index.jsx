@@ -3,6 +3,8 @@ import PublicTable from '@/components/Table';
 import { connect } from 'umi';
 import { toPercent } from '@/utils/commonUtils';
 import { Tag } from 'antd';
+import Tags from "@/components/Tags";
+import Million from "@/components/Million";
 
 const DepositTabRecord = (props) => {
   const {dispatch, dataSource} = props
@@ -18,12 +20,12 @@ const DepositTabRecord = (props) => {
     {
       title: '业务类型',
       dataIndex: 'customerTypeName',
-      render: (customerTypeName) => <Tag color="#009933">{customerTypeName}</Tag>,
+      render: (customerTypeName) => <Tags>{customerTypeName}</Tags>,
     },
     {
       title: '金额(万元)',
       dataIndex: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '利率',
@@ -37,7 +39,7 @@ const DepositTabRecord = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
-      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+      render: (rateTypeName) => <Tags>{rateTypeName}</Tags>,
     },
     {
       title: '渠道类型',

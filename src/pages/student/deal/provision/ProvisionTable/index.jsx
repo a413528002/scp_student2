@@ -4,6 +4,8 @@ import { Button, Card, Space } from 'antd';
 import PublicTable from '@/components/Table';
 import ProvisionRule from '@/pages/student/deal/provision/ProvisionRule';
 import ProvisionOrPrepareModal from '@/pages/student/deal/components/provisionOrPrepareModal';
+import Million from "@/components/Million";
+import Tags from "@/components/Tags";
 
 const ProvisionTable = (props) => {
   const { dispatch, dataSource, loading } = props;
@@ -47,24 +49,25 @@ const ProvisionTable = (props) => {
       title: '交易类型',
       dataIndex: 'typeName',
       key: 'typeName',
+      render:(typeName)=><Tags>{typeName}</Tags>
     },
     {
       title: '计提前余额(万元)',
       dataIndex: 'openingBalance',
       key: 'openingBalance',
-      render: (openingBalance) => `${openingBalance / 10000}`,
+      render: (openingBalance) => <Million>{openingBalance}</Million>,
     },
     {
       title: '计提金额(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '计提后余额(万元)',
       dataIndex: 'closingBalance',
       key: 'closingBalance',
-      render: (closingBalance) => `${closingBalance / 10000}`,
+      render: (closingBalance) => <Million>{closingBalance}</Million>,
     },
 
     {

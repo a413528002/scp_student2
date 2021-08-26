@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import { Form, InputNumber, Modal } from 'antd';
+import Million from "@/components/Million";
 
 const EditableCell = ({
   editing,
@@ -100,7 +101,7 @@ const InterestSettlementModal = (props) => {
       dataIndex: 'interest',
       key: 'interest',
       editable: true,
-      render: (interest) => `${interest / 10000}`,
+      render: (interest) => <Million>{interest}</Million>,
     },
   ];
   // 表头

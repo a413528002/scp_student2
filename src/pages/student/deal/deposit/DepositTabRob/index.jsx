@@ -5,6 +5,8 @@ import { connect, useModel } from 'umi';
 import { Button, Card, Modal, Tag } from 'antd';
 import { toPercent } from '@/utils/commonUtils';
 import { useSubscription } from 'react-stomp-hooks';
+import Tags from "@/components/Tags";
+import Million from "@/components/Million";
 
 const DepositTabRob = (props) => {
   const {dispatch, dataSource, grabStatus, startDuration} = props
@@ -76,12 +78,12 @@ const DepositTabRob = (props) => {
     {
       title: '业务类型',
       dataIndex: 'customerTypeName',
-      render: (customerTypeName) => <Tag color="#009933">{customerTypeName}</Tag>,
+      render: (customerTypeName) => <Tags>{customerTypeName}</Tags>,
     },
     {
       title: '金额(万元)',
       dataIndex: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '利率',
@@ -95,7 +97,7 @@ const DepositTabRob = (props) => {
     {
       title: '利率类型',
       dataIndex: 'rateTypeName',
-      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+      render: (rateTypeName) => <Tags>{rateTypeName}</Tags>,
     },
     {
       title: '渠道类型',

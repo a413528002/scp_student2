@@ -3,6 +3,9 @@ import { connect } from 'umi';
 import { Button, Card, Tag } from 'antd';
 import PublicTable from '@/components/Table';
 import InterestSettlementModal from '@/pages/student/deal/depositMng/InterestSettlementModal';
+import Tags from "@/components/Tags";
+import Million from "@/components/Million";
+import {toPercent} from "@/utils/commonUtils";
 
 const DepositMngTable = (props) => {
   const { dispatch, dataSource, loading } = props;
@@ -55,19 +58,19 @@ const DepositMngTable = (props) => {
       title: '业务类型',
       dataIndex: 'customerTypeName',
       key: 'customerTypeName',
-      render: (customerTypeName) => <Tag color="#009933">{customerTypeName}</Tag>,
+      render: (customerTypeName) => <Tags>{customerTypeName}</Tags>,
     },
     {
       title: '金额(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '利率',
       dataIndex: 'expectRate',
       key: 'expectRate',
-      render: (expectRate) => `${expectRate * 100}%`,
+      render: (expectRate) => toPercent(expectRate),
     },
     {
       title: '存款期数',
@@ -84,7 +87,7 @@ const DepositMngTable = (props) => {
       title: '利率类型',
       dataIndex: 'rateTypeName',
       key: 'rateTypeName',
-      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+      render: (rateTypeName) => <Tags>{rateTypeName}</Tags>,
     },
     {
       title: '渠道类型',

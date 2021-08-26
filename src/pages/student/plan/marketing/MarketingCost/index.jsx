@@ -3,6 +3,7 @@ import {connect} from 'umi';
 import {Button, Card, Form, InputNumber} from "antd";
 import PublicTable from "@/components/Table";
 import MarketingCostRule from "@/pages/student/plan/marketing/MarketingCostRule";
+import Million from "@/components/Million";
 
 const EditableCell = ({
                         editing,
@@ -96,25 +97,25 @@ const MarketingCost = (props) => {
       title: '期数',
       dataIndex: 'period',
       key: 'period',
-      render: (period) => `第${period}期`
+      render: (period) => `第${period}期`,
     },
     {
       title: '存款营销费用(万元)',
       dataIndex: 'depositMktCost',
       key: 'depositMktCost',
       // 当前字段值为null时显示提交按钮 且可以编辑
-      editable: dataSource.every((item => item.depositMktCost === null)),
+      editable: dataSource.every((item) => item.depositMktCost === null),
       // 表头单位为万元
-      render: (depositMktCost) => `${depositMktCost / 10000}`
+      render: (depositMktCost) => <Million>{depositMktCost}</Million>,
     },
     {
       title: '贷款营销费用(万元)',
       dataIndex: 'loanMktCost',
       key: 'loanMktCost',
       // 当前字段值为null时显示提交按钮 且可以编辑
-      editable: dataSource.every((item => item.loanMktCost === null)),
+      editable: dataSource.every((item) => item.loanMktCost === null),
       // 表头单位为万元
-      render: (loanMktCost) => `${loanMktCost / 10000}`
+      render: (loanMktCost) => <Million>{loanMktCost}</Million>,
     },
     {
       title: '超额补足倍率',
@@ -125,22 +126,24 @@ const MarketingCost = (props) => {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      render: (_, {depositMktCost, loanMktCost, _key}) => {
+      render: (_, { depositMktCost, loanMktCost, _key }) => {
         return (
           <>
-            {
-              depositMktCost === null || loanMktCost === null ? (<Button
+            {depositMktCost === null || loanMktCost === null ? (
+              <Button
                 type="primary"
                 size="small"
                 loading={submitLoading}
                 onClick={() => save(_key)}
               >
                 提交
-              </Button>) : "已提交"
-            }
+              </Button>
+            ) : (
+              '已提交'
+            )}
           </>
-        )
-      }
+        );
+      },
     },
   ];
 
