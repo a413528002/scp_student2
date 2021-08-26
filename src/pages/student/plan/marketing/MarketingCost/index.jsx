@@ -4,6 +4,7 @@ import { Button, Card, Form, InputNumber } from 'antd';
 import PublicTable from '@/components/Table';
 import MarketingCostRule from '@/pages/student/plan/marketing/MarketingCostRule';
 import Million from '@/components/Million';
+import {yuan} from '@/utils/commonUtils'
 
 const EditableCell = ({
   editing,
@@ -51,14 +52,15 @@ const MarketingCost = (props) => {
   // 保存当前编辑row
   const save = async (key) => {
     try {
-      const row = await form.validateFields();
-      if (row) {
+      const values = await form.validateFields();
+      if (values) {
+        const params = yuan(values)
         // 投入营销费用
         dispatch({
           type: 'studentMarketing/inputMarketingCost',
           payload: {
             classHourId,
-            ...row,
+            ...params,
           },
           callback: () => setEditingKey(null),
         });
