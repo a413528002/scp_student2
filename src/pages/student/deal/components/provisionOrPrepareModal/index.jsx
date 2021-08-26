@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'umi';
 import {Button, Form, InputNumber, Modal, Space} from 'antd';
+import {yuan} from "@/utils/commonUtils";
 
 const ProvisionOrPrepareModal = (props) => {
   const {modalVisible, handleCancelModal, dispatch, typeModal} = props
@@ -10,7 +11,6 @@ const ProvisionOrPrepareModal = (props) => {
   const [form] = Form.useForm();
   // 更新
   const update = ({amount}) => {
-    console.log(type)
     if (classHourId) {
       // 调回取amount负值
       if (type === 'RECALL') {
@@ -72,7 +72,9 @@ const ProvisionOrPrepareModal = (props) => {
    * @param values 表单字段值
    */
   const onFinish = (values) => {
-    update(values)
+    // 金额转换
+    const params = yuan(values)
+    update(params)
   }
   // 关闭modal 重置表单
   const handleCancelResetFields = () => {

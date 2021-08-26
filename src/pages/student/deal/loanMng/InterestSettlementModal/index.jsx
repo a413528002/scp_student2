@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import { Form, InputNumber, Modal } from 'antd';
 import Million from "@/components/Million";
+import {yuan} from "@/utils/commonUtils";
 
 const EditableCell = ({
   editing,
@@ -72,11 +73,12 @@ const InterestSettlementModal = (props) => {
   // 保存存款利息
   const updateLoanInterest = async () => {
     try {
-      const { interest } = await form.validateFields();
-      if (interest && classHourId && bankFinancialBusinessInstId) {
+      const values = await form.validateFields();
+      if (values && classHourId && bankFinancialBusinessInstId) {
+        const params = yuan(values)
         dispatch({
           type: 'studentLoanMng/updateLoanInterest',
-          payload: { classHourId, bankFinancialBusinessInstId, interest },
+          payload: { classHourId, bankFinancialBusinessInstId, ...params },
           callback: () => {
             handleCancelModal();
             setEditingKey('');
