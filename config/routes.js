@@ -31,7 +31,7 @@ export default [
     routes: [
       {
         path: './',
-        redirect: './home',
+        redirect: './classroom',
       },
       // 首页
       {
