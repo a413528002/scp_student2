@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {Button, Card, Image, Empty} from 'antd';
-import SubmitContent from "@/pages/teacher/business/SubmitContent";
-import InstitutionsContent from "@/pages/teacher/business/InstitutionsContent";
-import ErrorContent from "@/pages/teacher/business/ErrorContent";
+import React from 'react';
+import { Tabs } from 'antd';
+import SubmitContent from '@/pages/teacher/business/SubmitContent';
+import InstitutionsContent from '@/pages/teacher/business/InstitutionsContent';
+import ErrorContent from '@/pages/teacher/business/ErrorContent';
 
+const { TabPane } = Tabs;
 const BusinessTabs = () => {
-  const [activeTabKey, setActiveTabKey] = useState('submit')
+  function callback(key) {
+    console.log(key);
+  }
 
-  // tabs切换
-  const onTabChange = (key) => {
-    setActiveTabKey(key);
-  };
+  // tabList
   const tabList = [
     {
       key: 'submit',
@@ -23,27 +23,22 @@ const BusinessTabs = () => {
     {
       key: 'error',
       tab: '错误记录',
-    }
+    },
   ];
 
   const contentList = {
-    submit: <SubmitContent/>,
-    institutions: <InstitutionsContent/>,
-    error: <ErrorContent/>,
+    submit: <SubmitContent />,
+    institutions: <InstitutionsContent />,
+    error: <ErrorContent />,
   };
   return (
-    <>
-      <Card
-        style={{width: '100%'}}
-        tabList={tabList}
-        activeTabKey={activeTabKey}
-        onTabChange={key => {
-          onTabChange(key);
-        }}
-      >
-        {contentList[activeTabKey]}
-      </Card>
-    </>
+    <Tabs onChange={callback}>
+      {tabList.map(({ tab, key }) => (
+        <TabPane tab={tab} key={key}>
+          {contentList[key]}
+        </TabPane>
+      ))}
+    </Tabs>
   );
 };
 

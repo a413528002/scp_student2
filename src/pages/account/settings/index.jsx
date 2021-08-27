@@ -95,7 +95,6 @@ class Settings extends Component {
 
   render() {
     const { currentUserData } = this.props;
-    console.log(currentUserData)
     if (!currentUserData.id) {
       return '';
     }
