@@ -139,7 +139,7 @@ const LoanTabRob = (props) => {
       return <div className={styles.timer}><span>抢单未开始</span></div>
     }
     if (grabStatus === 'STARTED') {
-      return <div className={styles.timer}>抢单倒计时：<span>{startDuration ?? 0}秒</span></div>
+      return <div className={styles.timer}>抢单开始倒计时：<span>{startDuration ?? 0}秒</span></div>
     }
     if (grabStatus === 'ENDED') {
       return <div className={styles.timer}><span>抢单已结束</span></div>
