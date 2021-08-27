@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
-import {Button, Card, Image, Empty} from 'antd';
-import UploadPictureModal from "@/pages/teacher/macro/UploadPictureModal";
+import React, { useState } from 'react';
+import { Button, Image, Empty, Tabs } from 'antd';
+import UploadPictureModal from '@/pages/teacher/macro/UploadPictureModal';
 
+const { TabPane } = Tabs;
 const PictureTabs = () => {
-  const [modalVisible, setModalVisible] = useState(false)
-  const [activeTabKey, setActiveTabKey] = useState('rate')
+  const [modalVisible, setModalVisible] = useState(false);
+  const [activeTabKey, setActiveTabKey] = useState('rate');
   // 请求到的数据
-  const srcBea64 = undefined
+  const srcBea64 = undefined;
   // src url "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
   // 显示uploadModal
   const handleShowModal = () => {
@@ -16,10 +17,11 @@ const PictureTabs = () => {
   const handleCancelModal = () => {
     setModalVisible(false);
   };
-  // tabs切换
-  const onTabChange = (key,) => {
+
+  function callback(key) {
     setActiveTabKey(key);
-  };
+  }
+
   const tabList = [
     {
       key: 'rate',
@@ -46,10 +48,7 @@ const PictureTabs = () => {
       tab: '债券市场',
     },
   ];
-  const contentImage = srcBea64 ? <Image
-    width={'100%'}
-    src={srcBea64}
-  /> : <Empty/>
+  const contentImage = srcBea64 ? <Image width={'100%'} src={srcBea64} /> : <Empty />;
 
   const contentList = {
     rate: contentImage,
@@ -61,23 +60,23 @@ const PictureTabs = () => {
   };
   return (
     <>
-      <Card
-        style={{width: '100%'}}
-        tabBarExtraContent={<Button type="primary" onClick={handleShowModal}>上传</Button>}
-        tabList={tabList}
-        activeTabKey={activeTabKey}
-        onTabChange={key => {
-          onTabChange(key);
-        }}
+      <Tabs
+        onChange={callback}
+        tabBarExtraContent={
+          <Button type="primary" onClick={handleShowModal}>
+            上传
+          </Button>
+        }
       >
-        {contentList[activeTabKey]}
-      </Card>
-      {
-        modalVisible && <UploadPictureModal
-          modalVisible={modalVisible}
-          handleCancelModal={handleCancelModal}
-        />
-      }
+        {tabList.map(({ tab, key }) => (
+          <TabPane tab={tab} key={key}>
+            {contentList[key]}
+          </TabPane>
+        ))}
+      </Tabs>
+      {modalVisible && (
+        <UploadPictureModal modalVisible={modalVisible} handleCancelModal={handleCancelModal} />
+      )}
     </>
   );
 };
