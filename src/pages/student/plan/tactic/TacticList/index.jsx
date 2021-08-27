@@ -75,8 +75,8 @@ const TacticList = (props) => {
               {Array(periodTtl)
                 .fill()
                 .map((e, i) => i + 1)
-                .map((e,i) => (
-                  <Radio.Button disabled={i+1 > period} key={e} value={e}>
+                .map((e) => (
+                  <Radio.Button disabled={e > periodCur} key={e} value={e}>
                     第{e}期
                   </Radio.Button>
                 ))}
