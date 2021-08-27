@@ -15,7 +15,6 @@ export default [
       },
     ],
   },
-
   {
     path: '/',
     component: './404',
@@ -286,6 +285,24 @@ export default [
         name: 'ranking',
         icon: 'RocketOutlined',
         component: './teacher/ranking',
+      },
+    ],
+  },
+  // 设置
+  {
+    path: './account',
+    name: 'account',
+    icon: 'UserOutlined',
+    routes: [
+      {
+        path: './',
+        redirect: './settings',
+      },
+      {
+        // 个人设置
+        path: './settings',
+        name: 'settings',
+        component: './account/settings',
       },
     ],
   },
