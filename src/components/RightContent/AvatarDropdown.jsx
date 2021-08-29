@@ -79,7 +79,7 @@ const AvatarDropdown = ({ menu }) => {
       {menu && (
         <Menu.Item key="settings">
           <SettingOutlined />
-          修改密码
+          个人设置
         </Menu.Item>
       )}
       {menu && <Menu.Divider />}

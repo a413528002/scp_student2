@@ -292,6 +292,7 @@ export default [
   {
     path: './account',
     name: 'account',
+    hideInMenu: true,
     icon: 'UserOutlined',
     routes: [
       {
