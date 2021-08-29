@@ -32,19 +32,19 @@ export default [
         path: './',
         redirect: './classroom',
       },
-      // 首页
-      {
-        path: './home',
-        name: 'home',
-        icon: 'HomeOutlined',
-        component: './student/home',
-      },
       // 我的课堂
       {
         path: './classroom',
         name: 'classroom',
         icon: 'BulbOutlined',
         component: './student/classroom',
+      },
+      // 宏观经济
+      {
+        path: './macroeconomic',
+        name: 'macroeconomic',
+        icon: 'FireOutlined',
+        component: './student/macroeconomic',
       },
       // 规划
       {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Col, Row } from 'antd';
-import DepositAndLoanInterestRate from '@/pages/student/home/DepositAndLoanInterestRate';
-import DepositAndLoanAmount from '@/pages/student/home/DepositAndLoanAmount';
-import DepositAndLoanCount from '@/pages/student/home/DepositAndLoanCount';
+import DepositAndLoanInterestRate from '@/pages/student/macroeconomic/DepositAndLoanInterestRate';
+import DepositAndLoanAmount from '@/pages/student/macroeconomic/DepositAndLoanAmount';
+import DepositAndLoanCount from '@/pages/student/macroeconomic/DepositAndLoanCount';
 
 
-const HomeList = () => {
+const MacroeconomicList = () => {
   const gutter = { xs: 24, sm: 12, md: 12, lg: 12 }
   return (
     <Card>
@@ -75,4 +75,4 @@ const HomeList = () => {
   );
 };
 
-export default HomeList;
+export default MacroeconomicList;
