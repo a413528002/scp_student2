@@ -3,8 +3,6 @@ import {Table} from "antd";
 
 const PublicTable = (props) => {
   const {dataSource, columns, bordered, rowSelection, pagination, loading, rowClassName, components, scroll} = props;
-  // console.log(scroll)
-  // console.log(components)
   return (
     <Table
       // 边框

@@ -10,6 +10,7 @@ const BusinessModel = {
     queryBankWrongsDate: {},
     queryBankPeriodInfosDate: [],
     queryBankOrganizationsDate: [],
+    queryBankWrongsTotalElements: 0,
   },
   effects: {
     // 查询各个银行错误记录
@@ -17,6 +18,7 @@ const BusinessModel = {
       const response = yield call(queryBankWrongs, payload);
       if (!response.errCode) {
         const content = response['content'];
+        const queryBankWrongsTotalElements = response['totalElements'];
         const queryBankWrongsDate = {
           ...response,
           content: content?.map((item, index) => {
@@ -30,6 +32,7 @@ const BusinessModel = {
           type: 'save',
           payload: {
             queryBankWrongsDate,
+            queryBankWrongsTotalElements,
           },
         });
       }
