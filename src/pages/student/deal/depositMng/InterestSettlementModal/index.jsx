@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import { Form, InputNumber, Modal } from 'antd';
-import Million from "@/components/Million";
-import {yuan} from "@/utils/commonUtils";
+import Million from '@/components/Million';
+import { yuan } from '@/utils/commonUtils';
 
 const EditableCell = ({
   editing,
@@ -49,7 +49,7 @@ const EditableCell = ({
 
 const InterestSettlementModal = (props) => {
   const { modalVisible, handleCancelModal, loading, dispatch, confirmLoading } = props;
-  const { bankFinancialBusinessInstId, dataSource } = props;
+  const { bankFinancialBusinessInstId, bankFinancialBusinessInstRow, dataSource } = props;
   const [form] = Form.useForm();
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -59,23 +59,24 @@ const InterestSettlementModal = (props) => {
   // 是否可编辑
   const isEditing = (record) => record._key === editingKey;
   // 编辑
-  const handleEdit = (editKey) => {
+  const handleEdit = (editKey, editRow) => {
     form.setFieldsValue({
-      ...editKey,
+      // 回显利息
+      ...editRow,
     });
     setEditingKey(editKey);
   };
   // 初始化编辑状态
   useEffect(() => {
-    handleEdit(bankFinancialBusinessInstId);
-  }, [bankFinancialBusinessInstId]);
+    handleEdit(bankFinancialBusinessInstId, bankFinancialBusinessInstRow);
+  }, [bankFinancialBusinessInstId,bankFinancialBusinessInstRow]);
 
   // 保存存款利息
   const updateDepositInterest = async () => {
     try {
       const values = await form.validateFields();
       if (values && classHourId && bankFinancialBusinessInstId) {
-        const params = yuan(values)
+        const params = yuan(values);
         dispatch({
           type: 'studentDepositMng/updateDepositInterest',
           payload: { classHourId, bankFinancialBusinessInstId, ...params },
@@ -154,6 +155,7 @@ const InterestSettlementModal = (props) => {
 export default connect(({ studentDepositMng, loading }) => ({
   dataSource: studentDepositMng.queryDepositInterestsData,
   bankFinancialBusinessInstId: studentDepositMng.editBankFinancialBusinessInstId,
+  bankFinancialBusinessInstRow: studentDepositMng.editRow,
   confirmLoading: loading.effects['studentDepositMng/updateDepositInterest'],
   loading: loading.effects['studentDepositMng/queryDepositInterests'],
 }))(InterestSettlementModal);

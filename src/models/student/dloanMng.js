@@ -9,6 +9,7 @@ const LoanMngModel = {
     queryLoansData: [],
     queryLoanInterestsData: [],
     editBankFinancialBusinessInstId: undefined,
+    editRow: {},
   },
   effects: {
     // 查询贷款
@@ -39,6 +40,13 @@ const LoanMngModel = {
           .filter((item) => item._disable === false)
           .map((item) => item.bankFinancialBusinessInstId)
           .toString();
+        // 获取可以编辑的当前行editRow
+        const [editRow] = response
+          ?.filter((item) => item._disable === false)
+          .map((item) => {
+            // interest 元转换为万元
+            return { ...item, interest: item.interest / 10000 };
+          });
         const queryLoanInterestsData = response.map((item) => {
           return {
             ...item,
@@ -50,6 +58,7 @@ const LoanMngModel = {
           payload: {
             queryLoanInterestsData,
             editBankFinancialBusinessInstId,
+            editRow,
           },
         });
       }
