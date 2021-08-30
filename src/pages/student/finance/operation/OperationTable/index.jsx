@@ -3,6 +3,8 @@ import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import { Select, Button, Form, InputNumber, Popconfirm, Space } from 'antd';
 import styles from '@/pages/student/finance/operation/index.less';
+import Million from '@/components/Million';
+import { yuan } from '@/utils/commonUtils';
 
 const EditableCell = ({
   editing,
@@ -70,16 +72,16 @@ const OperationTable = (props) => {
 
   const updateBankExpense = async (bankExpenseId) => {
     try {
-      const amount = await form.validateFields();
-      if (classHourId && bankExpenseId) {
+      const values = await form.validateFields();
+      if (values && classHourId && bankExpenseId) {
+        const params = yuan(values);
         // 更新费用
         dispatch({
           type: 'studentOperation/updateBankExpense',
           payload: {
             classHourId,
             bankExpenseId,
-            amount,
-            period,
+            ...params,
           },
           callback: () => setEditingKey(''),
         });
@@ -128,7 +130,7 @@ const OperationTable = (props) => {
       dataIndex: 'amount',
       key: 'amount',
       editable: true,
-      render: (amount) => `${amount / 1000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '操作',
