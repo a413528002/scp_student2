@@ -62,6 +62,7 @@ const OperationTable = (props) => {
   const handleEdit = (record) => {
     form.setFieldsValue({
       ...record,
+      amount: record.amount / 10000,
     });
     setEditingKey(record._key);
   };
