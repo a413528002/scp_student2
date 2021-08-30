@@ -29,7 +29,6 @@ export default {
   'menu.student.risk.market': '市场风险',
   'menu.student.risk.regulatory': '风险监管',
 
-
   'menu.teacher': '老师',
   'menu.teacher.classroom': '我的课堂',
   'menu.teacher.operation': '经营控制',
@@ -38,6 +37,9 @@ export default {
   'menu.teacher.business': '经营管理',
   'menu.teacher.bankruptcy': '破产管理',
   'menu.teacher.ranking': '排行榜',
+
+  'menu.admin': '用户管理',
+  'menu.admin.user': '用户管理',
 
   'menu.account': '个人页',
   'menu.account.center': '个人中心',
@@ -54,5 +56,4 @@ export default {
   'menu.exception.trigger': '触发错误',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
-
 };

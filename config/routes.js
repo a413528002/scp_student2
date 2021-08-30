@@ -288,6 +288,24 @@ export default [
       },
     ],
   },
+  {
+    path: '/admin',
+    name: 'admin',
+    flatMenu: true,
+    access: 'adminRouteFilter',
+    routes: [
+      {
+        path: './',
+        redirect: './user',
+      },
+      {
+        path: './user',
+        name: 'user',
+        icon: 'IdcardOutlined',
+        component: './admin/user',
+      },
+    ],
+  },
   // 设置
   {
     path: './account',
