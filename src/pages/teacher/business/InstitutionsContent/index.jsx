@@ -48,6 +48,6 @@ const InstitutionsContent = (props) => {
 };
 
 export default connect(({ teacherBusiness, loading }) => ({
-  dataSource: teacherBusiness.queryBankOrganizationsDate,
+  dataSource: teacherBusiness.queryBankOrganizationsData,
   loading: loading.effects['teacherBusiness/queryBankOrganizations'],
 }))(InstitutionsContent);

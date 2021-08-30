@@ -69,7 +69,7 @@ const ErrorContent = (props) => {
 };
 
 export default connect(({ teacherBusiness, loading }) => ({
-  dataSource: teacherBusiness.queryBankWrongsDate.content,
+  dataSource: teacherBusiness.queryBankWrongsData.content,
   total: teacherBusiness.queryBankWrongsTotalElements,
   loading: loading.effects['teacherBusiness/queryBankWrongs'],
 }))(ErrorContent);

@@ -7,9 +7,9 @@ import {
 const BusinessModel = {
   namespace: 'teacherBusiness',
   state: {
-    queryBankWrongsDate: {},
-    queryBankPeriodInfosDate: [],
-    queryBankOrganizationsDate: [],
+    queryBankWrongsData: {},
+    queryBankPeriodInfosData: [],
+    queryBankOrganizationsData: [],
     queryBankWrongsTotalElements: 0,
   },
   effects: {
@@ -19,7 +19,7 @@ const BusinessModel = {
       if (!response.errCode) {
         const content = response['content'];
         const queryBankWrongsTotalElements = response['totalElements'];
-        const queryBankWrongsDate = {
+        const queryBankWrongsData = {
           ...response,
           content: content?.map((item, index) => {
             return {
@@ -31,7 +31,7 @@ const BusinessModel = {
         yield put({
           type: 'save',
           payload: {
-            queryBankWrongsDate,
+            queryBankWrongsData,
             queryBankWrongsTotalElements,
           },
         });
@@ -41,7 +41,7 @@ const BusinessModel = {
     *queryBankPeriodInfos({ payload }, { call, put }) {
       const response = yield call(queryBankPeriodInfos, payload);
       if (!response.errCode) {
-        const queryBankPeriodInfosDate = response?.map((item, index) => {
+        const queryBankPeriodInfosData = response?.map((item, index) => {
           return {
             ...item,
             _key: index,
@@ -50,7 +50,7 @@ const BusinessModel = {
         yield put({
           type: 'save',
           payload: {
-            queryBankPeriodInfosDate,
+            queryBankPeriodInfosData,
           },
         });
       }
@@ -59,7 +59,7 @@ const BusinessModel = {
     *queryBankOrganizations({ payload }, { call, put }) {
       const response = yield call(queryBankOrganizations, payload);
       if (!response.errCode) {
-        const queryBankOrganizationsDate = response?.map((item, index) => {
+        const queryBankOrganizationsData = response?.map((item, index) => {
           return {
             ...item,
             _key: index,
@@ -68,7 +68,7 @@ const BusinessModel = {
         yield put({
           type: 'save',
           payload: {
-            queryBankOrganizationsDate,
+            queryBankOrganizationsData,
           },
         });
       }

@@ -46,6 +46,6 @@ const SubmitContent = (props) => {
 };
 
 export default connect(({ teacherBusiness, loading }) => ({
-  dataSource: teacherBusiness.queryBankPeriodInfosDate,
+  dataSource: teacherBusiness.queryBankPeriodInfosData,
   loading: loading.effects['teacherBusiness/queryBankPeriodInfos'],
 }))(SubmitContent);
