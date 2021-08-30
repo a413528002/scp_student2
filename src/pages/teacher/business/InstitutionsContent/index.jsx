@@ -24,9 +24,9 @@ const InstitutionsContent = (props) => {
     },
     {
       title: '是否建立总行',
-      dataIndex: 'moduleName',
-      key: 'moduleName',
-      render: (moduleName) => (moduleName ? '是' : '否'),
+      dataIndex: 'hasCoreOffice',
+      key: 'hasCoreOffice',
+      render: (hasCoreOffice) => (hasCoreOffice ? '是' : '否'),
     },
     {
       title: 'A区',
