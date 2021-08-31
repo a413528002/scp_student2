@@ -3,10 +3,10 @@ import { connect } from 'umi';
 import { Button, Card, Descriptions, Empty, Input, message, Popconfirm, Space } from 'antd';
 import NewBankModal from '@/pages/student/classroom/NewBankModal';
 
-const {Search} = Input;
+const { Search } = Input;
 const BankInformation = (props) => {
-  const {dispatch, classOpt, bankOpt, bankData} = props;
-  const {searchLoading, joinLoading} = props;
+  const { dispatch, classOpt, bankOpt, bankData } = props;
+  const { searchLoading, joinLoading } = props;
 
   // 新建银行modal显示状态 ----start-----
   const [newBankModalVisible, setBankModalVisible] = useState(false);
@@ -27,7 +27,7 @@ const BankInformation = (props) => {
    * @param code 输入的内容
    * @returns {boolean}
    */
-  const onSearchQueryBankByCode = code => {
+  const onSearchQueryBankByCode = (code) => {
     if (code.trim()) {
       // 如果搜索的银行code与当前银行的code相同，直接返回提示信息，不进行搜索
       // if (bankCode === code) {
@@ -37,11 +37,11 @@ const BankInformation = (props) => {
       dispatch({
         type: 'studentClassroom/queryBankByCode',
         payload: {
-          code
-        }
-      })
+          code,
+        },
+      });
     } else {
-      message.error('请输入银行编号')
+      message.error('请输入银行编号');
     }
   };
 
@@ -49,19 +49,19 @@ const BankInformation = (props) => {
   const joinBank = () => {
     dispatch({
       type: 'studentClassroom/joinBank',
-    })
-  }
+    });
+  };
 
   // 退出银行
   const exitBank = () => {
     dispatch({
       type: 'studentClassroom/exitBank',
-    })
-  }
+    });
+  };
   // 关闭pop
   const handleCancelExitBankPop = () => {
-    message.error('已取消')
-  }
+    message.error('已取消');
+  };
   return (
     <Card
       title="银行信息"
@@ -72,14 +72,18 @@ const BankInformation = (props) => {
             <Search
               placeholder="请输入银行编号"
               onSearch={onSearchQueryBankByCode}
-              style={{width: 300}}
+              style={{ width: 300 }}
               enterButton="查询银行"
               loading={searchLoading}
               allowClear
               disabled={!classOpt}
             />
-            <Button type="primary" onClick={joinBank} loading={joinLoading} disabled={!classOpt}>加入银行</Button>
-            <Button type="primary" onClick={handleNewBankShowModal} disabled={!classOpt}>新建银行</Button>
+            <Button type="primary" onClick={joinBank} loading={joinLoading} disabled={!classOpt}>
+              加入银行
+            </Button>
+            <Button type="primary" onClick={handleNewBankShowModal} disabled={!classOpt}>
+              新建银行
+            </Button>
             <Popconfirm
               title="确认退出银行"
               onConfirm={exitBank}
@@ -91,30 +95,30 @@ const BankInformation = (props) => {
           </Space>
         </>
       }
-      type='inner'
+      type="inner"
     >
-      {
-        bankData.bankId ? (
-          <Descriptions column={2}>
-            <Descriptions.Item label="银行编号">{bankData.bankCode}</Descriptions.Item>
-            <Descriptions.Item label="银行行长">{bankData.presNickname}</Descriptions.Item>
-            <Descriptions.Item label="银行名称">{bankData.bankName}</Descriptions.Item>
-          </Descriptions>
-        ) : <Empty/>
-      }
-      {/*新建银行modal*/}
+      {bankData.bankId ? (
+        <Descriptions column={2}>
+          <Descriptions.Item label="银行编号">{bankData.bankCode}</Descriptions.Item>
+          <Descriptions.Item label="银行行长">{bankData.presNickname}</Descriptions.Item>
+          <Descriptions.Item label="银行名称">{bankData.bankName}</Descriptions.Item>
+        </Descriptions>
+      ) : (
+        <Empty />
+      )}
+      {/* 新建银行modal */}
       <NewBankModal
         newBankModalVisible={newBankModalVisible}
         handleNewBankCancelModal={handleNewBankCancelModal}
       />
     </Card>
   );
-}
+};
 
-export default connect(({studentClassroom, loading}) => ({
+export default connect(({ studentClassroom, loading }) => ({
   classOpt: studentClassroom.classOpt,
   bankOpt: studentClassroom.bankOpt,
   bankData: studentClassroom.bankData,
   searchLoading: loading.effects['studentClassroom/queryBankByCode'],
   joinLoading: loading.effects['studentClassroom/joinBank'],
-}))(BankInformation)
+}))(BankInformation);
