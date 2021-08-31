@@ -10,13 +10,24 @@ const StatementModel = {
   namespace: 'studentStatement',
   state: {
     queryBankPeriodInfoData: {},
+    consultationTipsInfo: {},
   },
   effects: {
     // 业务结账
-    *endBusiness({ payload }, { call }) {
+    *endBusiness({ payload }, { call, put }) {
       const response = yield call(endBusiness, payload);
       if (!response.errCode) {
         message.success('业务结账成功');
+      } else if (response.errCode === -1) {
+        yield put({
+          type: 'save',
+          payload: {
+            consultationTipsInfo: {
+              ...response,
+              consultationTipsState: true,
+            },
+          },
+        });
       }
     },
     // 财务结账
@@ -50,6 +61,16 @@ const StatementModel = {
         ...state,
         ...payload,
       };
+    },
+  },
+  subscriptions: {
+    setup({ history, dispatch }) {
+      // 监听 history 变化，当进入 `/student/finance/statement` 时触发 `save` action
+      return history.listen(({ pathname }) => {
+        if (pathname !== '/student/finance/statement') {
+          dispatch({ type: 'save', payload: { consultationTipsInfo: {} } });
+        }
+      });
     },
   },
 };

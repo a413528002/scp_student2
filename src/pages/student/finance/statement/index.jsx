@@ -4,9 +4,11 @@ import StatementTabs from '@/pages/student/finance/statement/StatementTabs';
 
 const statement = () => {
   return (
-    <Card title="财务报表" bordered={false} type="inner">
-      <StatementTabs />
-    </Card>
+    <>
+      <Card title="财务报表" bordered={false} type="inner">
+        <StatementTabs />
+      </Card>
+    </>
   );
 };
 

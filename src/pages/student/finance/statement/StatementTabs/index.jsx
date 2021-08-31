@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Tabs, Button, Space } from 'antd';
+import StatementTips from '@/pages/student/finance/statement/StatementTips';
 
 const { TabPane } = Tabs;
 const StatementTabs = (props) => {
   const { dispatch, endBusinessLoading, endFinanceLoading, submitStatementsLoading } = props;
-  const { bankPeriodInfoData } = props;
+  const { bankPeriodInfoData, tipsInfo } = props;
+  console.log(tipsInfo);
   // ButtonList disabled禁用状态
   const { businessEndFlag, financeEndFlag, reportFlag } = bankPeriodInfoData;
-
+  const { errMsg, consultationTipsState } = tipsInfo;
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
@@ -99,18 +101,22 @@ const StatementTabs = (props) => {
     },
   ];
   return (
-    <Tabs onChange={callback} tabBarExtraContent={operations}>
-      {tabList.map(({ tab, key }) => (
-        <TabPane tab={tab} key={key}>
-          contentList[key]
-        </TabPane>
-      ))}
-    </Tabs>
+    <>
+      {consultationTipsState && <StatementTips errMsg={errMsg} />}
+      <Tabs onChange={callback} tabBarExtraContent={operations}>
+        {tabList.map(({ tab, key }) => (
+          <TabPane tab={tab} key={key}>
+            contentList[key]
+          </TabPane>
+        ))}
+      </Tabs>
+    </>
   );
 };
 
 export default connect(({ studentStatement, loading }) => ({
   bankPeriodInfoData: studentStatement.queryBankPeriodInfoData,
+  tipsInfo: studentStatement.consultationTipsInfo,
   endBusinessLoading: loading.effects['studentStatement/endBusiness'],
   endFinanceLoading: loading.effects['studentStatement/endFinance'],
   submitStatementsLoading: loading.effects['studentStatement/submitStatements'],
