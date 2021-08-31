@@ -61,7 +61,6 @@ const ErrorContent = (props) => {
           // 接口page是从0开始
           setPage(page - 1);
           setSize(pageSize);
-          console.log('onChange', page, pageSize);
         },
       }}
     />
