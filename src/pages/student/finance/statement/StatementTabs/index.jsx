@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Tabs, Button, Space } from 'antd';
 
 const { TabPane } = Tabs;
 const StatementTabs = (props) => {
-  const { dispatch, endBusinessLoading, endFinanceLoading } = props;
+  const { dispatch, endBusinessLoading, endFinanceLoading, submitStatementsLoading } = props;
+  const { bankPeriodInfoData } = props;
+  // ButtonList disabled禁用状态
+  const { businessEndFlag, financeEndFlag, reportFlag } = bankPeriodInfoData;
+
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
+  useEffect(() => {
+    if (classHourId) {
+      dispatch({
+        type: 'studentStatement/queryBankPeriodInfo',
+        payload: { classHourId },
+      });
+    }
+  }, []);
   // 业务结账
   const endBusiness = () => {
     if (classHourId) {
@@ -27,16 +39,43 @@ const StatementTabs = (props) => {
       });
     }
   };
+
+  // 提交报表
+  const submitStatements = () => {
+    if (classHourId) {
+      dispatch({
+        type: 'studentStatement/submitStatements',
+        payload: { classHourId },
+      });
+    }
+  };
   // tabBarExtraContent ButtonList
   const operations = (
-    <Space>
-      <Button type="primary" onClick={endBusiness} loading={endBusinessLoading}>
+    <Space size={[8, 16]} wrap>
+      <Button
+        type="primary"
+        onClick={endBusiness}
+        loading={endBusinessLoading}
+        disabled={businessEndFlag}
+      >
         业务结账
       </Button>
-      <Button type="primary" onClick={endFinance} loading={endFinanceLoading}>
+      <Button
+        type="primary"
+        onClick={endFinance}
+        loading={endFinanceLoading}
+        disabled={financeEndFlag}
+      >
         财务结账
       </Button>
-      <Button type="primary">提交报表</Button>
+      <Button
+        type="primary"
+        onClick={submitStatements}
+        loading={submitStatementsLoading}
+        disabled={reportFlag}
+      >
+        提交报表
+      </Button>
       <Button type="primary">导出报表</Button>
     </Space>
   );
@@ -70,7 +109,9 @@ const StatementTabs = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ studentStatement, loading }) => ({
+  bankPeriodInfoData: studentStatement.queryBankPeriodInfoData,
   endBusinessLoading: loading.effects['studentStatement/endBusiness'],
   endFinanceLoading: loading.effects['studentStatement/endFinance'],
+  submitStatementsLoading: loading.effects['studentStatement/submitStatements'],
 }))(StatementTabs);

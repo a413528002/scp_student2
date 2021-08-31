@@ -23,3 +23,11 @@ export async function submitStatements(params) {
     data: params,
   });
 }
+
+// 查询银行期间信息
+export async function queryBankPeriodInfo(params) {
+  return request(`${NODE_API}/student/fs/queryBankPeriodInfo`, {
+    method: 'GET',
+    params,
+  });
+}
