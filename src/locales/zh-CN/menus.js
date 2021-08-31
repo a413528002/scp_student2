@@ -28,6 +28,7 @@ export default {
   'menu.student.risk.credit': '信用风险',
   'menu.student.risk.market': '市场风险',
   'menu.student.risk.regulatory': '风险监管',
+  'menu.student.consultation': '第三方咨询',
 
   'menu.teacher': '老师',
   'menu.teacher.classroom': '我的课堂',

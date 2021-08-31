@@ -226,6 +226,13 @@ export default [
           },
         ],
       },
+      // 咨询
+      {
+        path: './consultation',
+        name: 'consultation',
+        icon: 'MessageOutlined',
+        component: './student/consultation',
+      },
     ],
   },
 
