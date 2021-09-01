@@ -41,12 +41,11 @@ const DepositAndLoanAmount = (props) => {
 
   useEffect(() => {
     if (classHourId) {
+      setLoading(true)
       queryDepositAndLoanAmount({ classHourId })
         .then(initEchart)
         .finally(() => setLoading(false))
     }
-    setLoading(true)
-
   }, [classHourId])
 
   return (
