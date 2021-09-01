@@ -1,43 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import * as echarts from 'echarts/core';
-import {
-  DatasetComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent
-} from 'echarts/components';
-import {
-  BarChart
-} from 'echarts/charts';
-import {
-  CanvasRenderer
-} from 'echarts/renderers';
+import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { queryDepositAndLoanAmount } from '@/services/student/me';
+import { Spin } from 'antd';
 
 echarts.use(
   [DatasetComponent, TooltipComponent, GridComponent, LegendComponent, BarChart, CanvasRenderer]
 );
 
 const DepositAndLoanAmount = (props) => {
-  const {dispatch, classOpt, bankOpt, bankData} = props;
-  const {searchLoading, joinLoading} = props;
+  const[loading, setLoading] = useState(false)
 
-  const initEchart = () => {
+  // 获取课堂id
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+
+  const initEchart = (data) => {
     const option = {
       legend: {},
       tooltip: {},
       dataset: {
-        source: [
-          ['product', '存款总量', '贷款总量'],
-          ['第1期', 216000, 192000],
-          ['第2期', 204000, 156000],
-          ['第3期', 192000, 168000],
-          ['第4期', 165000, 110000],
-          ['第5期', 160600, 110000],
-          ['第6期', 165000, 143000],
-          ['第7期', 172800, 148800],
-          ['第8期', 88000, 88000],
-        ]
+        source: data
       },
       xAxis: {type: 'category'},
       yAxis: {},
@@ -55,12 +40,20 @@ const DepositAndLoanAmount = (props) => {
   }
 
   useEffect(() => {
-    initEchart()
-  }, [])
+    if (classHourId) {
+      queryDepositAndLoanAmount({ classHourId })
+        .then(initEchart)
+        .finally(() => setLoading(false))
+    }
+    setLoading(true)
+
+  }, [classHourId])
 
   return (
     <>
-      <div id = 'dpstAndLoanAmount' style={{height: 400}}/>
+      <Spin spinning={loading}>
+        <div id = 'dpstAndLoanAmount' style={{height: 400}}/>
+      </Spin>
     </>
   );
 }
