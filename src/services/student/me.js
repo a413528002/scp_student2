@@ -15,3 +15,11 @@ export async function queryDepositAndLoanAmount(params) {
     params
   })
 }
+
+// 查询存贷款单量
+export async function queryDepositAndLoanCount(params) {
+  return request(`${NODE_API}/student/me/queryDepositAndLoanCount`, {
+    method: 'GET',
+    params
+  })
+}

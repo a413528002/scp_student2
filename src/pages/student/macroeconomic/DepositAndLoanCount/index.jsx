@@ -1,43 +1,28 @@
-import React, { useEffect } from 'react';
-import { connect } from 'umi';
+import React, { useEffect, useState } from 'react';
 import * as echarts from 'echarts/core';
-import {
-  DatasetComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent
-} from 'echarts/components';
-import {
-  BarChart
-} from 'echarts/charts';
-import {
-  CanvasRenderer
-} from 'echarts/renderers';
+import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { Spin } from 'antd';
+import { queryDepositAndLoanCount } from '@/services/student/me';
 
 echarts.use(
   [DatasetComponent, TooltipComponent, GridComponent, LegendComponent, BarChart, CanvasRenderer]
 );
 
 const DepositAndLoanCount = (props) => {
-  const {dispatch, classOpt, bankOpt, bankData} = props;
-  const {searchLoading, joinLoading} = props;
 
-  const initEchart = () => {
+  const[loading, setLoading] = useState(false)
+
+  // 获取课堂id
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+
+  const initEchart = (data) => {
     const option = {
       legend: {},
       tooltip: {},
       dataset: {
-        source: [
-          ['product', 'A区域存款单数', 'B区域存款单数', 'C区域存款单数', 'A区域贷款单数', 'B区域贷款单数', 'C区域贷款单数'],
-          ['第1期', 20, 0, 0, 20, 0, 0],
-          ['第2期', 15, 6, 3, 15, 6, 3],
-          ['第3期', 12, 6, 4, 12, 6, 4],
-          ['第4期', 12, 7, 3, 12, 7, 3],
-          ['第5期', 10, 8, 4, 10, 8, 4],
-          ['第6期', 14, 6, 4, 14, 6, 4],
-          ['第7期', 12, 7, 5, 12, 7, 5],
-          ['第8期', 10, 8, 4, 0, 0, 0],
-        ]
+        source: data
       },
       xAxis: {type: 'category'},
       yAxis: {},
@@ -59,16 +44,21 @@ const DepositAndLoanCount = (props) => {
   }
 
   useEffect(() => {
-    initEchart()
-  }, [])
+    if (classHourId) {
+      setLoading(true)
+      queryDepositAndLoanCount({ classHourId })
+        .then(initEchart)
+        .finally(() => setLoading(false))
+    }
+  }, [classHourId])
 
   return (
     <>
-      <div id = 'dpstAndLoanCount' style={{height: 400}}/>
+      <Spin spinning={loading}>
+        <div id = 'dpstAndLoanCount' style={{height: 400}}/>
+      </Spin>
     </>
   );
 }
 
-export default connect(() => ({
-
-}))(DepositAndLoanCount)
+export default DepositAndLoanCount

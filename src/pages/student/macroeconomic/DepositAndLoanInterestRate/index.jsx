@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'umi';
 import * as echarts from 'echarts/core';
 import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
@@ -60,6 +59,4 @@ const DepositAndLoanInterestRate = (props) => {
   );
 }
 
-export default connect(() => ({
-
-}))(DepositAndLoanInterestRate)
+export default DepositAndLoanInterestRate
