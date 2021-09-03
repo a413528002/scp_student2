@@ -4,9 +4,10 @@ import { message } from 'antd';
 const ConsultationModel = {
   namespace: 'studentConsultation',
   state: {
-    queryBankConsultationsTotalElements: null,
-    queryBankConsultationsData: {},
-    queryBankWrongsData: [],
+    queryBankConsultationsTotalElements: null, // 第三方咨询数据总数
+    queryBankConsultationsIsFirstPage: null, // 是否第一页
+    queryBankConsultationsData: {}, // 第三方咨询数据
+    queryBankWrongsData: [], // 明细数据
   },
   effects: {
     // 查询第三方质询
@@ -15,6 +16,7 @@ const ConsultationModel = {
       if (!response.errCode) {
         const content = response['content'];
         const queryBankConsultationsTotalElements = response['totalElements'];
+        const queryBankConsultationsIsFirstPage = response['first'];
         const queryBankConsultationsData = {
           ...response,
           content: content?.map((item) => {
@@ -28,6 +30,7 @@ const ConsultationModel = {
           type: 'save',
           payload: {
             queryBankConsultationsTotalElements,
+            queryBankConsultationsIsFirstPage,
             queryBankConsultationsData,
           },
         });

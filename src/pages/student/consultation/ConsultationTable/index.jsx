@@ -5,7 +5,9 @@ import { Button, message, Popconfirm, Space } from 'antd';
 
 const ConsultationTable = (props) => {
   const { dispatch, loading, buyLoading } = props;
-  const { dataSource, total } = props;
+  const { dataSource, total, isFirstPat } = props;
+
+  const defaultPageSize = 3
 
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -40,13 +42,12 @@ const ConsultationTable = (props) => {
 
   useEffect(() => {
     if (classHourId) {
-      queryBankConsultations(0,10)
+      queryBankConsultations(0, defaultPageSize)
     }
   }, [classHourId]);
 
 
   const renderBuyButton = (buyStatus, bankConsultationId) => {
-    console.log(buyStatus)
     return (
       <>
         <Popconfirm
@@ -115,24 +116,23 @@ const ConsultationTable = (props) => {
     {
       title: '已购买类别',
       dataIndex: 'buyStatusName',
-      key: 'buyStatusName',
     },
     {
       title: '操作',
-      dataIndex: 'operation',
       key: 'operation',
       render: (_, { buyStatus, bankConsultationId }, index) =>
       {
-        if (index) {
+        // 第一页第一条才能购买咨询
+        if (isFirstPat && !index) {
           return (
             <Space>
+              {renderBuyButton(buyStatus, bankConsultationId)}
               {renderWrongs(buyStatus, bankConsultationId)}
             </Space>
           )
         }
         return (
           <Space>
-            {renderBuyButton(buyStatus, bankConsultationId)}
             {renderWrongs(buyStatus, bankConsultationId)}
           </Space>
         )
@@ -146,6 +146,7 @@ const ConsultationTable = (props) => {
       loading={loading}
       bordered
       pagination={{
+        defaultPageSize: defaultPageSize,
         // 数据总数
         total,
         // 页码或 pageSize 改变的回调，参数是改变后的页码及每页条数
@@ -160,6 +161,7 @@ const ConsultationTable = (props) => {
 export default connect(({ studentConsultation, loading }) => ({
   dataSource: studentConsultation.queryBankConsultationsData.content,
   total: studentConsultation.queryBankConsultationsTotalElements,
+  isFirstPat: studentConsultation.queryBankConsultationsIsFirstPage,
   loading: loading.effects['studentConsultation/queryBankConsultations'],
   buyLoading: loading.effects['studentConsultation/buyBankConsultation'],
 }))(ConsultationTable);
