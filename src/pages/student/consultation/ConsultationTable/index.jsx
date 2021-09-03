@@ -1,29 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Button, Space, Popconfirm, message } from 'antd';
+import { Button, message, Popconfirm, Space } from 'antd';
 
 const ConsultationTable = (props) => {
   const { dispatch, loading, buyLoading } = props;
   const { dataSource, total } = props;
-  // 初始页数
-  const [page, setPage] = useState(0);
-  // 每页条数
-  const [size, setSize] = useState(10);
+
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
-  useEffect(() => {
-    if (classHourId) {
-      // 查询第三方质询
-      dispatch({
-        type: 'studentConsultation/queryBankConsultations',
-        payload: { classHourId, page, size },
-      });
-    }
-  }, [page, size]);
 
-  // 购买第三方质询
+
+  // 查询第三方咨询
+  const queryBankConsultations = (page, size) => {
+    dispatch({
+      type: 'studentConsultation/queryBankConsultations',
+      payload: { classHourId, page, size },
+    });
+  }
+
+  // 查询错误详情
+  const queryBankWrongs = (bankConsultationId) => {
+    dispatch({
+      type: 'studentConsultation/queryBankWrongs',
+      payload: { classHourId, bankConsultationId },
+    });
+  }
+
+  // 购买第三方咨询
   const buyBankConsultation = (bankConsultationId, full) => {
     if ((classHourId && bankConsultationId) || full) {
       dispatch({
@@ -33,21 +38,54 @@ const ConsultationTable = (props) => {
     }
   };
 
-  // 关闭Pop
-  const handleCancelPop = () => {
-    message.error('已取消');
-  };
+  useEffect(() => {
+    if (classHourId) {
+      queryBankConsultations(0,10)
+    }
+  }, [classHourId]);
+
+
+  const renderBuyButton = (buyStatus, bankConsultationId) => {
+    console.log(buyStatus)
+    return (
+      <>
+        <Popconfirm
+          title="确认购买提示咨询?"
+          onConfirm={() => buyBankConsultation(bankConsultationId, false)}
+          okButtonProps={{ loading: buyLoading }}
+          disabled={buyStatus !== 'NONE'}
+        >
+          <Button type="primary" size="small" disabled={buyStatus !== 'NONE'}>
+            提示咨询
+          </Button>
+        </Popconfirm>
+
+        <Popconfirm
+          title="确认购买完整咨询?"
+          onConfirm={() => buyBankConsultation(bankConsultationId, true)}
+          okButtonProps={{ loading: buyLoading }}
+          disabled={buyStatus === 'FULL'}
+        >
+          <Button type="primary" size="small" disabled={buyStatus === 'FULL'}>
+            完整咨询
+          </Button>
+        </Popconfirm>
+      </>
+    )
+  }
+
+  const renderWrongs = (buyStatus, bankConsultationId) => {
+    return <Button type="primary" size="small" disabled={buyStatus === 'NONE'} onClick={() => queryBankWrongs(bankConsultationId)}>
+      查看
+    </Button>
+  }
+
   const columns = [
     {
       title: '期数',
       dataIndex: 'period',
       key: 'period',
       render: (period) => `第${period}期`,
-    },
-    {
-      title: '批次号',
-      dataIndex: 'bankConsultationId',
-      key: 'bankConsultationId',
     },
     {
       title: '错误数量',
@@ -83,52 +121,22 @@ const ConsultationTable = (props) => {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      render: (_, { buyStatus, bankConsultationId }) => {
-        switch (buyStatus) {
-          case 'NONE':
-            return (
-              <Space>
-                <Popconfirm
-                  title="确认购买?"
-                  onConfirm={() => buyBankConsultation(bankConsultationId, false)}
-                  onCancel={handleCancelPop}
-                  okButtonProps={{ loading: buyLoading }}
-                >
-                  <Button type="primary" size="small">
-                    购买提示咨询
-                  </Button>
-                </Popconfirm>
-                <Popconfirm
-                  title="确认购买?"
-                  onConfirm={() => buyBankConsultation(bankConsultationId, true)}
-                  onCancel={handleCancelPop}
-                  okButtonProps={{ loading: buyLoading }}
-                >
-                  <Button type="primary" size="small">
-                    购买完整咨询
-                  </Button>
-                </Popconfirm>
-              </Space>
-            );
-          case 'HINT':
-            return (
-              <Popconfirm
-                title="确认购买?"
-                onConfirm={() => buyBankConsultation(bankConsultationId, true)}
-                onCancel={handleCancelPop}
-                okButtonProps={{ loading: buyLoading }}
-              >
-                <Button type="primary" size="small">
-                  购买完整咨询
-                </Button>
-              </Popconfirm>
-            );
-          case 'FULL':
-            return '已购买全部咨询';
-          default:
-            break;
+      render: (_, { buyStatus, bankConsultationId }, index) =>
+      {
+        if (index) {
+          return (
+            <Space>
+              {renderWrongs(buyStatus, bankConsultationId)}
+            </Space>
+          )
         }
-      },
+        return (
+          <Space>
+            {renderBuyButton(buyStatus, bankConsultationId)}
+            {renderWrongs(buyStatus, bankConsultationId)}
+          </Space>
+        )
+      }
     },
   ];
   return (
@@ -142,9 +150,7 @@ const ConsultationTable = (props) => {
         total,
         // 页码或 pageSize 改变的回调，参数是改变后的页码及每页条数
         onChange: (page, pageSize) => {
-          // 接口page是从0开始
-          setPage(page - 1);
-          setSize(pageSize);
+          queryBankConsultations(page - 1, pageSize)
         },
       }}
     />

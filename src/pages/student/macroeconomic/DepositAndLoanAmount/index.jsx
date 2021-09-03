@@ -4,7 +4,7 @@ import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } fr
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { queryDepositAndLoanAmount } from '@/services/student/me';
-import { Spin } from 'antd';
+import { Empty, Spin } from 'antd';
 
 echarts.use(
   [DatasetComponent, TooltipComponent, GridComponent, LegendComponent, BarChart, CanvasRenderer]
@@ -49,9 +49,14 @@ const DepositAndLoanAmount = (props) => {
 
   return (
     <>
-      <Spin spinning={loading}>
-        <div id = 'dpstAndLoanAmount' style={{height: 400}}/>
-      </Spin>
+      {
+        classHourId ?
+          (
+            <Spin spinning={loading}>
+              <div id = 'dpstAndLoanAmount' style={{height: 400}}/>
+            </Spin>
+          ) : (<Empty/>)
+      }
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { buyBankConsultation, queryBankConsultations } from '@/services/student/bco';
+import { buyBankConsultation, queryBankConsultations, queryBankWrongs } from '@/services/student/bco';
 import { message } from 'antd';
 
 const ConsultationModel = {
@@ -6,11 +6,12 @@ const ConsultationModel = {
   state: {
     queryBankConsultationsTotalElements: null,
     queryBankConsultationsData: {},
+    queryBankWrongsData: [],
   },
   effects: {
     // 查询第三方质询
     *queryBankConsultations({ payload }, { call, put }) {
-      const response = yield call(queryBankConsultations, payload);
+      const response = yield call(queryBankConsultations, { ...payload, sort: 'id,desc' });
       if (!response.errCode) {
         const content = response['content'];
         const queryBankConsultationsTotalElements = response['totalElements'];
@@ -32,6 +33,26 @@ const ConsultationModel = {
         });
       }
     },
+    // 查询错误明细
+    *queryBankWrongs({ payload }, { call, put }) {
+      const response = yield call(queryBankWrongs, payload);
+      if (!response.errCode) {
+
+        const queryBankWrongsData = response.map(item => {
+          return {
+            ...item,
+            _key: item.bankWrongId,
+          }
+        })
+        yield put({
+          type: 'save',
+          payload: {
+            queryBankWrongsData,
+          },
+        });
+      }
+    },
+
     // 购买第三方质询
     *buyBankConsultation({ payload }, { call, put }) {
       const response = yield call(buyBankConsultation, { ...payload });
