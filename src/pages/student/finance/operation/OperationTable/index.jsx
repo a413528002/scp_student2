@@ -137,6 +137,7 @@ const OperationTable = (props) => {
       title: '操作',
       dataIndex: '_key',
       key: '_key',
+      fixed: 'right',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (

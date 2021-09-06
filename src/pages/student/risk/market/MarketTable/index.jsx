@@ -3,20 +3,9 @@ import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import { Button, Card, Form, InputNumber, Popconfirm, Space } from 'antd';
 import MarketRule from '@/pages/student/risk/market/MarketRule';
+import Million from '@/components/Million';
+import { toPercent, yuan } from '@/utils/commonUtils';
 
-const originData = [];
-for (let i = 0; i < 8; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    bizTypeName: '假数据-bizTypeName',
-    rateTypeName: 'A',
-    amount: 120000,
-    loanAmount: 120000,
-    depositAmount: 120000,
-    status: true,
-  });
-}
 const EditableCell = ({
   editing,
   dataIndex,
@@ -66,6 +55,8 @@ const MarketTable = (props) => {
   const handleEdit = (record) => {
     form.setFieldsValue({
       ...record,
+      gap: record.gap / 10000,
+      totalRisk: record.totalRisk / 10000,
     });
     setEditingKey(record._key);
   };
@@ -78,14 +69,17 @@ const MarketTable = (props) => {
   const updateBankRwaMarket = async (bankRwaMarketId) => {
     try {
       const values = await form.validateFields();
-      if (classHourId && bankRwaMarketId) {
+      if (values && classHourId && bankRwaMarketId) {
+        const params = yuan(values);
+        debugger
         // 保存市场风险
         dispatch({
-          type: 'studentCredit/updateBankRwaMarket',
+          type: 'studentMarket/updateBankRwaMarket',
           payload: {
             classHourId,
             bankRwaMarketId,
-            ...values,
+            ...params,
+            marketRate: values.marketRate, // 覆盖转换后的marketRate
           },
           callback: () => setEditingKey(''),
         });
@@ -112,43 +106,48 @@ const MarketTable = (props) => {
     },
     {
       title: '所属期数',
-      dataIndex: 'term',
-      key: 'term',
+      dataIndex: 'period',
+      key: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '贷款总额(万元)',
       dataIndex: 'loanAmount',
       key: 'loanAmount',
-      render: (loanAmount) => `${loanAmount / 10000}`,
+      render: (loanAmount) => <Million>{loanAmount}</Million>,
     },
     {
       title: '存款总额(万元)',
       dataIndex: 'depositAmount',
       key: 'depositAmount',
-      render: (depositAmount) => `${depositAmount / 10000}`,
+      render: (depositAmount) => <Million>{depositAmount}</Million>,
     },
     {
       title: '利率敏感性缺口',
       dataIndex: 'gap',
       key: 'gap',
       editable: true,
+      render: (gap) => <Million>{gap}</Million>,
     },
     {
       title: '市场风险系数',
       dataIndex: 'marketRate',
       key: 'marketRate',
       editable: true,
+      render: (marketRate) => toPercent(marketRate),
     },
     {
       title: '风险小计',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'totalRisk',
+      key: 'totalRisk',
       editable: true,
+      render: (totalRisk) => <Million>{totalRisk}</Million>,
     },
     {
       title: '操作',
       dataIndex: '_key',
       key: '_key',
+      fixed: 'right',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -207,8 +206,7 @@ const MarketTable = (props) => {
             },
           }}
           rowClassName="editable-row"
-          // dataSource={dataSource}
-          dataSource={originData}
+          dataSource={dataSource}
           columns={columnsData}
           loading={loading}
           bordered

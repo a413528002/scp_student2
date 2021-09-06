@@ -1,20 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import {Button, Card, Form, InputNumber, Popconfirm, Space, Tag} from 'antd';
+import { Button, Card, Form, InputNumber, Popconfirm, Space, Tag } from 'antd';
 import CreditRule from '@/pages/student/risk/credit/CreditRule';
+import Tags from '@/components/Tags';
+import Million from '@/components/Million';
+import { yuan } from '@/utils/commonUtils';
 
-const originData = [];
-for (let i = 0; i < 8; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    bizTypeName: '假数据-bizTypeName',
-    rateTypeName: 'A',
-    amount: 120000,
-    status: true,
-  });
-}
 const EditableCell = ({
   editing,
   dataIndex,
@@ -71,6 +63,7 @@ const CreditTable = (props) => {
   const handleEdit = (record) => {
     form.setFieldsValue({
       ...record,
+      totalRisk: record.totalRisk / 10000,
     });
     setEditingKey(record._key);
   };
@@ -81,15 +74,16 @@ const CreditTable = (props) => {
 
   const updateBankRwaCredit = async (bankRwaCreditId) => {
     try {
-      const totalRisk = await form.validateFields();
-      if (classHourId && bankRwaCreditId) {
+      const values = await form.validateFields();
+      if (values && classHourId && bankRwaCreditId) {
+        const params = yuan(values);
         // 保存信用风险
         dispatch({
           type: 'studentCredit/updateBankRwaCredit',
           payload: {
             classHourId,
             bankRwaCreditId,
-            totalRisk,
+            ...params,
           },
           callback: () => setEditingKey(''),
         });
@@ -112,23 +106,25 @@ const CreditTable = (props) => {
       title: '期数',
       dataIndex: 'period',
       key: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '所属期数',
-      dataIndex: 'term',
-      key: 'term',
+      dataIndex: 'period',
+      key: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '业务类型',
       dataIndex: 'bizTypeName',
       key: 'bizTypeName',
-      render: (bizTypeName) => <Tag color="#009933">{bizTypeName}</Tag>,
+      render: (bizTypeName) => <Tags>{bizTypeName}</Tags>,
     },
     {
       title: '利率属性',
       dataIndex: 'rateTypeName',
       key: 'rateTypeName',
-      render: (rateTypeName) => <Tag color="#009933">{rateTypeName}</Tag>,
+      render: (rateTypeName) => <Tags>{rateTypeName}</Tags>,
     },
     {
       title: '贷款分类',
@@ -144,18 +140,20 @@ const CreditTable = (props) => {
       title: '金额(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `${amount / 10000}`,
+      render: (amount) => <Million>{amount}</Million>,
     },
     {
       title: '风险小计',
       dataIndex: 'totalRisk',
       key: 'totalRisk',
       editable: true,
+      render: (totalRisk) => <Million>{totalRisk}</Million>,
     },
     {
       title: '操作',
       dataIndex: '_key',
       key: '_key',
+      fixed: 'right',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -214,8 +212,7 @@ const CreditTable = (props) => {
             },
           }}
           rowClassName="editable-row"
-          // dataSource={dataSource}
-          dataSource={originData}
+          dataSource={dataSource}
           columns={columnsData}
           loading={loading}
           bordered
