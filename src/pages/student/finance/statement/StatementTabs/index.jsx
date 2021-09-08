@@ -7,7 +7,6 @@ const { TabPane } = Tabs;
 const StatementTabs = (props) => {
   const { dispatch, endBusinessLoading, endFinanceLoading, submitStatementsLoading } = props;
   const { bankPeriodInfoData, tipsInfo } = props;
-  console.log(tipsInfo);
   // ButtonList disabled禁用状态
   const { businessEndFlag, financeEndFlag, reportFlag } = bankPeriodInfoData;
   const { errMsg, consultationTipsState } = tipsInfo;

@@ -18,6 +18,13 @@ const StatementModel = {
       const response = yield call(endBusiness, payload);
       if (!response.errCode) {
         message.success('业务结账成功');
+        // 获取课堂id
+        const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+        // 刷新查询银行期间信息
+        yield put({
+          type: 'queryBankPeriodInfo',
+          payload: { classHourId },
+        });
       } else if (response.errCode === -1) {
         yield put({
           type: 'save',
@@ -31,10 +38,17 @@ const StatementModel = {
       }
     },
     // 财务结账
-    *endFinance({ payload }, { call }) {
+    *endFinance({ payload }, { call, put }) {
       const response = yield call(endFinance, payload);
       if (!response.errCode) {
         message.success('财务结账成功');
+        // 获取课堂id
+        const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+        // 刷新查询银行期间信息
+        yield put({
+          type: 'queryBankPeriodInfo',
+          payload: { classHourId },
+        });
       }
     },
     // 财务结账
@@ -65,7 +79,7 @@ const StatementModel = {
   },
   subscriptions: {
     setup({ history, dispatch }) {
-      // 监听 history 变化，当进入 `/student/finance/statement` 时触发 `save` action
+      // 监听 history 变化，当离开 `/student/finance/statement` 时触发 `save` action
       return history.listen(({ pathname }) => {
         if (pathname !== '/student/finance/statement') {
           dispatch({ type: 'save', payload: { consultationTipsInfo: {} } });
