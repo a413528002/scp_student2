@@ -1,11 +1,13 @@
 import React from 'react';
+import { Card } from 'antd';
+import RegulatoryList from '@/pages/student/risk/regulatory/RegulatoryList';
 
-const Index = () => {
+const Regulatory = () => {
   return (
-    <div>
-      regulatory....
-    </div>
+    <Card title="风险监管" bordered={false} type="inner">
+      <RegulatoryList />
+    </Card>
   );
 };
 
-export default Index;
+export default Regulatory;

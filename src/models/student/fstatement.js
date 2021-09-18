@@ -2,6 +2,9 @@ import {
   endBusiness,
   endFinance,
   queryBankPeriodInfo,
+  queryBankReport,
+  queryClassReports,
+  saveBankReport,
   submitStatements,
 } from '@/services/student/fs';
 import { message } from 'antd';
@@ -9,8 +12,11 @@ import { message } from 'antd';
 const StatementModel = {
   namespace: 'studentStatement',
   state: {
-    queryBankPeriodInfoData: {},
-    consultationTipsInfo: {},
+    queryBankPeriodInfoData: {}, // 银行期间信息
+    consultationTipsInfo: {}, // 业务结账
+    queryClassReportsTabsData: [], // 报表列表- tabs数据
+    firstTabPaneDefault: undefined, // 初始选中项
+    queryBankReportData: {}, // 银行报表
   },
   effects: {
     // 业务结账
@@ -66,6 +72,41 @@ const StatementModel = {
           type: 'save',
           payload: { queryBankPeriodInfoData: response },
         });
+      }
+    },
+    // 查询课堂报表列表- tabs数据
+    *queryClassReports({ payload }, { call, put }) {
+      const response = yield call(queryClassReports, payload);
+      if (!response.errCode) {
+        const [firstTabPaneName] = response;
+        // 默认选中的第一个tab
+        const { reportCode: firstTabPaneDefault } = firstTabPaneName || {};
+        yield put({
+          type: 'save',
+          payload: { queryClassReportsTabsData: response, firstTabPaneDefault },
+        });
+      }
+    },
+    // 查询银行报表
+    *queryBankReport({ payload }, { call, put }) {
+      const response = yield call(queryBankReport, payload);
+      if (!response.errCode) {
+        // const { reportDetails } = response;
+        const queryBankReportData = {
+          ...response,
+        };
+        yield put({
+          type: 'save',
+          payload: { queryBankReportData },
+        });
+      }
+    },
+    // 保存报表
+    *saveBankReport({ payload,callback }, { call }) {
+      const response = yield call(saveBankReport, payload);
+      if (!response.errCode) {
+        message.success('保存成功');
+        // callback()
       }
     },
   },

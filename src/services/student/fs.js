@@ -31,3 +31,27 @@ export async function queryBankPeriodInfo(params) {
     params,
   });
 }
+
+// 查询课堂报表列表
+export async function queryClassReports(params) {
+  return request(`${NODE_API}/student/fs/queryClassReports`, {
+    method: 'GET',
+    params,
+  });
+}
+
+// 查询银行报表
+export async function queryBankReport(params) {
+  return request(`${NODE_API}/student/fs/queryBankReport`, {
+    method: 'GET',
+    params,
+  });
+}
+
+// 保存报表
+export async function saveBankReport(params) {
+  return request(`${NODE_API}/student/fs/saveBankReport`, {
+    method: 'POST',
+    data: params,
+  });
+}

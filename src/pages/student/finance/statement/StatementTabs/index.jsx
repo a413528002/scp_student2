@@ -1,26 +1,107 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Tabs, Button, Space } from 'antd';
+import { Tabs, Button, Space, Empty, Card } from 'antd';
 import StatementTips from '@/pages/student/finance/statement/StatementTips';
+import StatementContent from '@/pages/student/finance/statement/StatementContent';
 
 const { TabPane } = Tabs;
 const StatementTabs = (props) => {
-  const { dispatch, endBusinessLoading, endFinanceLoading, submitStatementsLoading } = props;
-  const { bankPeriodInfoData, tipsInfo } = props;
-  // ButtonList disabled禁用状态
-  const { businessEndFlag, financeEndFlag, reportFlag } = bankPeriodInfoData;
-  const { errMsg, consultationTipsState } = tipsInfo;
+  // 加载的loading
+  const {
+    dispatch,
+    endBusinessLoading,
+    endFinanceLoading,
+    submitStatementsLoading,
+    saveBankReportLoading,
+  } = props;
+  const {
+    bankPeriodInfoData,
+    tipsInfo,
+    tabList,
+    firstTabPaneDefault,
+    queryBankReportData: { periodCur },
+  } = props;
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
+  // ButtonList disabled禁用状态
+  const { businessEndFlag, financeEndFlag, reportFlag } = bankPeriodInfoData;
+  const { errMsg, consultationTipsState } = tipsInfo;
+
+  // 提交的数据
+  const [tableDataLeft, setTableDataLeft] = useState([]);
+  const [tableDataRight, setTableDataRight] = useState([]);
+  // 是否可编辑
+  const [selectedDisabled, setSelectedDisabled] = useState(true);
+
+  /**
+   * 询银行期间信息
+   */
   useEffect(() => {
     if (classHourId) {
+      // 查询银行期间信息
       dispatch({
         type: 'studentStatement/queryBankPeriodInfo',
         payload: { classHourId },
       });
     }
   }, []);
+
+  /**
+   * 查询课堂报表列表
+   */
+  useEffect(() => {
+    if (classHourId) {
+      // 查询课堂报表列表
+      dispatch({
+        type: 'studentStatement/queryClassReports',
+        payload: { classHourId },
+      });
+    }
+  }, []);
+
+  /**
+   * 查询银行报表 ---START---
+   * @param reportCode 当前的tab
+   * @param period 变化期数
+   */
+  const queryBankReport = (reportCode, period) => {
+    // 设置是否可编辑
+    period && setSelectedDisabled(period === periodCur);
+
+    dispatch({
+      type: 'studentStatement/queryBankReport',
+      payload: { classHourId, reportCode, period },
+    });
+  };
+  // 页面挂载时查询银行报表
+  useEffect(() => {
+    if (classHourId && firstTabPaneDefault) {
+      queryBankReport(firstTabPaneDefault);
+    }
+  }, [firstTabPaneDefault]);
+
+  // tabs切换时的回调
+  const onChangeTabs = (reportCode) => {
+    if (classHourId) {
+      queryBankReport(reportCode);
+    }
+  };
+
+  // 保存报表
+  const saveBankReport = () => {
+    if (classHourId) {
+      // 合并两个数组数据
+      const reportDetails = tableDataLeft.concat(tableDataRight);
+      dispatch({
+        type: 'studentStatement/saveBankReport',
+        payload: { classHourId, reportDetails },
+      });
+    }
+  };
+
+  // 查询银行报表  ---END---
+
   // 业务结账
   const endBusiness = () => {
     if (classHourId) {
@@ -50,6 +131,7 @@ const StatementTabs = (props) => {
       });
     }
   };
+
   // tabBarExtraContent ButtonList
   const operations = (
     <Space size={[8, 16]} wrap>
@@ -81,34 +163,34 @@ const StatementTabs = (props) => {
     </Space>
   );
 
-  function callback(key) {
-    console.log(key);
-  }
-
-  const tabList = [
-    {
-      key: 'financialPosition',
-      tab: '资产负债表',
-    },
-    {
-      key: 'cashFlows',
-      tab: '现金流量表',
-    },
-    {
-      key: 'incomeStatement',
-      tab: '利润表',
-    },
-  ];
   return (
     <>
       {consultationTipsState && <StatementTips errMsg={errMsg} />}
-      <Tabs onChange={callback} tabBarExtraContent={operations}>
-        {tabList.map(({ tab, key }) => (
-          <TabPane tab={tab} key={key}>
-            contentList[key]
-          </TabPane>
-        ))}
-      </Tabs>
+      {tabList?.length === 0 ? (
+        <Empty />
+      ) : (
+        <>
+          <Tabs onChange={onChangeTabs} tabBarExtraContent={operations}>
+            {tabList.map(({ reportName, reportCode }) => (
+              <TabPane tab={reportName} key={reportCode}>
+                <StatementContent
+                  queryBankReport={queryBankReport}
+                  setTableDataLeft={setTableDataLeft}
+                  setTableDataRight={setTableDataRight}
+                  selectedDisabled={selectedDisabled}
+                />
+              </TabPane>
+            ))}
+          </Tabs>
+          {selectedDisabled && (
+            <Card bordered={false} style={{ textAlign: 'center' }}>
+              <Button type="primary" onClick={saveBankReport} loading={saveBankReportLoading}>
+                保存报表
+              </Button>
+            </Card>
+          )}
+        </>
+      )}
     </>
   );
 };
@@ -116,7 +198,11 @@ const StatementTabs = (props) => {
 export default connect(({ studentStatement, loading }) => ({
   bankPeriodInfoData: studentStatement.queryBankPeriodInfoData,
   tipsInfo: studentStatement.consultationTipsInfo,
+  tabList: studentStatement.queryClassReportsTabsData,
+  firstTabPaneDefault: studentStatement.firstTabPaneDefault,
+  queryBankReportData: studentStatement.queryBankReportData,
   endBusinessLoading: loading.effects['studentStatement/endBusiness'],
   endFinanceLoading: loading.effects['studentStatement/endFinance'],
   submitStatementsLoading: loading.effects['studentStatement/submitStatements'],
+  saveBankReportLoading: loading.effects['studentStatement/saveBankReport'],
 }))(StatementTabs);

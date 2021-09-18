@@ -27,7 +27,6 @@ const Login = (props) => {
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
-
     if (userInfo) {
       await setInitialState((s) => ({...s, currentUser: userInfo}));
     }
