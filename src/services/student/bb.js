@@ -1,8 +1,8 @@
 import { request } from 'umi';
 
 // 查询列表
-export async function queryBankruptcies(params) {
-  return request(`${NODE_API}/student/bb/queryBankruptcies`, {
+export async function queryBankInjectMonies(params) {
+  return request(`${NODE_API}/student/bb/queryBankInjectMonies`, {
     method: 'GET',
     params,
   });

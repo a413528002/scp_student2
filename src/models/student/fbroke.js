@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { applyForInject, queryBankruptcies } from '@/services/student/bb';
+import { applyForInject, queryBankInjectMonies } from '@/services/student/bb';
 
 const BrokeModel = {
   namespace: 'studentBroke',
@@ -8,10 +8,9 @@ const BrokeModel = {
   },
   effects: {
     // 查询列表
-    *queryBankruptcies({ payload }, { call, put }) {
-      const response = yield call(queryBankruptcies, payload)||[];
+    *queryBankInjectMonies({ payload }, { call, put }) {
+      const response = yield call(queryBankInjectMonies, payload) || [];
       if (!response.errCode) {
-        console.log(1)
         const queryBankruptciesData = Array.isArray(response).map((item) => {
           return {
             ...item,
@@ -28,17 +27,14 @@ const BrokeModel = {
     },
 
     // 注资申请
-    *applyForInject({ payload, callback }, { call, put }) {
+    *applyForInject({ payload }, { call, put }) {
       const response = yield call(applyForInject, payload);
-      const { period } = payload;
       if (!response.errCode) {
-        message.success('保存成功');
-        callback();
-        // 获取课堂id
-        const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+        const { classHourId } = payload;
+        message.success('申请成功');
         // 刷新表格
         yield put({
-          type: 'queryBankruptcies',
+          type: 'queryBankInjectMonies',
           payload: {
             classHourId,
           },
