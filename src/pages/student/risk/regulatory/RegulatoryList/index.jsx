@@ -35,12 +35,13 @@ const RegulatoryList = (props) => {
   }, [dataSource]);
   // 切换期数
   const onRadioChange = (e) => {
-    e.target.value === periodCur ? setEditForm(false) : setEditForm(true);
+    const period = e.target.value;
+    setEditForm(period === periodCur);
     dispatch({
       type: 'studentRegulatory/queryBankRiskRegulation',
       payload: {
         classHourId,
-        period: e.target.value,
+        period,
       },
     });
   };
