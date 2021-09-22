@@ -5,7 +5,7 @@ import styles from '@/pages/student/finance/statement/index.less';
 
 const ContentTableLeft = (props) => {
   const {
-    queryBankReportData: { reportDetails, titleItem, titleB },
+    queryBankReportData: { reportDetails, titleItem, titleB, titleE, titleM },
     setTableDataLeft,
     selectedDisabled,
     loading,
@@ -24,6 +24,18 @@ const ContentTableLeft = (props) => {
       title: titleB,
       dataIndex: 'valueB',
       key: 'valueB',
+      editable: false,
+    },
+    {
+      title: titleE,
+      dataIndex: 'valueE',
+      key: 'valueE',
+      editable: selectedDisabled,
+    },
+    {
+      title: titleM,
+      dataIndex: 'valueM',
+      key: 'valueM',
       editable: selectedDisabled,
     },
   ];

@@ -4,7 +4,7 @@ import { connect } from 'umi';
 
 const ContentTableRight = (props) => {
   const {
-    queryBankReportData: { reportDetails, titleItem, titleE, titleM },
+    queryBankReportData: { reportDetails, titleItem, titleB, titleE, titleM },
     setTableDataRight,
     selectedDisabled,
     loading,
@@ -18,6 +18,12 @@ const ContentTableRight = (props) => {
       title: titleItem,
       dataIndex: 'valueItem',
       key: 'valueItem',
+      editable: false,
+    },
+    {
+      title: titleB,
+      dataIndex: 'valueB',
+      key: 'valueB',
       editable: false,
     },
     {
