@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import _ from 'lodash';
+
 /**
  * 小数转百分数
  * @param point
@@ -36,7 +37,12 @@ export function yuan(obj) {
   return _.transform(
     obj,
     function (result, value, key) {
-      result[key] = value * 10000;
+      if (typeof value === 'number') {
+        result[key] = value * 10000;
+      } else {
+        result[key] = value;
+      }
+      // result[key] = value * 10000;
     },
     {},
   );
