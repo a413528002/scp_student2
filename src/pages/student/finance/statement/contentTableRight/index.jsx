@@ -19,6 +19,8 @@ const ContentTableRight = (props) => {
       dataIndex: 'valueItem',
       key: 'valueItem',
       editable: false,
+      width: '40%',
+      render: (valueItem) => <pre style={{ marginBottom: 0 }}>{valueItem}</pre>,
     },
     {
       title: titleB,
