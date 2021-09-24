@@ -5,7 +5,7 @@ import {
   queryBankReport,
   queryClassReports,
   saveBankReport,
-  submitStatements,
+  submitReport,
 } from '@/services/student/fs';
 import { message } from 'antd';
 
@@ -25,13 +25,13 @@ const StatementModel = {
       if (!response.errCode) {
         message.success('业务结账成功');
         // 获取课堂id
-        const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+        const { classHourId } = payload;
         // 刷新查询银行期间信息
         yield put({
           type: 'queryBankPeriodInfo',
           payload: { classHourId },
         });
-      } else if (response.errCode === -1) {
+      } else if (response.errCode === 22) {
         yield put({
           type: 'save',
           payload: {
@@ -49,19 +49,46 @@ const StatementModel = {
       if (!response.errCode) {
         message.success('财务结账成功');
         // 获取课堂id
-        const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
+        const { classHourId } = payload;
         // 刷新查询银行期间信息
         yield put({
           type: 'queryBankPeriodInfo',
           payload: { classHourId },
         });
+      } else if (response.errCode === 22) {
+        yield put({
+          type: 'save',
+          payload: {
+            consultationTipsInfo: {
+              ...response,
+              consultationTipsState: true,
+            },
+          },
+        });
       }
     },
-    // 财务结账
-    *submitStatements({ payload }, { call }) {
-      const response = yield call(submitStatements, payload);
+    // 提交报表
+    *submitReport({ payload }, { call, put }) {
+      const response = yield call(submitReport, payload);
       if (!response.errCode) {
         message.success('提交报表成功');
+        // 获取课堂id
+        const { classHourId } = payload;
+        // 刷新查询银行期间信息
+        yield put({
+          type: 'queryBankPeriodInfo',
+          payload: { classHourId },
+        });
+      } else if (response.errCode === 22) {
+        yield put({
+          type: 'save',
+          payload: {
+            consultationTipsInfo: {
+              ...response,
+              consultationTipsState: true,
+            },
+          },
+        });
       }
     },
     // 查询银行期间信息
@@ -103,7 +130,7 @@ const StatementModel = {
       }
     },
     // 保存报表
-    *saveBankReport({ payload,callback }, { call }) {
+    *saveBankReport({ payload, callback }, { call }) {
       const response = yield call(saveBankReport, payload);
       if (!response.errCode) {
         message.success('保存成功');

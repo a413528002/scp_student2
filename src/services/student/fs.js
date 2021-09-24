@@ -17,8 +17,8 @@ export async function endFinance(params) {
 }
 
 // 提交报表
-export async function submitStatements(params) {
-  return request(`${NODE_API}/student/fs/submitStatements`, {
+export async function submitReport(params) {
+  return request(`${NODE_API}/student/fs/submitReport`, {
     method: 'POST',
     data: params,
   });

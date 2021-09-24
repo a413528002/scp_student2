@@ -11,7 +11,7 @@ const StatementTabs = (props) => {
     dispatch,
     endBusinessLoading,
     endFinanceLoading,
-    submitStatementsLoading,
+    submitReportLoading,
     queryBankReportLoading,
     saveBankReportLoading,
   } = props;
@@ -116,10 +116,10 @@ const StatementTabs = (props) => {
   };
 
   // 提交报表
-  const submitStatements = () => {
+  const submitReport = () => {
     if (classHourId) {
       dispatch({
-        type: 'studentStatement/submitStatements',
+        type: 'studentStatement/submitReport',
         payload: { classHourId },
       });
     }
@@ -146,8 +146,8 @@ const StatementTabs = (props) => {
       </Button>
       <Button
         type="primary"
-        onClick={submitStatements}
-        loading={submitStatementsLoading}
+        onClick={submitReport}
+        loading={submitReportLoading}
         disabled={reportFlag}
       >
         提交报表
@@ -203,5 +203,6 @@ export default connect(({ studentStatement, loading }) => ({
   saveBankReportLoading: loading.effects['studentStatement/saveBankReport'],
   endBusinessLoading: loading.effects['studentStatement/endBusiness'],
   endFinanceLoading: loading.effects['studentStatement/endFinance'],
-  submitStatementsLoading: loading.effects['studentStatement/submitStatements'],
+  submitReportLoading: loading.effects['studentStatement/submitReport'],
+  saveBankReportLoading: loading.effects['studentStatement/saveBankReport'],
 }))(StatementTabs);
