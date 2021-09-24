@@ -33,6 +33,9 @@ const StatementContent = (props) => {
   // column数组去重
   const columnArray = unique(reportDetails?.map(item => item.columnNo) || [])
 
+  // 是否显示保存报表的按钮
+  const showSubmitButton = editable && onSubmit && columnArray.length > 0;
+
   const columns = [
     {
       title: titleItem,
@@ -97,7 +100,7 @@ const StatementContent = (props) => {
         </Row>
       </Card>
       {/* 可编辑并且props传入onSubmit时渲染保存的按钮 */}
-      {editable && onSubmit && (
+      {showSubmitButton && (
         <Card bordered={false} style={{ textAlign: 'center' }}>
           <Button type="primary" onClick={onSubmit0}>
             保存报表
