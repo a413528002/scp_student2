@@ -1,16 +1,7 @@
-import { useIntl } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
+
 export default () => {
-  const intl = useIntl();
-  const defaultMessage = intl.formatMessage({
-    id: 'app.copyright.produced',
-    defaultMessage: '奢侈品',
-  });
   return (
-    <DefaultFooter
-      copyright={`2020 ${defaultMessage}`}
-      links={''}
-    />
+    <DefaultFooter copyright={`${new Date().getFullYear()} 商业银行经营管理实训平台`} links={''} />
   );
 };
