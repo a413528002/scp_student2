@@ -31,7 +31,7 @@ const StatementTabs = (props) => {
 
   /**
    * 保存报表
-   * @param data
+   * @param _reportDetails
    */
   const saveBankReport = (_reportDetails) => {
     if (classHourId) {
@@ -70,8 +70,8 @@ const StatementTabs = (props) => {
 
   /**
    * 查询银行报表 ---START---
-   * @param reportCode 当前的tab
-   * @param period 变化期数
+   * @param _reportCode
+   * @param _period
    */
   const queryBankReport = (_reportCode, _period) => {
     dispatch({

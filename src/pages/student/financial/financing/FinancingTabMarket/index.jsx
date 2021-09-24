@@ -4,23 +4,12 @@ import PublicTable from "@/components/Table";
 import FinancingRule from "@/pages/student/financial/financing/FinancingRule";
 import {Button} from "antd";
 
-const originData = [];
-for (let i = 0; i < 8; i++) {
-  originData.push({
-    _key: i.toString(),
-    period: `${i}`,
-    customerTypeName: '假数据',
-    amount: Math.random() * 100000000,
-    regionName: 'A',
-    status: true,
-  });
-}
 const FinancingTabMarket = (props) => {
   const {dispatch, loading, grabLoading} = props;
   const {dataSource} = props;
   // 获取课堂id
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
-  useEffect(() => {
+  /* useEffect(() => {
     if (classHourId) {
       // 查询金融市场数据
       dispatch({
@@ -28,10 +17,10 @@ const FinancingTabMarket = (props) => {
         payload: {classHourId}
       })
     }
-  }, [])
+  }, []) */
   /**
    * 投融资抢单
-   * @param financialMarketId row id
+   * @param financialMarketId
    */
   const gifGrab = (financialMarketId) => {
     if (classHourId && financialMarketId) {
@@ -101,7 +90,7 @@ const FinancingTabMarket = (props) => {
     <>
       <PublicTable
         // dataSource={dataSource}
-        dataSource={originData}
+        // dataSource={originData}
         columns={columns}
         loading={loading}
         bordered

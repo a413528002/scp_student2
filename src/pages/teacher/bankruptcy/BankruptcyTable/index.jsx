@@ -90,7 +90,7 @@ const BankruptcyTable = (props) => {
       dataIndex: 'value1',
       key: 'value1',
       render: (_, { bankInjectMoneyId, status }) =>
-        status === 'INIT' ? (
+        status === 'PENDING' ? (
           <Popconfirm
             title="确认同意"
             onConfirm={() => agreedToInject(bankInjectMoneyId)}

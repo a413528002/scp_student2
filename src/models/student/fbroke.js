@@ -9,9 +9,9 @@ const BrokeModel = {
   effects: {
     // 查询列表
     *queryBankInjectMonies({ payload }, { call, put }) {
-      const response = yield call(queryBankInjectMonies, payload) || [];
+      const response = yield call(queryBankInjectMonies, payload);
       if (!response.errCode) {
-        const queryBankruptciesData = Array.isArray(response).map((item) => {
+        const queryBankruptciesData = response?.map((item) => {
           return {
             ...item,
             _key: item.bankExpenseId,
