@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Card, Descriptions, Empty, Space } from 'antd';
+import { Button, Card, Descriptions, Empty, Popconfirm, message } from 'antd';
 import PublicTable from '@/components/Table';
 
 const Control = (props) => {
@@ -21,6 +21,10 @@ const Control = (props) => {
   useEffect(() => {
     getClassInfoData();
   }, [classHourId]);
+  // 关闭pop
+  const handleCancelPop = () => {
+    message.error('已取消');
+  };
   const dataSource = [
     {
       _key: '0',
@@ -122,15 +126,16 @@ const Control = (props) => {
       render: (_, { opt }) => (
         <>
           {opt.map((item, i) => (
-            <Button
+            <Popconfirm
               key={i}
-              type="primary"
-              disabled={item.buttonDisabled}
-              onClick={item.onClick}
-              style={{ marginRight: '5px' }}
+              title={`确认${item.buttonName}?`}
+              onConfirm={item.onClick}
+              onCancel={handleCancelPop}
             >
-              {item.buttonName}
-            </Button>
+              <Button type="primary" disabled={item.buttonDisabled} style={{ marginRight: '5px' }}>
+                {item.buttonName}
+              </Button>
+            </Popconfirm>
           ))}
         </>
       ),
