@@ -5,9 +5,9 @@ import NewClassroomModal from '@/pages/teacher/classroom/NewClassroomModal';
 import SwitchClassroomModal from '@/pages/teacher/classroom/SwitchClassroomModal';
 
 const ClassroomInformation = (props) => {
-  const {dispatch, teacherInClassData} = props
+  const { dispatch, teacherInClassData, startClassHourLoading } = props;
 
-  const TEACHER_IN_CLASS = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'))
+  const TEACHER_IN_CLASS = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS'));
 
   const {
     classHourCode,
@@ -15,7 +15,8 @@ const ClassroomInformation = (props) => {
     classHourName,
     classHourStatusName,
     classHourId,
-  } = teacherInClassData
+    classHourStatus,
+  } = teacherInClassData;
 
   // 新建课堂modal显示状态 ----start-----
   const [newClassroomModalVisible, setNewClassroomModalVisible] = useState(false);
@@ -50,23 +51,34 @@ const ClassroomInformation = (props) => {
     dispatch({
       type: 'teacherClassroom/endClassHour',
       payload: {
-        classHourId
-      }
-    })
-  }
-
+        classHourId,
+      },
+    });
+  };
+  // 开始课堂并且选择课堂
+  const startClassHour = () => {
+    if (classHourId) {
+      dispatch({
+        type: 'teacherClassroom/startClassHour',
+        payload: {
+          classHourId,
+        },
+      });
+    }
+  };
+  // 关闭pop
   const handleCancelClassOverModal = () => {
     message.error('已取消');
-  }
+  };
 
   useEffect(() => {
     if (!classHourId && TEACHER_IN_CLASS) {
       dispatch({
         type: 'teacherClassroom/switchClassroom',
-        payload: TEACHER_IN_CLASS
-      })
+        payload: TEACHER_IN_CLASS,
+      });
     }
-  }, [classHourId])
+  }, [classHourId]);
 
   return (
     <Card
@@ -75,46 +87,60 @@ const ClassroomInformation = (props) => {
       extra={
         <>
           <Space>
-            <Button type="primary" onClick={handleNewClassroomShowModal}>新建课堂</Button>
-            <Button type="primary" onClick={handleSwitchClassroomShowModal}>切换课堂</Button>
-            <Popconfirm
-              title="确认下课"
-              onConfirm={endClassHour}
-              onCancel={handleCancelClassOverModal}
-            >
-              <Button>下课</Button>
-            </Popconfirm>
+            <Button type="primary" onClick={handleNewClassroomShowModal}>
+              新建课堂
+            </Button>
+            <Button type="primary" onClick={handleSwitchClassroomShowModal}>
+              切换课堂
+            </Button>
+            {classHourStatus && classHourStatus === 'INIT' ? (
+              <Button type="primary" onClick={startClassHour} loading={startClassHourLoading}>
+                上课
+              </Button>
+            ) : (
+              <Popconfirm
+                title="确认下课"
+                onConfirm={endClassHour}
+                onCancel={handleCancelClassOverModal}
+              >
+                <Button>下课</Button>
+              </Popconfirm>
+            )}
           </Space>
         </>
       }
-      type='inner'
+      type="inner"
     >
       {classHourId ? (
         <Descriptions column={2}>
           <Descriptions.Item label="课堂编号">{classHourCode}</Descriptions.Item>
           <Descriptions.Item label="教师名称">{tchNickname}</Descriptions.Item>
           <Descriptions.Item label="课堂名称">{classHourName}</Descriptions.Item>
-          <Descriptions.Item label="课堂状态"><span style={{color: "red"}}>{classHourStatusName}</span></Descriptions.Item>
+          <Descriptions.Item label="课堂状态">
+            <span style={{ color: 'red' }}>{classHourStatusName}</span>
+          </Descriptions.Item>
         </Descriptions>
-      ) : <Empty/>}
+      ) : (
+        <Empty />
+      )}
 
-      {/*新建课堂modal*/}
+      {/* 新建课堂modal */}
       <NewClassroomModal
         newClassroomModalVisible={newClassroomModalVisible}
         handleNewClassroomCancelModal={handleNewClassroomCancelModal}
       />
-      {/*切换课堂modal*/}
-      {
-        switchClassroomModalVisible && <SwitchClassroomModal
+      {/* 切换课堂modal */}
+      {switchClassroomModalVisible && (
+        <SwitchClassroomModal
           switchClassroomModalVisible={switchClassroomModalVisible}
           handleSwitchClassroomCancelModal={handleSwitchClassroomCancelModal}
         />
-      }
-
+      )}
     </Card>
-  )
-}
+  );
+};
 
-export default connect(({teacherClassroom}) => ({
-  teacherInClassData: teacherClassroom.teacherClassroomTeacherInClassData
-}))(ClassroomInformation)
+export default connect(({ teacherClassroom, loading }) => ({
+  teacherInClassData: teacherClassroom.teacherClassroomTeacherInClassData,
+  startClassHourLoading: loading.effects['teacherClassroom/startClassHour'],
+}))(ClassroomInformation);

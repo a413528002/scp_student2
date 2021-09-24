@@ -100,7 +100,7 @@ const InterestSettlementModal = (props) => {
       render: (period) => `第${period}期`,
     },
     {
-      title: '利息支出(万元)',
+      title: '利息收入(万元)',
       dataIndex: 'interest',
       key: 'interest',
       editable: true,
