@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, message, Row, Spin } from 'antd';
+import { Button, Card, Col, Empty, message, Row, Spin } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { isNumber, unique } from '@/utils/commonUtils';
 
@@ -79,18 +79,20 @@ const StatementContent = (props) => {
       setDataSource(reportDetails)
     }
   },[reportDetails])
+
   return (
     <Spin spinning={loading || false}>
       <Card bordered={true} bodyStyle={{padding:'0px'}}>
         <Row justify={'start'} wrap={false} >
           {
-            columnArray.map((columnNo) =>
-              <Col key={columnNo} flex={1} order={columnNo}>
-                <StatementContentTable dataSource={dataSource.filter(item => item.columnNo === columnNo)}
-                                       columns={columns}
-                                       onValuesChange={mergeDataSource}
-                />
-              </Col>)
+            columnArray.length > 0 ?
+              (columnArray.map((columnNo) =>
+                <Col key={columnNo} flex={1} order={columnNo}>
+                  <StatementContentTable dataSource={dataSource.filter(item => item.columnNo === columnNo)}
+                                         columns={columns}
+                                         onValuesChange={mergeDataSource}
+                  />
+                </Col>)) : (<Col flex={1}><Empty/></Col>)
           }
         </Row>
       </Card>
