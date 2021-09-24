@@ -1,4 +1,5 @@
 import {
+  queryBankMarketings,
   queryBankOrganizations,
   queryBankPeriodInfos,
   queryBankWrongs,
@@ -7,18 +8,19 @@ import {
 const BusinessModel = {
   namespace: 'teacherBusiness',
   state: {
-    queryBankWrongsData: {},
-    queryBankPeriodInfosData: [],
-    queryBankOrganizationsData: [],
-    queryBankWrongsTotalElements: 0,
+    queryBankWrongsData: {}, // 错误记录数据
+    queryBankWrongsTotalElements: 0, // 错误记录数据总条数
+    queryBankPeriodInfosData: [], // 银行期间数据
+    queryBankOrganizationsData: [], // 银行机构数据
+    queryBankMarketingsData: {}, // 营销费用数据
+    queryBankMarketingsTotalElements: 0, // 营销费用数据总条数
   },
   effects: {
     // 查询各个银行错误记录
     *queryBankWrongs({ payload }, { call, put }) {
       const response = yield call(queryBankWrongs, payload);
       if (!response.errCode) {
-        const content = response['content'];
-        const queryBankWrongsTotalElements = response['totalElements'];
+        const { content, totalElements: queryBankWrongsTotalElements } = response;
         const queryBankWrongsData = {
           ...response,
           content: content?.map((item, index) => {
@@ -33,6 +35,29 @@ const BusinessModel = {
           payload: {
             queryBankWrongsData,
             queryBankWrongsTotalElements,
+          },
+        });
+      }
+    },
+    // 查询各个银行营销费用
+    *queryBankMarketings({ payload }, { call, put }) {
+      const response = yield call(queryBankMarketings, payload);
+      if (!response.errCode) {
+        const { content, totalElements: queryBankMarketingsTotalElements } = response;
+        const queryBankMarketingsData = {
+          ...response,
+          content: content?.map((item, index) => {
+            return {
+              ...item,
+              _key: index,
+            };
+          }),
+        };
+        yield put({
+          type: 'save',
+          payload: {
+            queryBankMarketingsData,
+            queryBankMarketingsTotalElements,
           },
         });
       }
