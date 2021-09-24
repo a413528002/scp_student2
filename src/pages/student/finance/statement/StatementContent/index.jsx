@@ -38,6 +38,7 @@ const StatementContent = (props) => {
       title: titleItem,
       dataIndex: 'valueItem',
       key: 'valueItem',
+      width: '40%',
       editable: false,
     },
     {

@@ -204,5 +204,4 @@ export default connect(({ studentStatement, loading }) => ({
   endBusinessLoading: loading.effects['studentStatement/endBusiness'],
   endFinanceLoading: loading.effects['studentStatement/endFinance'],
   submitReportLoading: loading.effects['studentStatement/submitReport'],
-  saveBankReportLoading: loading.effects['studentStatement/saveBankReport'],
 }))(StatementTabs);
