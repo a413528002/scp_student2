@@ -99,6 +99,7 @@ const StatementModel = {
           type: 'save',
           payload: { queryBankReportData },
         });
+        // console.timeEnd("str2") //结束
       }
     },
     // 保存报表

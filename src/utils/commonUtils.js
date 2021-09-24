@@ -29,6 +29,31 @@ export function delay(ms) {
 }
 
 /**
+ * 数组去重
+ * @param arr
+ * @returns {unknown[]}
+ */
+export function unique (arr) {
+  const n = [];
+  for(let i = 0; i < arr.length; i++){
+    if (n.indexOf(arr[i]) === -1) n.push(arr[i]);
+  }
+  return n;
+}
+
+/**
+ * 判断是否数字
+ * @param val
+ * @returns {boolean}
+ */
+export function isNumber(val) {
+  if(val === "" || val == null){
+    return false;
+  }
+  return !isNaN(val)
+}
+
+/**
  * 金额提交转换 万元转换为元
  * @param obj
  * @returns {{}}
