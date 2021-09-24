@@ -183,6 +183,12 @@ export default [
             component: './student/finance/broke',
           },
           {
+            // 会计
+            path: './accountant',
+            name: 'accountant',
+            component: './student/finance/accountant',
+          },
+          {
             // 报表
             path: './statement',
             name: 'statement',
