@@ -8,7 +8,6 @@ import Million from '@/components/Million';
 const BrokeTable = (props) => {
   const { dispatch, loading } = props;
   const { dataSource } = props;
-
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
