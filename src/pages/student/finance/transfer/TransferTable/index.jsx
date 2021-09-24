@@ -1,9 +1,8 @@
 import React from 'react';
-import PublicTable from "@/components/Table";
-import {Button,Card} from "antd";
+import PublicTable from '@/components/Table';
+import { Button, Card } from 'antd';
 
 const TransferTable = () => {
-
   const dataSource = [];
   const columns = [
     {
@@ -22,20 +21,7 @@ const TransferTable = () => {
       key: 'address',
     },
   ];
-  return (
-    <Card
-      title='资金转账'
-      bordered={false}
-      type='inner'
-      extra={<Button type='primary'>保存</Button>}
-    >
-      <PublicTable
-        dataSource={dataSource}
-        columns={columns}
-        bordered
-      />
-    </Card>
-  );
+  return <PublicTable dataSource={dataSource} columns={columns} bordered />;
 };
 
 export default TransferTable;
