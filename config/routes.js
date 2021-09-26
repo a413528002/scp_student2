@@ -279,28 +279,28 @@ export default [
       },
       // 宏观经济
       {
-        path: 'teacher/macro',
+        path: './macro',
         name: 'macro',
         icon: 'FireOutlined',
         component: './teacher/macro',
       },
       // 经营管理
       {
-        path: 'teacher/business',
+        path: './business',
         name: 'business',
         icon: 'RiseOutlined',
         component: './teacher/business',
       },
       // 破产管理
       {
-        path: 'teacher/bankruptcy',
+        path: './bankruptcy',
         name: 'bankruptcy',
         icon: 'PieChartOutlined',
         component: './teacher/bankruptcy',
       },
       // 排行榜
       {
-        path: 'teacher/ranking',
+        path: './ranking',
         name: 'ranking',
         icon: 'RocketOutlined',
         component: './teacher/ranking',
