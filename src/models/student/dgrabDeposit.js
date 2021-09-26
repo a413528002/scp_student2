@@ -72,15 +72,23 @@ const GrabDepositModel = {
     setGrabbedData(state, {payload}) {
       const classFinancialMarketId = payload
       // 将该条金融数据状态改为已被抢单
-      const financialMarketData = state.financialMarketData.map(item => {
-        if (item.classFinancialMarketId === classFinancialMarketId) {
-          return {
-            ...item,
-            status: 'GRABBED'
+      const financialMarketData = state.financialMarketData
+        .map(item => {
+          if (item.classFinancialMarketId === classFinancialMarketId) {
+            return {
+              ...item,
+              status: 'GRABBED'
+            }
           }
-        }
-        return item
-      })
+          return item
+        })
+        // 将被抢单的移到数组末尾
+        .sort((a, b) => {
+          return (a.status === 'NORMAL' ? a.orderNo : a.orderNo + 100000) - (b.status === 'NORMAL' ? b.orderNo: b.orderNo + 100000);
+        })
+
+
+
 
       return {
         ...state,
@@ -94,12 +102,17 @@ const GrabDepositModel = {
       // 距离开始时间=当前用户对应的银行开始时间-服务器时间
       const startDuration = serverTime && startTimes && startTimes[currentUserId]
         && Math.max(0, Math.trunc((startTimes[currentUserId] - serverTime) / 1000))
-      const financialMarketData = data?.map((item, index) => {
-        return {
-          ...item,
-          _key: index,
-        }
-      }) ?? [];
+      const financialMarketData = data
+        ?.map((item, index) => {
+          return {
+            ...item,
+            _key: index,
+          }
+        })
+        // 将被抢单的移到数组末尾
+        .sort((a, b) => {
+          return (a.status === 'NORMAL' ? a.orderNo : a.orderNo + 100000) - (b.status === 'NORMAL' ? b.orderNo: b.orderNo + 100000);
+        }) ?? [];
       return {
         ...state,
         grabStatus,
