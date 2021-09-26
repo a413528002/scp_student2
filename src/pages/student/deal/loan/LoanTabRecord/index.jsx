@@ -13,8 +13,9 @@ const LoanTabRecord = (props) => {
   const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
   const columns = [
     {
-      title: '序号',
-      dataIndex: 'orderNo',
+      title: '所属期数',
+      dataIndex: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '业务类型',
