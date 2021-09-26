@@ -128,6 +128,12 @@ export default [
             name: 'loanMng',
             component: './student/deal/loanMng',
           },
+          {
+            // 不良资产管理
+            path: './asset',
+            name: 'asset',
+            component: './student/deal/asset',
+          },
         ],
       },
       // 金融
@@ -184,9 +190,9 @@ export default [
           },
           {
             // 会计
-            path: './accountant',
-            name: 'accountant',
-            component: './student/finance/accountant',
+            path: './certificate',
+            name: 'certificate',
+            component: './student/finance/certificate',
           },
           {
             // 报表
