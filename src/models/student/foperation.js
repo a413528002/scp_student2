@@ -4,19 +4,23 @@ import { queryBankExpenses, updateBankExpense } from '@/services/student/be';
 const OperationModel = {
   namespace: 'studentOperation',
   state: {
-    queryBankExpensesData: [],
+    queryBankExpensesData: {},
   },
   effects: {
     // 查询薪资/费用
     *queryBankExpenses({ payload }, { call, put }) {
       const response = yield call(queryBankExpenses, payload);
       if (!response.errCode) {
-        const queryBankExpensesData = response.map((item) => {
-          return {
-            ...item,
-            _key: item.bankExpenseId,
-          };
-        });
+        const { bankExpenses } = response;
+        const queryBankExpensesData = {
+          ...response,
+          bankExpenses: bankExpenses?.map((item) => {
+            return {
+              ...item,
+              _key: item.bankExpenseId,
+            };
+          }),
+        };
         yield put({
           type: 'save',
           payload: {

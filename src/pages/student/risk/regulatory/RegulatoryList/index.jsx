@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import styles from '@/pages/student/risk/regulatory/index.less';
-import { Button, Form, Radio, InputNumber, Typography, Descriptions, Card } from 'antd';
+import { Button, Form, Radio, InputNumber, Typography, Descriptions, Card, Input } from 'antd';
 import { yuan } from '@/utils/commonUtils';
 
 const { Title } = Typography;
@@ -135,13 +135,13 @@ const RegulatoryList = (props) => {
           <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
         <Form.Item name="capitalAdequacyRatio" label="资本充足率（%）">
-          <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} stringMode />
+          <Input min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
         <Form.Item name="loanToDepositRatio" label="存贷比（%）">
-          <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} stringMode />
+          <Input min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
         <Form.Item name="provisionCoverage" label="拨备覆盖率（%）">
-          <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} stringMode />
+          <Input min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
       </Card>
     </Form>

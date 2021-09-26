@@ -32,12 +32,12 @@ const BusinessTabs = () => {
     },
     {
       key: 'deposit',
-      tab: '存款记录',
+      tab: '存款抢单记录',
       content: <DepositContent />,
     },
     {
       key: 'loan',
-      tab: '贷款记录',
+      tab: '贷款抢单记录',
       content: <LoanContent />,
     },
     {

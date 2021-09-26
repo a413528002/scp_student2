@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Select, Button, Form, InputNumber, Popconfirm, Space } from 'antd';
+import { Button, Form, InputNumber, Popconfirm, Space, Radio } from 'antd';
 import styles from '@/pages/student/finance/operation/index.less';
 import Million from '@/components/Million';
 import { yuan } from '@/utils/commonUtils';
@@ -50,7 +50,10 @@ const EditableCell = ({
 
 const OperationTable = (props) => {
   const { dispatch, loading, saveLoading } = props;
-  const { dataSource } = props;
+  const {
+    dataSource,
+    queryBankExpensesData: { period, periodCur, periodTtl },
+  } = props;
   const [form] = Form.useForm();
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -92,18 +95,33 @@ const OperationTable = (props) => {
     }
   };
 
-  // 初始化查询期数
-  const [period, setPeriod] = useState(null);
+  // 是否可以编辑
+  const [editForm, setEditForm] = useState(true);
+
+  /**
+   * 查询薪资/费用
+   * @param classHourId 课堂id
+   */
+  const queryBankExpenses = (classHourId, period) => {
+    dispatch({
+      type: 'studentOperation/queryBankExpenses',
+      payload: { classHourId, period },
+    });
+  };
 
   useEffect(() => {
     if (classHourId) {
-      // 查询薪资/费用
-      dispatch({
-        type: 'studentOperation/queryBankExpenses',
-        payload: { classHourId, period },
-      });
+      queryBankExpenses(classHourId);
     }
   }, []);
+
+  // 切换期数
+  const onRadioChange = (e) => {
+    const period = e.target.value;
+    // 当期才能显示操作按钮
+    setEditForm(period === periodCur);
+    queryBankExpenses(classHourId, period);
+  };
   const columns = [
     {
       title: '期数',
@@ -157,14 +175,16 @@ const OperationTable = (props) => {
             </Popconfirm>
           </Space>
         ) : (
-          <Button
-            type="primary"
-            size="small"
-            disabled={editingKey !== ''}
-            onClick={() => handleEdit(record)}
-          >
-            编辑
-          </Button>
+          editForm && (
+            <Button
+              type="primary"
+              size="small"
+              disabled={editingKey !== ''}
+              onClick={() => handleEdit(record)}
+            >
+              编辑
+            </Button>
+          )
         );
       },
     },
@@ -189,12 +209,18 @@ const OperationTable = (props) => {
   return (
     <>
       <div className={styles.choose}>
-        <Select defaultValue="one" style={{ width: 120 }}>
-          <Select.Option value="one">第一期</Select.Option>
-          <Select.Option value="two">第二期</Select.Option>
-        </Select>
+        <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
+          {Array(periodTtl)
+            .fill()
+            .map((e, i) => i + 1)
+            .map((e) => (
+              <Radio.Button disabled={e > periodCur} key={e} value={e}>
+                第{e}期
+              </Radio.Button>
+            ))}
+        </Radio.Group>
       </div>
-      {/*表单提交*/}
+      {/* 表单提交 */}
       <Form form={form} component={false}>
         <PublicTable
           components={{
@@ -214,7 +240,8 @@ const OperationTable = (props) => {
 };
 
 export default connect(({ studentOperation, loading }) => ({
-  dataSource: studentOperation.queryBankExpensesData,
+  dataSource: studentOperation.queryBankExpensesData.bankExpenses,
+  queryBankExpensesData: studentOperation.queryBankExpensesData,
   loading: loading.effects['studentOperation/queryBankExpenses'],
   saveLoading: loading.effects['studentOperation/updateBankExpense'],
 }))(OperationTable);
