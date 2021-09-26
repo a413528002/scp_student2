@@ -8,6 +8,14 @@ export async function queryUsers(params) {
   });
 }
 
+// 查询角色
+export async function queryRoles(params) {
+  return request(`${NODE_API}/admin/user/queryRoles`, {
+    method: 'GET',
+    params,
+  });
+}
+
 // 更新用户
 export async function update(params) {
   return request(`${NODE_API}/admin/user/update`, {

@@ -1,10 +1,11 @@
-import { changePassword, queryUsers, template, update, userImport } from '@/services/admin/user';
+import { changePassword, queryRoles, queryUsers, template, update, userImport } from '@/services/admin/user';
 import { message } from 'antd';
 
 const UserModel = {
   namespace: 'adminUser',
   state: {
     queryUsersData: {},
+    queryRolesData: [],
   },
   effects: {
     // 分页查询
@@ -29,6 +30,27 @@ const UserModel = {
         });
       }
     },
+
+    // 分页查询角色
+    *queryRoles({ payload }, { call, put }) {
+      const response = yield call(queryRoles, payload);
+      if (!response.errCode) {
+        const queryRolesData = response.map((item, index) => {
+          return {
+            ...item,
+            _key: index,
+          };
+        })
+
+        yield put({
+          type: 'save',
+          payload: {
+            queryRolesData,
+          },
+        });
+      }
+    },
+
     // 修改用户
     *update({ payload, callback }, { call, put }) {
       const response = yield call(update, payload);

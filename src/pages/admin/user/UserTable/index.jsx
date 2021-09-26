@@ -6,11 +6,20 @@ import UploadUserModal from '@/pages/admin/user/UploadUserModal';
 
 const UserTable = (props) => {
   const { dispatch, loading, updateLoading, downloadLoading } = props;
-  const { dataSource, total } = props;
+  const { roles, dataSource, total } = props;
   // 初始页数
   const [page, setPage] = useState(0);
   // 每页条数
   const [size, setSize] = useState(10);
+
+  // 获取角色
+  useEffect(() => {
+    // 分页查询
+    dispatch({
+      type: 'adminUser/queryRoles',
+    });
+  }, []);
+
   // 获取课堂id
   useEffect(() => {
     // 分页查询
@@ -70,9 +79,11 @@ const UserTable = (props) => {
       key: 'tenantId',
     },
     {
-      title: '权限集合',
+      title: '角色',
       dataIndex: 'roles',
-      key: 'roles',
+      render: (_roles) => {
+        return _roles?.map(e => roles.find(r => e === r.id)?.name || '').join(",")
+      }
     },
     {
       title: '启用',
@@ -131,6 +142,7 @@ const UserTable = (props) => {
 };
 
 export default connect(({ adminUser, loading }) => ({
+  roles: adminUser.queryRolesData,
   dataSource: adminUser.queryUsersData.content,
   total: adminUser.queryUsersData.totalElements,
   loading: loading.effects['adminUser/queryUsers'],
