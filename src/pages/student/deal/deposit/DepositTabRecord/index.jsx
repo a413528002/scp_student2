@@ -3,19 +3,20 @@ import PublicTable from '@/components/Table';
 import { connect } from 'umi';
 import { toPercent } from '@/utils/commonUtils';
 import { Tag } from 'antd';
-import Tags from "@/components/Tags";
-import Million from "@/components/Million";
+import Tags from '@/components/Tags';
+import Million from '@/components/Million';
 
 const DepositTabRecord = (props) => {
-  const {dispatch, dataSource} = props
-  const {loading} = props
+  const { dispatch, dataSource } = props;
+  const { loading } = props;
 
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
   const columns = [
     {
-      title: '序号',
-      dataIndex: 'orderNo',
+      title: '所属期数',
+      dataIndex: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '业务类型',
@@ -55,10 +56,10 @@ const DepositTabRecord = (props) => {
     if (classHourId) {
       dispatch({
         type: 'studentGrabDeposit/queryLogs',
-        payload: { classHourId }
-      })
+        payload: { classHourId },
+      });
     }
-  }, [classHourId])
+  }, [classHourId]);
 
   return (
     <div>
@@ -76,7 +77,7 @@ const DepositTabRecord = (props) => {
   );
 };
 
-export default connect(({studentGrabDeposit, loading}) => ({
+export default connect(({ studentGrabDeposit, loading }) => ({
   dataSource: studentGrabDeposit.logData,
-  loading:loading.effects['studentGrabDeposit/queryLogs'],
+  loading: loading.effects['studentGrabDeposit/queryLogs'],
 }))(DepositTabRecord);
