@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Card, Space, Switch } from 'antd';
+import { Button, Card, message, Space } from 'antd';
 import PublicTable from '@/components/Table';
 import UploadUserModal from '@/pages/admin/user/UploadUserModal';
 
@@ -46,12 +46,12 @@ const UserTable = (props) => {
     setModalVisible(false);
   };
 
-  const updateEnabled = (record, e) => {
+  const updateEnabled = (record, enabled) => {
     dispatch({
       type: 'adminUser/update',
       payload: {
         ...record,
-        enabled: e
+        enabled
       },
       callback: () => {
         dispatch({
@@ -62,45 +62,68 @@ const UserTable = (props) => {
     });
   }
 
+
+
   const columns = [
     {
       title: '用户名',
       dataIndex: 'username',
       key: 'username',
+      width: '20%',
     },
     {
       title: '用户昵称',
       dataIndex: 'nickname',
       key: 'nickname',
-    },
-    {
-      title: '租户ID',
-      dataIndex: 'tenantId',
-      key: 'tenantId',
+      width: '20%',
     },
     {
       title: '角色',
       dataIndex: 'roles',
-      render: (_roles) => {
-        return _roles?.map(e => roles.find(r => e === r.id)?.name || '').join(",")
-      }
+      width: '20%',
+      render: (_roles) => _roles?.map(e => roles.find(r => e === r.id)?.name || '').join(",")
     },
     {
-      title: '启用',
+      title: '创建时间',
+      dataIndex: 'createdDate',
+      width: '15%',
+    },
+    {
+      title: '状态',
       dataIndex: 'enabled',
-      render: (text, record) => {
-        return <Switch
-          checkedChildren="ON"
-          unCheckedChildren="OFF"
-          onChange={e => updateEnabled(record, e)}
-          checked={text ? true : false}
-          loading={updateLoading}
-        />
-      }
+      width: '5%',
+      render: (enabled) => enabled ? '正常' : '停用'
+    },
+    {
+      title: '操作',
+      key: 'opt',
+      dataIndex: 'enabled',
+      render: (enabled, record) => {
+        return (
+          <Space>
+            <Button type="primary"
+                    size="small"
+                    onClick={() => message.error('暂不支持')}>
+              修改密码
+            </Button>
+            {
+              enabled ? (<Button type={enabled ? 'default' : 'primary'}
+                                 size="small"
+                                 loading={updateLoading}
+                                 onClick={() => updateEnabled(record, false)}
+                >停用</Button>) :
+                (<Button type="primary"
+                         size="small"
+                         loading={updateLoading}
+                         onClick={() => updateEnabled(record, true)}
+                >启用</Button>)
+            }
+          </Space>
+
+        );
+      },
     },
   ];
-
-
 
   return (
     <Card
@@ -127,10 +150,10 @@ const UserTable = (props) => {
           // 数据总数
           total,
           // 页码或 pageSize 改变的回调，参数是改变后的页码及每页条数
-          onChange: (page, pageSize) => {
+          onChange: (_page, _pageSize) => {
             // 接口page是从0开始
-            setPage(page - 1);
-            setSize(pageSize);
+            setPage(_page - 1);
+            setSize(_pageSize);
           },
         }}
       />
