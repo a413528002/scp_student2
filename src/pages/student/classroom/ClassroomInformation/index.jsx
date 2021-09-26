@@ -52,9 +52,14 @@ const ClassroomInformation = (props) => {
   }
   // 加入课堂
   const joinClassHour = () => {
-    dispatch({
-      type: 'studentClassroom/joinClassHour',
-    })
+    if (classData.classHourId){
+      dispatch({
+        type: 'studentClassroom/joinClassHour',
+      })
+    }else {
+      message.error('没有可加入的课堂信息')
+    }
+
   }
   // 退出课堂
   const exitClassHour = () => {
