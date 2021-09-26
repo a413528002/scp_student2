@@ -4,8 +4,8 @@ import { Button, Card, Tag } from 'antd';
 import PublicTable from '@/components/Table';
 import InterestSettlementModal from '@/pages/student/deal/loanMng/InterestSettlementModal';
 import Million from '@/components/Million';
-import Tags from "@/components/Tags";
-import {toPercent} from "@/utils/commonUtils";
+import Tags from '@/components/Tags';
+import { toPercent } from '@/utils/commonUtils';
 
 const LoanMngTable = (props) => {
   const { dispatch, dataSource, loading } = props;
@@ -79,9 +79,10 @@ const LoanMngTable = (props) => {
       key: 'term',
     },
     {
-      title: '所属期限',
+      title: '所属期数',
       dataIndex: 'period',
       key: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '信用评级',
