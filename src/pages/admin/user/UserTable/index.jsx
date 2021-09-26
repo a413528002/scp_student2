@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Button, Space } from 'antd';
+import { Button, Card, Space, Switch } from 'antd';
 import PublicTable from '@/components/Table';
 import UploadUserModal from '@/pages/admin/user/UploadUserModal';
 
 const UserTable = (props) => {
-  const { dispatch, loading, downloadLoading } = props;
+  const { dispatch, loading, updateLoading, downloadLoading } = props;
   const { dataSource, total } = props;
   // 初始页数
   const [page, setPage] = useState(0);
@@ -37,6 +37,22 @@ const UserTable = (props) => {
     setModalVisible(false);
   };
 
+  const updateEnabled = (record, e) => {
+    dispatch({
+      type: 'adminUser/update',
+      payload: {
+        ...record,
+        enabled: e
+      },
+      callback: () => {
+        dispatch({
+          type: 'adminUser/queryUsers',
+          payload: { page, size, sort: 'id,desc' },
+        });
+      }
+    });
+  }
+
   const columns = [
     {
       title: '用户名',
@@ -58,7 +74,23 @@ const UserTable = (props) => {
       dataIndex: 'roles',
       key: 'roles',
     },
+    {
+      title: '启用',
+      dataIndex: 'enabled',
+      render: (text, record) => {
+        return <Switch
+          checkedChildren="ON"
+          unCheckedChildren="OFF"
+          onChange={e => updateEnabled(record, e)}
+          checked={text ? true : false}
+          loading={updateLoading}
+        />
+      }
+    },
   ];
+
+
+
   return (
     <Card
       title="用户管理"
@@ -100,7 +132,8 @@ const UserTable = (props) => {
 
 export default connect(({ adminUser, loading }) => ({
   dataSource: adminUser.queryUsersData.content,
-  total: adminUser.queryUsersTotalElements,
+  total: adminUser.queryUsersData.totalElements,
   loading: loading.effects['adminUser/queryUsers'],
+  updateLoading: loading.effects['adminUser/update'],
   downloadLoading: loading.effects['adminUser/template'],
 }))(UserTable);

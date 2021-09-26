@@ -24,3 +24,11 @@ export async function queryBankOrganizations(params) {
   })
 }
 
+// 查询各个银行营销费用
+export async function queryBankMarketings(params) {
+  return request(`${NODE_API}/teacher/om/queryBankMarketings`, {
+    method: 'GET',
+    params
+  })
+}
+

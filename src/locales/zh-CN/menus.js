@@ -22,6 +22,7 @@ export default {
   'menu.student.finance.operation': '运营管理',
   'menu.student.finance.transfer': '资金转账',
   'menu.student.finance.broke': '破产管理',
+  'menu.student.finance.accountant': '会计凭证',
   'menu.student.finance.statement': '财务报表',
   'menu.student.risk': '风险管理',
   'menu.student.risk.handle': '操作风险',

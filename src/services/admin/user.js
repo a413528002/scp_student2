@@ -8,6 +8,22 @@ export async function queryUsers(params) {
   });
 }
 
+// 更新用户
+export async function update(params) {
+  return request(`${NODE_API}/admin/user/update`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+// 修改用户密码
+export async function changePassword(params) {
+  return request(`${NODE_API}/admin/user/changePassword`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 // 下载用户导入模板
 export async function template() {
   return request(`${NODE_API}/admin/user/template`, {
