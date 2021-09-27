@@ -85,7 +85,6 @@ const UserModel = {
     *template({ payload, callback }, { call }) {
       try {
         const response = yield call(template, payload);
-        console.log(response)
         if (!response.errCode && response.data instanceof Blob) {
           // 获取文件名
           const [_, _fileName] = new Headers(response.response.headers)
