@@ -5,7 +5,7 @@ import PublicTable from '@/components/Table';
 import UploadUserModal from '@/pages/admin/user/UploadUserModal';
 
 const UserTable = (props) => {
-  const { dispatch, loading, updateLoading, downloadLoading } = props;
+  const { dispatch, loading, updateLoading, resetPasswordLoading, downloadLoading } = props;
   const { roles, dataSource, total } = props;
   // 初始页数
   const [page, setPage] = useState(0);
@@ -126,7 +126,9 @@ const UserTable = (props) => {
               onConfirm={() => resetPassword(record)}
             >
               <Button type="primary"
-                      size="small">
+                      size="small"
+                      loading={resetPasswordLoading}
+              >
                 重置密码
               </Button>
             </Popconfirm>
@@ -182,5 +184,6 @@ export default connect(({ adminUser, loading }) => ({
   total: adminUser.queryUsersData.totalElements,
   loading: loading.effects['adminUser/queryUsers'],
   updateLoading: loading.effects['adminUser/update'],
+  resetPasswordLoading: loading.effects['adminUser/resetPassword'],
   downloadLoading: loading.effects['adminUser/template'],
 }))(UserTable);

@@ -85,11 +85,13 @@ const UserModel = {
     *template({ payload, callback }, { call }) {
       try {
         const response = yield call(template, payload);
+        console.log(response)
         if (!response.errCode && response.data instanceof Blob) {
           // 获取文件名
-          const [_, fileName] = new Headers(response.response.headers)
+          const [_, _fileName] = new Headers(response.response.headers)
             .get('content-disposition')
             .split('=');
+          const fileName = decodeURIComponent(_fileName)
           if (window.navigator.msSaveOrOpenBlob) {
             navigator.msSaveBlob(response.data, fileName);
           } else {
