@@ -5,7 +5,6 @@ import { isNumber, unique } from '@/utils/commonUtils';
 
 // 报表展示的组件
 const StatementContent = (props) => {
-
   const {
     reportDetails, // 报表数据
     titleItem, // 项目标题
@@ -21,17 +20,19 @@ const StatementContent = (props) => {
 
   // 分区数据合并到DataSource里面去
   const mergeDataSource = (partitionList) => {
-    setDataSource(dataSource.map(item => {
-      const data = partitionList.find(e => e.bankReportDetailId === item.bankReportDetailId)
-      if (data) {
-        return data;
-      }
-      return item;
-    }))
-  }
+    setDataSource(
+      dataSource.map((item) => {
+        const data = partitionList.find((e) => e.bankReportDetailId === item.bankReportDetailId);
+        if (data) {
+          return data;
+        }
+        return item;
+      }),
+    );
+  };
 
   // column数组去重
-  const columnArray = unique(reportDetails?.map(item => item.columnNo) || [])
+  const columnArray = unique(reportDetails?.map((item) => item.columnNo) || []);
 
   // 是否显示保存报表的按钮
   const showSubmitButton = editable && onSubmit && columnArray.length > 0;
@@ -66,37 +67,41 @@ const StatementContent = (props) => {
 
   const onSubmit0 = (e) => {
     for (let dataSourceElement of dataSource) {
-      const { valueB, valueM, valueE } = dataSourceElement
+      const { valueB, valueM, valueE } = dataSourceElement;
       // 暂时先这样预防输入非数字的金额
       if (!isNumber(valueB) || !isNumber(valueM) || !isNumber(valueE)) {
         message.error('输入金额格式错误');
         return;
       }
-
     }
     onSubmit(dataSource);
-  }
+  };
 
   useEffect(() => {
     if (reportDetails) {
-      setDataSource(reportDetails)
+      setDataSource(reportDetails);
     }
-  },[reportDetails])
+  }, [reportDetails]);
 
   return (
     <Spin spinning={loading || false}>
-      <Card bordered={true} bodyStyle={{padding:'0px'}}>
-        <Row justify={'start'} wrap={false} >
-          {
-            columnArray.length > 0 ?
-              (columnArray.map((columnNo) =>
-                <Col key={columnNo} flex={1} order={columnNo}>
-                  <StatementContentTable dataSource={dataSource.filter(item => item.columnNo === columnNo)}
-                                         columns={columns}
-                                         onValuesChange={mergeDataSource}
-                  />
-                </Col>)) : (<Col flex={1}><Empty/></Col>)
-          }
+      <Card bordered={true} bodyStyle={{ padding: '0px' }}>
+        <Row justify={'start'} wrap={false}>
+          {columnArray.length > 0 ? (
+            columnArray.map((columnNo) => (
+              <Col key={columnNo} flex={1} order={columnNo}>
+                <StatementContentTable
+                  dataSource={dataSource.filter((item) => item.columnNo === columnNo)}
+                  columns={columns}
+                  onValuesChange={mergeDataSource}
+                />
+              </Col>
+            ))
+          ) : (
+            <Col flex={1}>
+              <Empty />
+            </Col>
+          )}
         </Row>
       </Card>
       {/* 可编辑并且props传入onSubmit时渲染保存的按钮 */}
@@ -112,11 +117,7 @@ const StatementContent = (props) => {
 };
 
 const StatementContentTable = (props) => {
-  const {
-    dataSource,
-    columns,
-    onValuesChange
-  } = props;
+  const { dataSource, columns, onValuesChange } = props;
 
   // 获取所有编辑的key 如果不是当前期不返回可编辑的key
   const editableKeys = dataSource?.map((item) => item.bankReportDetailId);
@@ -125,7 +126,7 @@ const StatementContentTable = (props) => {
     <>
       <EditableProTable
         tableStyle={{ whiteSpace: 'pre' }} // 显示空格
-        cardProps={{bodyStyle: {padding:'0px'}}} // 去除ProTable里内嵌的Card的padding
+        cardProps={{ bodyStyle: { padding: '0px' } }} // 去除ProTable里内嵌的Card的padding
         columns={columns}
         rowKey="bankReportDetailId"
         value={dataSource}
@@ -141,7 +142,6 @@ const StatementContentTable = (props) => {
       />
     </>
   );
-
-}
+};
 
 export default StatementContent;

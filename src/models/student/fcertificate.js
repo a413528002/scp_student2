@@ -10,12 +10,16 @@ const CertificateModel = {
     *queryBankOriginalCertificates({ payload }, { call, put }) {
       const response = yield call(queryBankOriginalCertificates, payload);
       if (!response.errCode) {
-        const queryBankOriginalCertificatesData = response?.map((item) => {
-          return {
-            ...item,
-            _key: item.bankOriginalCertificateId,
-          };
-        });
+        const { bankOriginalCertificates } = response;
+        const queryBankOriginalCertificatesData = {
+          ...response,
+          bankOriginalCertificates: bankOriginalCertificates?.map((item) => {
+            return {
+              ...item,
+              _key: item.bankOriginalCertificateId,
+            };
+          }),
+        };
         yield put({
           type: 'save',
           payload: {
@@ -24,7 +28,6 @@ const CertificateModel = {
         });
       }
     },
-
   },
   reducers: {
     save(state, { payload }) {

@@ -1,16 +1,16 @@
-import {PageLoading} from '@ant-design/pro-layout';
-import {notification} from 'antd';
-import {history} from 'umi';
+import { PageLoading } from '@ant-design/pro-layout';
+import { notification } from 'antd';
+import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import {queryCurrentUser} from "@/services/user";
+import { queryCurrentUser } from '@/services/user';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /** 获取用户信息比较慢的时候会展示一个 loading */
 
 export const initialStateConfig = {
-  loading: <PageLoading/>,
+  loading: <PageLoading />,
 };
 
 /**
@@ -18,7 +18,6 @@ export const initialStateConfig = {
  * */
 
 export async function getInitialState() {
-
   const fetchUserInfo = async () => {
     try {
       const response = await queryCurrentUser();
@@ -101,14 +100,14 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
-}
+};
 export const request = {
   errorHandler: async (error) => {
-    const {response} = error;
+    const { response } = error;
 
     if (response && response.status) {
       const errorText = codeMessage[response.status] || response.statusText;
-      const {status} = response;
+      const { status } = response;
       // 401需要重新登录
       if (status === 401) {
         // 如果不是登录页面 跳转去登录页
@@ -117,7 +116,7 @@ export const request = {
         }
       }
       // 错误处理
-      const body = await response.clone().json()
+      const body = await response.clone().json();
       notification.error({
         message: '操作失败',
         description: body?.errMsg || errorText,
@@ -133,15 +132,14 @@ export const request = {
   },
 }; // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
-
-export const layout = ({initialState}) => {
+export const layout = ({ initialState }) => {
   return {
-    rightContentRender: () => <RightContent/>,
+    rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
-    footerRender: () => <Footer/>,
+    footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history; // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {

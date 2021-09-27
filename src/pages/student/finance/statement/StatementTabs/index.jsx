@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Empty, Radio, Space, Tabs } from 'antd';
 import StatementTips from '@/pages/student/finance/statement/StatementTips';
 import StatementContent from '@/pages/student/finance/statement/StatementContent';
+import styles from '@/pages/student/finance/statement/index.less';
 
 const { TabPane } = Tabs;
 const StatementTabs = (props) => {
@@ -20,7 +21,17 @@ const StatementTabs = (props) => {
     tipsInfo,
     tabList,
     firstTabPaneDefault,
-    queryBankReportData: { periodCur, periodTtl, period ,reportCode, reportDetails, titleItem, titleB, titleE, titleM },
+    queryBankReportData: {
+      periodCur,
+      periodTtl,
+      period,
+      reportCode,
+      reportDetails,
+      titleItem,
+      titleB,
+      titleE,
+      titleM,
+    },
   } = props;
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -40,7 +51,7 @@ const StatementTabs = (props) => {
         payload: { classHourId, reportDetails: _reportDetails },
       });
     }
-  }
+  };
 
   /**
    * 询银行期间信息
@@ -84,7 +95,7 @@ const StatementTabs = (props) => {
     if (classHourId && firstTabPaneDefault) {
       queryBankReport(firstTabPaneDefault);
     }
-  }, [classHourId,firstTabPaneDefault]);
+  }, [classHourId, firstTabPaneDefault]);
 
   // tabs切换时的回调
   const onChangeTabs = (_reportCode) => {
@@ -168,15 +179,21 @@ const StatementTabs = (props) => {
               <TabPane tab={reportName} key={_reportCode} />
             ))}
           </Tabs>
-          <Radio.Group value={period} onChange={(e) => queryBankReport(reportCode, e.target.value)} buttonStyle="solid">
-            {new Array(periodTtl).fill().map((_, index) => {
-              return (
-                <Radio.Button value={index + 1} key={index} disabled={index + 1 > periodCur}>
-                  {`第${index + 1}期`}
-                </Radio.Button>
-              );
-            })}
-          </Radio.Group>
+          <div className={styles.choose}>
+            <Radio.Group
+              value={period}
+              onChange={(e) => queryBankReport(reportCode, e.target.value)}
+              buttonStyle="solid"
+            >
+              {new Array(periodTtl).fill().map((_, index) => {
+                return (
+                  <Radio.Button value={index + 1} key={index} disabled={index + 1 > periodCur}>
+                    {`第${index + 1}期`}
+                  </Radio.Button>
+                );
+              })}
+            </Radio.Group>
+          </div>
           <StatementContent
             reportDetails={reportDetails}
             titleItem={titleItem}
