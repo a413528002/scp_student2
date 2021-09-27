@@ -1,4 +1,12 @@
-import { changePassword, queryRoles, queryUsers, template, update, userImport } from '@/services/admin/user';
+import {
+  changePassword,
+  queryRoles,
+  queryUsers,
+  resetPassword,
+  template,
+  update,
+  userImport,
+} from '@/services/admin/user';
 import { message } from 'antd';
 
 const UserModel = {
@@ -55,7 +63,7 @@ const UserModel = {
     *update({ payload, callback }, { call, put }) {
       const response = yield call(update, payload);
       if (!response.errCode) {
-
+        message.success('修改成功')
       }
       callback()
     },
@@ -63,7 +71,14 @@ const UserModel = {
     *changePassword({ payload }, { call, put }) {
       const response = yield call(changePassword, payload);
       if (!response.errCode) {
-
+        message.success('修改成功')
+      }
+    },
+    // 重置用户密码
+    *resetPassword({ payload }, { call, put }) {
+      const response = yield call(resetPassword, payload);
+      if (!response.errCode) {
+        message.success('重置成功')
       }
     },
     // 分页查询

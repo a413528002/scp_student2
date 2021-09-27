@@ -32,6 +32,14 @@ export async function changePassword(params) {
   });
 }
 
+// 重置用户密码
+export async function resetPassword(params) {
+  return request(`${NODE_API}/admin/user/resetPassword`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 // 下载用户导入模板
 export async function template() {
   return request(`${NODE_API}/admin/user/template`, {

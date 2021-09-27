@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Card, message, Space } from 'antd';
+import { Button, Card, Popconfirm, Space } from 'antd';
 import PublicTable from '@/components/Table';
 import UploadUserModal from '@/pages/admin/user/UploadUserModal';
 
@@ -62,6 +62,15 @@ const UserTable = (props) => {
     });
   }
 
+  const resetPassword = (record) => {
+    if (record && record.id) {
+      dispatch({
+        type: 'adminUser/resetPassword',
+        payload: {userId : record.id}
+      });
+    }
+  }
+
 
 
   const columns = [
@@ -97,27 +106,30 @@ const UserTable = (props) => {
     {
       title: '操作',
       key: 'opt',
-      dataIndex: 'enabled',
-      render: (enabled, record) => {
+      render: (_, record) => {
         return (
           <Space>
-            <Button type="primary"
-                    size="small"
-                    onClick={() => message.error('暂不支持')}>
-              修改密码
-            </Button>
             {
-              enabled ? (<Button type={enabled ? 'default' : 'primary'}
+              record?.enabled ? (<Button type='primary'
                                  size="small"
                                  loading={updateLoading}
                                  onClick={() => updateEnabled(record, false)}
                 >停用</Button>) :
-                (<Button type="primary"
+                (<Button type="default"
                          size="small"
                          loading={updateLoading}
                          onClick={() => updateEnabled(record, true)}
                 >启用</Button>)
             }
+            <Popconfirm
+              title={`确认重置为初始密码?`}
+              onConfirm={() => resetPassword(record)}
+            >
+              <Button type="primary"
+                      size="small">
+                重置密码
+              </Button>
+            </Popconfirm>
           </Space>
 
         );
