@@ -4,7 +4,7 @@ import { Button, Card, Descriptions, Empty, Popconfirm, message } from 'antd';
 import PublicTable from '@/components/Table';
 
 const Control = (props) => {
-  const { dispatch, classInfo, loading } = props;
+  const { dispatch, classInfo, loading, operationLoading } = props;
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {};
   const getClassInfoData = () => {
@@ -32,6 +32,7 @@ const Control = (props) => {
       opt: [
         {
           buttonName: '开始经营',
+          buttonLoading: operationLoading,
           buttonDisabled: classInfo.periodStatus !== 'PREPARING',
           onClick: () => {
             dispatch({
@@ -41,6 +42,7 @@ const Control = (props) => {
         },
         {
           buttonName: '结束经营',
+          buttonLoading: operationLoading,
           buttonDisabled: classInfo.periodStatus !== 'STARTED',
           onClick: () => {
             dispatch({
@@ -50,6 +52,7 @@ const Control = (props) => {
         },
         {
           buttonName: '转入下期',
+          buttonLoading: operationLoading,
           buttonDisabled:
             classInfo.periodStatus !== 'ENDED' || classInfo.periodCur === classInfo.periodTtl,
           onClick: () => {
@@ -66,6 +69,7 @@ const Control = (props) => {
       opt: [
         {
           buttonName: '开始抢单',
+          buttonLoading: operationLoading,
           buttonDisabled:
             classInfo.periodStatus !== 'STARTED' || classInfo.grabDpstStatus !== 'NONE',
           onClick: () => {
@@ -76,6 +80,7 @@ const Control = (props) => {
         },
         {
           buttonName: '结束抢单',
+          buttonLoading: operationLoading,
           buttonDisabled:
             classInfo.periodStatus !== 'STARTED' || classInfo.grabDpstStatus !== 'STARTED',
           onClick: () => {
@@ -92,6 +97,7 @@ const Control = (props) => {
       opt: [
         {
           buttonName: '开始抢单',
+          buttonLoading: operationLoading,
           buttonDisabled:
             classInfo.periodStatus !== 'STARTED' || classInfo.grabLoanStatus !== 'NONE',
           onClick: () => {
@@ -102,6 +108,7 @@ const Control = (props) => {
         },
         {
           buttonName: '结束抢单',
+          buttonLoading: operationLoading,
           buttonDisabled:
             classInfo.periodStatus !== 'STARTED' || classInfo.grabLoanStatus !== 'STARTED',
           onClick: () => {
@@ -132,7 +139,12 @@ const Control = (props) => {
               onConfirm={item.onClick}
               onCancel={handleCancelPop}
             >
-              <Button type="primary" disabled={item.buttonDisabled} style={{ marginRight: '5px' }}>
+              <Button
+                type="primary"
+                disabled={item.buttonDisabled}
+                style={{ marginRight: '5px' }}
+                loading={item.buttonLoading}
+              >
                 {item.buttonName}
               </Button>
             </Popconfirm>
@@ -188,4 +200,5 @@ const Control = (props) => {
 export default connect(({ teacherOperation, loading }) => ({
   classInfo: teacherOperation.teacherOperationClassInfoData,
   loading: loading.effects['teacherOperation/queryClassInfo'],
+  operationLoading: loading.models.teacherOperation,
 }))(Control);
