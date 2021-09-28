@@ -31,6 +31,10 @@ const LoanContent = (props) => {
       render: (period) => `第${period}期`,
     },
     {
+      title: '银行名称',
+      dataIndex: 'bankName',
+    },
+    {
       title: '业务类型',
       dataIndex: 'loanTypeName',
       render: (loanTypeName) => <Tags>{loanTypeName}</Tags>,

@@ -29,6 +29,10 @@ const DepositContent = (props) => {
       render: (period) => `第${period}期`,
     },
     {
+      title: '银行名称',
+      dataIndex: 'bankName',
+    },
+    {
       title: '业务类型',
       dataIndex: 'customerTypeName',
       render: (customerTypeName) => <Tags>{customerTypeName}</Tags>,
