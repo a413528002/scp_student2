@@ -32,3 +32,11 @@ export async function queryBankMarketings(params) {
   })
 }
 
+// 查询银行抢单记录
+export async function queryBankGrabDetails(params) {
+  return request(`${NODE_API}/teacher/om/queryBankGrabDetails`, {
+    method: 'GET',
+    params
+  })
+}
+

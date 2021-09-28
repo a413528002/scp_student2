@@ -1,4 +1,5 @@
 import {
+  queryBankGrabDetails,
   queryBankMarketings,
   queryBankOrganizations,
   queryBankPeriodInfos,
@@ -14,6 +15,7 @@ const BusinessModel = {
     queryBankOrganizationsData: [], // 银行机构数据
     queryBankMarketingsData: {}, // 营销费用数据
     queryBankMarketingsTotalElements: 0, // 营销费用数据总条数
+    queryBankGrabDetailDataList: {}, // 银行抢单记录
   },
   effects: {
     // 查询各个银行错误记录
@@ -94,6 +96,33 @@ const BusinessModel = {
           type: 'save',
           payload: {
             queryBankOrganizationsData,
+          },
+        });
+      }
+    },
+    // 查询银行抢单记录
+    *queryBankGrabDetails({ payload }, { call, put }) {
+      const response = yield call(queryBankGrabDetails, payload);
+      if (!response.errCode) {
+        const queryBankGrabDetailDataList = {};
+        const queryBankGrabDetailData = response?.map((item, index) => {
+          return {
+            ...item,
+            _key: index,
+          };
+        });
+        const { bizType } = payload;
+        if (bizType === 'DPST') {
+          // 存款抢单记录
+          queryBankGrabDetailDataList[bizType] = queryBankGrabDetailData;
+        } else if (bizType === 'LOAN') {
+          // 贷款抢单记录
+          queryBankGrabDetailDataList[bizType] = queryBankGrabDetailData;
+        }
+        yield put({
+          type: 'save',
+          payload: {
+            queryBankGrabDetailDataList,
           },
         });
       }

@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import Tags from "@/components/Tags";
-import Million from "@/components/Million";
-import {toPercent} from "@/utils/commonUtils";
+import Tags from '@/components/Tags';
+import Million from '@/components/Million';
+import { toPercent } from '@/utils/commonUtils';
 
 const DepositContent = (props) => {
   const { dispatch, loading } = props;
-  const { dataSource } = props;
+  const bizType = 'DPST';
+  const {
+    queryBankGrabDetailDataList: { [bizType]: dataSource },
+  } = props;
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {};
   useEffect(() => {
-    // 查询各个银行机构信息
+    // 查询银行抢单记录
     if (classHourId) {
-      /* dispatch({
-        type: 'teacherBusiness/queryBankOrganizations',
-        payload: { classHourId },
-      }); */
+      dispatch({
+        type: 'teacherBusiness/queryBankGrabDetails',
+        payload: { classHourId, bizType },
+      });
     }
-  }, []);
+  }, [bizType]);
   const columns = [
     {
       title: '所属期数',
@@ -62,6 +65,6 @@ const DepositContent = (props) => {
 };
 
 export default connect(({ teacherBusiness, loading }) => ({
-  // dataSource: teacherBusiness.queryBankOrganizationsData,
-  loading: loading.effects['teacherBusiness/queryBankOrganizations'],
+  queryBankGrabDetailDataList: teacherBusiness.queryBankGrabDetailDataList,
+  loading: loading.effects['teacherBusiness/queryBankGrabDetails'],
 }))(DepositContent);
