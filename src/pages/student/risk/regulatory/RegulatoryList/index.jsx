@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import styles from '@/pages/student/risk/regulatory/index.less';
-import { Button, Form, Radio, InputNumber, Typography, Descriptions, Card, Input } from 'antd';
+import {
+  Button,
+  Form,
+  Radio,
+  InputNumber,
+  Typography,
+  Descriptions,
+  Card,
+  Input,
+  Empty,
+} from 'antd';
 import { yuan } from '@/utils/commonUtils';
 
 const { Title } = Typography;
@@ -67,11 +77,11 @@ const RegulatoryList = (props) => {
 
   // 表单栅格
   const formItemLayout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 10, offset: 1 },
+    labelCol: { span: 3 },
+    wrapperCol: { span: 10 },
   };
-  return (
-    <Form {...formItemLayout} form={form} labelAlign="left" onFinish={updateBankRiskRegulation}>
+  return periodTtl ? (
+    <Form {...formItemLayout} form={form} onFinish={updateBankRiskRegulation}>
       <div className={styles.list}>
         <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
           {Array(periodTtl)
@@ -145,6 +155,8 @@ const RegulatoryList = (props) => {
         </Form.Item>
       </Card>
     </Form>
+  ) : (
+    <Empty />
   );
 };
 

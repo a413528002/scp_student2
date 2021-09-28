@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import Million from '@/components/Million';
-import { Button, message, Popconfirm, Radio } from 'antd';
+import { Button, Empty, message, Popconfirm, Radio } from 'antd';
 import Tags from '@/components/Tags';
 import styles from '@/pages/student/finance/certificate/index.less';
 
@@ -112,7 +112,7 @@ const CertificateTable = (props) => {
         ) : null,
     },
   ];
-  return (
+  return periodTtl ? (
     <>
       <div className={styles.choose}>
         <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
@@ -128,6 +128,8 @@ const CertificateTable = (props) => {
       </div>
       <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
     </>
+  ) : (
+    <Empty />
   );
 };
 

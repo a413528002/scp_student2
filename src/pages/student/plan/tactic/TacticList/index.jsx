@@ -65,9 +65,9 @@ const TacticList = (props) => {
           fields={planData}
           layout="horizontal"
           name="BankPlan"
-          labelAlign={'left'}
-          labelCol={{ span: 5, offset: 0 }}
-          wrapperCol={{ span: 10, offset: 1 }}
+          // labelAlign={'left'}
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 10 }}
           onFinish={onFinish}
         >
           <div className={styles.list}>

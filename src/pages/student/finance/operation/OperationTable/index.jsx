@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Button, Form, InputNumber, Popconfirm, Space, Radio } from 'antd';
+import { Button, Form, InputNumber, Popconfirm, Space, Radio, Empty } from 'antd';
 import styles from '@/pages/student/finance/operation/index.less';
 import Million from '@/components/Million';
 import { yuan } from '@/utils/commonUtils';
@@ -206,7 +206,7 @@ const OperationTable = (props) => {
       }),
     };
   });
-  return (
+  return periodTtl ? (
     <>
       <div className={styles.choose}>
         <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
@@ -236,6 +236,8 @@ const OperationTable = (props) => {
         />
       </Form>
     </>
+  ) : (
+    <Empty />
   );
 };
 
