@@ -8,13 +8,13 @@
  */
 export default {
   dev: {
-    '/api/': {
+    '/scp-api/': {
       // target: 'http://47.119.142.92:8081',
       target: 'http://192.168.1.20:8081',
       changeOrigin: true,
       ws: true,
       pathRewrite: {
-        '^/api/': '',
+        '^/scp-api/': '',
       },
     },
   },
