@@ -176,12 +176,12 @@ export default [
             name: 'operation',
             component: './student/finance/operation',
           },
-          {
+          /*{
             // 资金
             path: './transfer',
             name: 'transfer',
             component: './student/finance/transfer',
-          },
+          },*/
           {
             // 破产
             path: './broke',
