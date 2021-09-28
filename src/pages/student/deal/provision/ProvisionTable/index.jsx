@@ -40,7 +40,7 @@ const ProvisionTable = (props) => {
   // modal显示状态 ----end-----
   const columns = [
     {
-      title: '期数',
+      title: '所属期数',
       dataIndex: 'period',
       key: 'period',
       render: (period) => `第${period}期`,

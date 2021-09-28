@@ -124,10 +124,10 @@ const OperationTable = (props) => {
   };
   const columns = [
     {
-      title: '期数',
+      title: '所属期数',
       dataIndex: 'period',
       key: 'period',
-      render: (period) => (!period ? null : `第${period}期`),
+      render: (period) => `第${period}期`,
     },
     {
       title: '类别',

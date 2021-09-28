@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Button, message, Popconfirm, Space } from 'antd';
+import { Button, Popconfirm, Space } from 'antd';
 
 const ConsultationTable = (props) => {
   const { dispatch, loading, buyLoading } = props;
   const { dataSource, total, isFirstPat } = props;
 
-  const defaultPageSize = 3
+  const defaultPageSize = 3;
 
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
-
-
 
   // 查询第三方咨询
   const queryBankConsultations = (page, size) => {
@@ -20,7 +18,7 @@ const ConsultationTable = (props) => {
       type: 'studentConsultation/queryBankConsultations',
       payload: { classHourId, page, size },
     });
-  }
+  };
 
   // 查询错误详情
   const queryBankWrongs = (bankConsultationId) => {
@@ -28,7 +26,7 @@ const ConsultationTable = (props) => {
       type: 'studentConsultation/queryBankWrongs',
       payload: { classHourId, bankConsultationId },
     });
-  }
+  };
 
   // 购买第三方咨询
   const buyBankConsultation = (bankConsultationId, full) => {
@@ -42,10 +40,9 @@ const ConsultationTable = (props) => {
 
   useEffect(() => {
     if (classHourId) {
-      queryBankConsultations(0, defaultPageSize)
+      queryBankConsultations(0, defaultPageSize);
     }
   }, [classHourId]);
-
 
   const renderBuyButton = (buyStatus, bankConsultationId) => {
     return (
@@ -72,18 +69,25 @@ const ConsultationTable = (props) => {
           </Button>
         </Popconfirm>
       </>
-    )
-  }
+    );
+  };
 
   const renderWrongs = (buyStatus, bankConsultationId) => {
-    return <Button type="primary" size="small" disabled={buyStatus === 'NONE'} onClick={() => queryBankWrongs(bankConsultationId)}>
-      查看
-    </Button>
-  }
+    return (
+      <Button
+        type="primary"
+        size="small"
+        disabled={buyStatus === 'NONE'}
+        onClick={() => queryBankWrongs(bankConsultationId)}
+      >
+        查看
+      </Button>
+    );
+  };
 
   const columns = [
     {
-      title: '期数',
+      title: '所属期数',
       dataIndex: 'period',
       key: 'period',
       render: (period) => `第${period}期`,
@@ -120,8 +124,7 @@ const ConsultationTable = (props) => {
     {
       title: '操作',
       key: 'operation',
-      render: (_, { buyStatus, bankConsultationId }, index) =>
-      {
+      render: (_, { buyStatus, bankConsultationId }, index) => {
         // 第一页第一条才能购买咨询
         if (isFirstPat && !index) {
           return (
@@ -129,14 +132,10 @@ const ConsultationTable = (props) => {
               {renderBuyButton(buyStatus, bankConsultationId)}
               {renderWrongs(buyStatus, bankConsultationId)}
             </Space>
-          )
+          );
         }
-        return (
-          <Space>
-            {renderWrongs(buyStatus, bankConsultationId)}
-          </Space>
-        )
-      }
+        return <Space>{renderWrongs(buyStatus, bankConsultationId)}</Space>;
+      },
     },
   ];
   return (
@@ -151,7 +150,7 @@ const ConsultationTable = (props) => {
         total,
         // 页码或 pageSize 改变的回调，参数是改变后的页码及每页条数
         onChange: (page, pageSize) => {
-          queryBankConsultations(page - 1, pageSize)
+          queryBankConsultations(page - 1, pageSize);
         },
       }}
     />

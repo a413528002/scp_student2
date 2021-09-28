@@ -99,16 +99,15 @@ const MarketTable = (props) => {
   }, []);
   const columns = [
     {
-      title: '期数',
+      title: '所属期数',
       dataIndex: 'period',
       key: 'period',
       render: (period) => `第${period}期`,
     },
     {
-      title: '所属期数',
-      dataIndex: 'period',
-      key: 'period',
-      render: (period) => `第${period}期`,
+      title: '剩余期限',
+      dataIndex: 'term',
+      key: 'term',
     },
     {
       title: '贷款总额(万元)',

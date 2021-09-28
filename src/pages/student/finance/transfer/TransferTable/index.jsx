@@ -11,9 +11,10 @@ const TransferTable = () => {
       key: 'name',
     },
     {
-      title: '期数',
-      dataIndex: 'age',
-      key: 'age',
+      title: '所属期数',
+      dataIndex: 'period',
+      key: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '注入资金(万元)',
