@@ -25,6 +25,7 @@ export default {
   'menu.student.finance.broke': '破产管理',
   'menu.student.finance.certificate': '会计凭证',
   'menu.student.finance.statement': '财务报表',
+  'menu.student.finance.depreciation': '折旧管理',
   'menu.student.risk': '风险管理',
   'menu.student.risk.handle': '操作风险',
   'menu.student.risk.credit': '信用风险',

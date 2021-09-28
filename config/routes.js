@@ -168,7 +168,13 @@ export default [
         routes: [
           {
             path: './',
-            redirect: './operation',
+            redirect: './depreciation',
+          },
+          {
+            // 折旧
+            path: './depreciation',
+            name: 'depreciation',
+            component: './student/finance/depreciation',
           },
           {
             // 运营
