@@ -33,9 +33,9 @@ export function delay(ms) {
  * @param arr
  * @returns {unknown[]}
  */
-export function unique (arr) {
+export function unique(arr) {
   const n = [];
-  for(let i = 0; i < arr.length; i++){
+  for (let i = 0; i < arr.length; i++) {
     if (n.indexOf(arr[i]) === -1) n.push(arr[i]);
   }
   return n;
@@ -47,10 +47,10 @@ export function unique (arr) {
  * @returns {boolean}
  */
 export function isNumber(val) {
-  if(val === "" || val == null){
+  if (val === '' || val == null) {
     return false;
   }
-  return !isNaN(val)
+  return !isNaN(val);
 }
 
 /**
