@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, Card, Descriptions, Empty, Input, message, Popconfirm, Space } from 'antd';
 import NewBankModal from '@/pages/student/classroom/NewBankModal';
 
-const { Search } = Input;
 const BankInformation = (props) => {
   const { dispatch, classOpt, bankOpt, bankData } = props;
   const { searchLoading, joinLoading } = props;
@@ -68,16 +67,17 @@ const BankInformation = (props) => {
       bordered={false}
       extra={
         <>
-          <Space>
-            <Search
-              placeholder="请输入银行编号"
-              onSearch={onSearchQueryBankByCode}
-              style={{ width: 300 }}
-              enterButton="查询银行"
-              loading={searchLoading}
-              allowClear
-              disabled={!classOpt}
-            />
+          <Space wrap>
+            <Input.Group >
+              <Input.Search
+                allowClear
+                enterButton="查询银行"
+                placeholder="请输入银行编号"
+                onSearch={onSearchQueryBankByCode}
+                loading={searchLoading}
+                disabled={!classOpt}
+              />
+            </Input.Group>
             <Button type="primary" onClick={joinBank} loading={joinLoading} disabled={!classOpt}>
               加入银行
             </Button>

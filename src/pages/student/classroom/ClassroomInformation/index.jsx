@@ -4,7 +4,6 @@ import {Button, Card, Descriptions, Empty, Input, message, Space} from 'antd';
 import SwitchClassroomModal from '@/pages/student/classroom/SwitchClassroomModal';
 
 
-const {Search} = Input;
 const ClassroomInformation = (props) => {
   /**
    * joinLoading 加入课堂的loading
@@ -102,15 +101,16 @@ const ClassroomInformation = (props) => {
       bordered={false}
       extra={
         <>
-          <Space>
-            <Search
-              placeholder="请输入课堂编号"
-              onSearch={onSearchQueryClassHourByCode}
-              style={{width: 300}}
-              enterButton="查询课堂"
-              loading={searchLoading}
-              allowClear
-            />
+          <Space wrap>
+            <Input.Group >
+              <Input.Search
+                allowClear
+                enterButton="查询课堂"
+                placeholder="请输入课堂编号"
+                onSearch={onSearchQueryClassHourByCode}
+                loading={searchLoading}
+              />
+            </Input.Group>
             <Button type="primary" onClick={joinClassHour} loading={joinLoading} disabled={stuStatusName === '已加入'}>加入课堂</Button>
             <Button type="primary" onClick={handleSwitchClassroomShowModal}>切换课堂</Button>
             <Button onClick={exitClassHour} loading={exitLoading} disabled={!classOpt}>退出课堂</Button>
