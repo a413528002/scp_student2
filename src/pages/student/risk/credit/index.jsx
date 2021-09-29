@@ -1,11 +1,14 @@
 import React from 'react';
-import CreditTable from "@/pages/student/risk/credit/CreditTable";
+import { Card } from 'antd';
+import CreditTable from '@/pages/student/risk/credit/CreditTable';
+import CreditRule from '@/pages/student/risk/credit/CreditRule';
 
 const Credit = () => {
   return (
-    <div>
-      <CreditTable/>
-    </div>
+    <Card title="信用风险" bordered={false} type="inner">
+      <CreditTable />
+      <CreditRule />
+    </Card>
   );
 };
 

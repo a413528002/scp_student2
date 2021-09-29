@@ -8,7 +8,7 @@ import DepositAndLoanCount from '@/pages/student/macroeconomic/DepositAndLoanCou
 const MacroeconomicList = () => {
   const gutter = { xs: 24, sm: 12, md: 12, lg: 12 }
   return (
-    <Card>
+    <>
       <Row gutter={[16,24]}>
         <Col {...gutter}>
           <Card
@@ -71,7 +71,7 @@ const MacroeconomicList = () => {
           </Card>
         </Col>
       </Row>
-    </Card>
+    </>
   );
 };
 

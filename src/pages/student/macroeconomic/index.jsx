@@ -1,13 +1,13 @@
 import React from 'react';
-import MacroeconomicList from "@/pages/student/macroeconomic/MacroeconomicList";
+import MacroeconomicList from '@/pages/student/macroeconomic/MacroeconomicList';
+import { Card } from 'antd';
 
-
-const Home = () => {
+const Macroeconomic = () => {
   return (
-    <>
-      <MacroeconomicList/>
-    </>
+    <Card title="宏观经济" bordered={false} type="inner">
+      <MacroeconomicList />
+    </Card>
   );
 };
 
-export default Home;
+export default Macroeconomic;
