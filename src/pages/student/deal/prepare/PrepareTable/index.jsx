@@ -93,7 +93,7 @@ const PrepareTable = (props) => {
         // pagination={true}
       />
       <PrepareRule />
-      {/*调回缴纳modal*/}
+      {/* 调回缴纳modal */}
       <ProvisionOrPrepareModal
         modalVisible={modalVisible}
         handleCancelModal={handleCancelModal}

@@ -18,7 +18,6 @@ const ClassroomModel = {
   effects: {
     // 选择课堂
     *switchClassroom({ payload }, { put }) {
-      console.log(payload);
       if (!payload) {
         return;
       }

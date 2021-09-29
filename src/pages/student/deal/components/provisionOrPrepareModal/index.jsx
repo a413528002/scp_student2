@@ -1,16 +1,16 @@
 import React from 'react';
-import {connect} from 'umi';
-import {Button, Form, InputNumber, Modal, Space} from 'antd';
-import {yuan} from "@/utils/commonUtils";
+import { connect } from 'umi';
+import { Button, Form, InputNumber, Modal, Space } from 'antd';
+import { yuan } from '@/utils/commonUtils';
 
 const ProvisionOrPrepareModal = (props) => {
-  const {modalVisible, handleCancelModal, dispatch, typeModal} = props
-  const {type, title} = typeModal || {}
-  const {loading} = props
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  const { modalVisible, handleCancelModal, dispatch, typeModal } = props;
+  const { type, title, bankFinancialBusinessId } = typeModal || {};
+  const { loading } = props;
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
   const [form] = Form.useForm();
   // 更新
-  const update = ({amount}) => {
+  const update = ({ amount }) => {
     if (classHourId) {
       // 调回取amount负值
       if (type === 'RECALL') {
@@ -18,26 +18,26 @@ const ProvisionOrPrepareModal = (props) => {
           type: 'studentPrepare/updateBankDepositReserve',
           payload: {
             classHourId,
-            amount: -amount
+            amount: -amount,
           },
           // 新建成功后的回调
           callback: () => {
-            handleCancelResetFields()
+            handleCancelResetFields();
           },
-        })
+        });
       } else if (type === 'PAYMENT') {
         // 缴纳取amount正值
         dispatch({
           type: 'studentPrepare/updateBankDepositReserve',
           payload: {
             classHourId,
-            amount
+            amount,
           },
           // 新建成功后的回调
           callback: () => {
-            handleCancelResetFields()
+            handleCancelResetFields();
           },
-        })
+        });
       } else if (type === 'BACK') {
         // 拨回取amount负值
         dispatch({
@@ -47,42 +47,68 @@ const ProvisionOrPrepareModal = (props) => {
             amount: -amount,
           },
           callback: () => {
-            handleCancelResetFields()
+            handleCancelResetFields();
           },
-        })
+        });
       } else if (type === 'PROVISION') {
         // 计提取amount正值
         dispatch({
           type: 'studentProvision/updateBankLoanProvision',
           payload: {
             classHourId,
-            amount
+            amount,
           },
           callback: () => {
-            handleCancelResetFields()
+            handleCancelResetFields();
           },
-        })
+        });
+      } else if (type === 'L') {
+        // 清收
+        dispatch({
+          type: 'studentAsset/updateBankBadAssets',
+          payload: {
+            classHourId,
+            bankFinancialBusinessId,
+            disposalType: type,
+            returnAmount: amount,
+          },
+          callback: () => {
+            handleCancelResetFields();
+          },
+        });
+      } else if (type === 'S') {
+        // 变卖
+        dispatch({
+          type: 'studentAsset/updateBankBadAssets',
+          payload: {
+            classHourId,
+            bankFinancialBusinessId,
+            disposalType: type,
+            returnAmount: amount,
+          },
+          callback: () => {
+            handleCancelResetFields();
+          },
+        });
       }
     }
-
-
-  }
+  };
   /**
    * 提交表单
    * @param values 表单字段值
    */
   const onFinish = (values) => {
     // 金额转换
-    const params = yuan(values)
-    update(params)
-  }
+    const params = yuan(values);
+    update(params);
+  };
   // 关闭modal 重置表单
   const handleCancelResetFields = () => {
     // 关闭modal
-    handleCancelModal()
+    handleCancelModal();
     // 重置表单
-    form.resetFields()
-  }
+    form.resetFields();
+  };
   return (
     <Modal
       visible={modalVisible}
@@ -91,24 +117,19 @@ const ProvisionOrPrepareModal = (props) => {
       footer={null}
       width={320}
     >
-      <Form
-        form={form}
-        layout="vertical"
-        name="NewClassroomModal"
-        onFinish={onFinish}
-      >
+      <Form form={form} layout="vertical" name="NewClassroomModal" onFinish={onFinish}>
         <Form.Item
           name="amount"
           rules={[
             {
               required: true,
-              message: `请输入${title}金额`,
+              message: `请输入${title}金额（万元）`,
             },
           ]}
         >
-          <InputNumber min={0} placeholder={`请输入${title}金额`} style={{width: '100%'}}/>
+          <InputNumber min={0} placeholder={`请输入${title}金额（万元）`} style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item style={{textAlign: "center", marginBottom: 0}}>
+        <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
           <Space>
             <Button htmlType="button" onClick={handleCancelResetFields}>
               取消
@@ -123,6 +144,6 @@ const ProvisionOrPrepareModal = (props) => {
   );
 };
 
-export default connect(({loading}) => ({
-  loading: loading.models.studentProvision || loading.models.studentPrepare,
+export default connect(({ loading }) => ({
+  loading: loading.models.studentProvision || loading.models.studentPrepare||loading.models.studentAsset,
 }))(ProvisionOrPrepareModal);
