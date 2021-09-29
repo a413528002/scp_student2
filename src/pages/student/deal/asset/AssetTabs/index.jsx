@@ -10,8 +10,8 @@ const AssetTabs = () => {
   }
 
   const initialPanes = [
-    { tab: '变卖处理', content: <AssetRealization />, key: 'realization' },
-    { tab: '清收处理', content: <AssetLiquidate />, key: 'liquidate' },
+    { tab: '清收变卖处理', content: <AssetRealization />, key: 'realization' },
+    { tab: '清收变卖明细', content: <AssetLiquidate />, key: 'liquidate' },
   ];
   return (
     <Tabs defaultActiveKey="1" onChange={callback}>
