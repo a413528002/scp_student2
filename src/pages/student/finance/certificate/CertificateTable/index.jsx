@@ -5,6 +5,7 @@ import Million from '@/components/Million';
 import { Button, Empty, message, Popconfirm, Radio } from 'antd';
 import Tags from '@/components/Tags';
 import styles from '@/pages/student/finance/certificate/index.less';
+import Radios from '@/components/Radios';
 
 const CertificateTable = (props) => {
   const { dispatch, loading } = props;
@@ -115,16 +116,12 @@ const CertificateTable = (props) => {
   return periodTtl ? (
     <>
       <div className={styles.choose}>
-        <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
-          {Array(periodTtl)
-            .fill()
-            .map((e, i) => i + 1)
-            .map((e) => (
-              <Radio.Button disabled={e > periodCur} key={e} value={e}>
-                第{e}期
-              </Radio.Button>
-            ))}
-        </Radio.Group>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
       </div>
       <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
     </>

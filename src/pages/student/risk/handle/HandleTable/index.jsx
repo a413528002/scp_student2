@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Card, Form, InputNumber, Popconfirm, Space } from 'antd';
+import { Button, Empty, Form, InputNumber, Popconfirm, Space } from 'antd';
 import PublicTable from '@/components/Table';
-import HandleRule from '@/pages/student/risk/handle/HandleRule';
 import Tags from '@/components/Tags';
 import Million from '@/components/Million';
 import { yuan } from '@/utils/commonUtils';
+import styles from '@/pages/student/risk/handle/index.less';
+import Radios from '@/components/Radios';
 
 const EditableCell = ({
   editing,
@@ -51,7 +52,9 @@ const EditableCell = ({
 
 const HandleTable = (props) => {
   const { dispatch, loading, saveLoading } = props;
-  const { dataSource } = props;
+  const {
+    queryBankRwaOperationalData: { bankRwaOperationals: dataSource, period, periodCur, periodTtl },
+  } = props;
   const [form] = Form.useForm();
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -93,14 +96,33 @@ const HandleTable = (props) => {
       console.log('Validate Failed:', errInfo);
     }
   };
+
+  // 是否可以编辑
+  const [editForm, setEditForm] = useState(true);
+  /**
+   * 查询列表
+   * @param classHourId 课堂id
+   * @param period 期数
+   */
+  const queryBankRwaOperationals = (classHourId, period) => {
+    dispatch({
+      type: 'studentHandle/queryBankRwaOperationals',
+      payload: { classHourId, period },
+    });
+  };
   useEffect(() => {
     if (classHourId) {
-      dispatch({
-        type: 'studentHandle/queryBankRwaOperationals',
-        payload: { classHourId },
-      });
+      queryBankRwaOperationals(classHourId);
     }
   }, []);
+
+  // 切换期数
+  const onRadioChange = (e) => {
+    const period = e.target.value;
+    // 当期才能显示操作按钮
+    setEditForm(period === periodCur);
+    queryBankRwaOperationals(classHourId, period);
+  };
 
   const columns = [
     {
@@ -168,14 +190,16 @@ const HandleTable = (props) => {
             </Popconfirm>
           </Space>
         ) : (
-          <Button
-            type="primary"
-            size="small"
-            disabled={editingKey !== ''}
-            onClick={() => handleEdit(record)}
-          >
-            编辑
-          </Button>
+          editForm && (
+            <Button
+              type="primary"
+              size="small"
+              disabled={editingKey !== ''}
+              onClick={() => handleEdit(record)}
+            >
+              编辑
+            </Button>
+          )
         );
       },
     },
@@ -197,9 +221,17 @@ const HandleTable = (props) => {
       }),
     };
   });
-  return (
-    <Card title="操作风险" bordered={false} type="inner">
-      {/*表单提交*/}
+  return periodTtl ? (
+    <>
+      <div className={styles.choose}>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
+      </div>
+      {/* 表单提交 */}
       <Form form={form} component={false}>
         <PublicTable
           components={{
@@ -214,13 +246,14 @@ const HandleTable = (props) => {
           bordered
         />
       </Form>
-      <HandleRule />
-    </Card>
+    </>
+  ) : (
+    <Empty />
   );
 };
 
 export default connect(({ studentHandle, loading }) => ({
-  dataSource: studentHandle.queryBankRwaOperationalsData,
+  queryBankRwaOperationalData: studentHandle.queryBankRwaOperationalData,
   loading: loading.effects['studentHandle/queryBankRwaOperationals'],
   saveLoading: loading.effects['studentHandle/updateBankRwaOperational'],
 }))(HandleTable);

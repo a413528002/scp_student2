@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import styles from '@/pages/student/risk/regulatory/index.less';
-import {
-  Button,
-  Form,
-  Radio,
-  InputNumber,
-  Typography,
-  Descriptions,
-  Card,
-  Input,
-  Empty,
-} from 'antd';
+import { Button, Form, InputNumber, Typography, Descriptions, Card, Input, Empty } from 'antd';
 import { yuan } from '@/utils/commonUtils';
+import Radios from '@/components/Radios';
 
 const { Title } = Typography;
 const RegulatoryList = (props) => {
@@ -70,6 +61,9 @@ const RegulatoryList = (props) => {
           classHourId,
           bankRiskRegulationId,
           ...params,
+          capitalAdequacyRatio: values.capitalAdequacyRatio,
+          loanToDepositRatio: values.loanToDepositRatio,
+          provisionCoverage: values.provisionCoverage,
         },
       });
     }
@@ -82,17 +76,13 @@ const RegulatoryList = (props) => {
   };
   return periodTtl ? (
     <Form {...formItemLayout} form={form} onFinish={updateBankRiskRegulation}>
-      <div className={styles.list}>
-        <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
-          {Array(periodTtl)
-            .fill()
-            .map((e, i) => i + 1)
-            .map((e) => (
-              <Radio.Button disabled={e > periodCur} key={e} value={e}>
-                第{e}期
-              </Radio.Button>
-            ))}
-        </Radio.Group>
+      <div className={styles.choose}>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
         {!editForm ? (
           <Button type="primary" htmlType="submit" loading={updateLoading}>
             保存
@@ -120,9 +110,6 @@ const RegulatoryList = (props) => {
           <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
         <Descriptions title="二、金融市场" />
-        {/* <Form.Item name="input-number" label="债券市场风险（万元）">
-          <InputNumber min={0} style={{ width: '100%' }} />
-        </Form.Item> */}
         <Form.Item name="rwaInvestmentAndFinancing" label="投融资风险（万元）">
           <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>

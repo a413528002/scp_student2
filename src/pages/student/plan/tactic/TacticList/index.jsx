@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Card, Checkbox, Descriptions, Empty, Form, Input, message, Radio } from 'antd';
 import { connect } from 'umi';
 import styles from '@/pages/student/plan/tactic/index.less';
+import Radios from '@/components/Radios';
 
 const TacticList = (props) => {
   const { dispatch, periodTtl, period, periodCur, planData } = props;
@@ -70,20 +71,18 @@ const TacticList = (props) => {
           wrapperCol={{ span: 10 }}
           onFinish={onFinish}
         >
-          <div className={styles.list}>
-            <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
-              {Array(periodTtl)
-                .fill()
-                .map((e, i) => i + 1)
-                .map((e) => (
-                  <Radio.Button disabled={e > periodCur} key={e} value={e}>
-                    第{e}期
-                  </Radio.Button>
-                ))}
-            </Radio.Group>
-            <Button type="primary" htmlType="submit" disabled={disabled} loading={loading}>
-              保存
-            </Button>
+          <div className={styles.choose}>
+            <Radios
+              period={period}
+              periodCur={periodCur}
+              periodTtl={periodTtl}
+              onRadioChange={onRadioChange}
+            />
+            {!disabled && (
+              <Button type="primary" htmlType="submit" disabled={disabled} loading={loading}>
+                保存
+              </Button>
+            )}
           </div>
 
           <Descriptions title="一、机构建设" />

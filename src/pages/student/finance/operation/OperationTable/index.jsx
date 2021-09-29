@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Button, Form, InputNumber, Popconfirm, Space, Radio, Empty } from 'antd';
+import { Button, Form, InputNumber, Popconfirm, Space, Empty } from 'antd';
 import styles from '@/pages/student/finance/operation/index.less';
 import Million from '@/components/Million';
 import { yuan } from '@/utils/commonUtils';
+import Radios from '@/components/Radios';
 
 const EditableCell = ({
   editing,
@@ -209,16 +210,12 @@ const OperationTable = (props) => {
   return periodTtl ? (
     <>
       <div className={styles.choose}>
-        <Radio.Group value={period} onChange={onRadioChange} buttonStyle="solid">
-          {Array(periodTtl)
-            .fill()
-            .map((e, i) => i + 1)
-            .map((e) => (
-              <Radio.Button disabled={e > periodCur} key={e} value={e}>
-                第{e}期
-              </Radio.Button>
-            ))}
-        </Radio.Group>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
       </div>
       {/* 表单提交 */}
       <Form form={form} component={false}>

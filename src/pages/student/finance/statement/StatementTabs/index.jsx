@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Empty, Radio, Space, Tabs } from 'antd';
+import { Button, Empty, Space, Tabs } from 'antd';
 import StatementTips from '@/pages/student/finance/statement/StatementTips';
 import StatementContent from '@/pages/student/finance/statement/StatementContent';
 import styles from '@/pages/student/finance/statement/index.less';
+import Radios from '@/components/Radios';
 
 const { TabPane } = Tabs;
 const StatementTabs = (props) => {
@@ -180,19 +181,12 @@ const StatementTabs = (props) => {
             ))}
           </Tabs>
           <div className={styles.choose}>
-            <Radio.Group
-              value={period}
-              onChange={(e) => queryBankReport(reportCode, e.target.value)}
-              buttonStyle="solid"
-            >
-              {new Array(periodTtl).fill().map((_, index) => {
-                return (
-                  <Radio.Button value={index + 1} key={index} disabled={index + 1 > periodCur}>
-                    {`第${index + 1}期`}
-                  </Radio.Button>
-                );
-              })}
-            </Radio.Group>
+            <Radios
+              period={period}
+              periodCur={periodCur}
+              periodTtl={periodTtl}
+              onRadioChange={(e) => queryBankReport(reportCode, e.target.value)}
+            />
           </div>
           <StatementContent
             reportDetails={reportDetails}

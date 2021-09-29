@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Button, Card, Form, InputNumber, Popconfirm, Space, Tag } from 'antd';
-import CreditRule from '@/pages/student/risk/credit/CreditRule';
+import { Button, Empty, Form, InputNumber, Popconfirm, Space } from 'antd';
 import Tags from '@/components/Tags';
 import Million from '@/components/Million';
 import { yuan } from '@/utils/commonUtils';
+import styles from '@/pages/student/risk/credit/index.less';
+import Radios from '@/components/Radios';
 
 const EditableCell = ({
   editing,
@@ -51,7 +52,9 @@ const EditableCell = ({
 
 const CreditTable = (props) => {
   const { dispatch, loading, saveLoading } = props;
-  const { dataSource } = props;
+  const {
+    queryBankRwaCreditsData: { bankRwaCredits: dataSource, period, periodCur, periodTtl },
+  } = props;
   const [form] = Form.useForm();
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -92,15 +95,33 @@ const CreditTable = (props) => {
       console.log('Validate Failed:', errInfo);
     }
   };
+
+  // 是否可以编辑
+  const [editForm, setEditForm] = useState(true);
+
+  /**
+   * 查询列表
+   * @param classHourId 课堂id
+   * @param period 期数
+   */
+  const queryBankRwaCredits = (classHourId, period) => {
+    dispatch({
+      type: 'studentCredit/queryBankRwaCredits',
+      payload: { classHourId, period },
+    });
+  };
   useEffect(() => {
     if (classHourId) {
-      // 查询列表
-      dispatch({
-        type: 'studentCredit/queryBankRwaCredits',
-        payload: { classHourId },
-      });
+      queryBankRwaCredits(classHourId);
     }
   }, []);
+  // 切换期数
+  const onRadioChange = (e) => {
+    const period = e.target.value;
+    // 当期才能显示操作按钮
+    setEditForm(period === periodCur);
+    queryBankRwaCredits(classHourId, period);
+  };
   const columns = [
     {
       title: '所属期数',
@@ -172,14 +193,16 @@ const CreditTable = (props) => {
             </Popconfirm>
           </Space>
         ) : (
-          <Button
-            type="primary"
-            size="small"
-            disabled={editingKey !== ''}
-            onClick={() => handleEdit(record)}
-          >
-            编辑
-          </Button>
+          editForm && (
+            <Button
+              type="primary"
+              size="small"
+              disabled={editingKey !== ''}
+              onClick={() => handleEdit(record)}
+            >
+              编辑
+            </Button>
+          )
         );
       },
     },
@@ -200,9 +223,18 @@ const CreditTable = (props) => {
       }),
     };
   });
-  return (
-    <Card title="信用风险" bordered={false} type="inner">
-      {/*表单提交*/}
+  return periodTtl ? (
+    <>
+      <div className={styles.choose}>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
+      </div>
+
+      {/* 表单提交 */}
       <Form form={form} component={false}>
         <PublicTable
           components={{
@@ -217,12 +249,13 @@ const CreditTable = (props) => {
           bordered
         />
       </Form>
-      <CreditRule />
-    </Card>
+    </>
+  ) : (
+    <Empty />
   );
 };
 
 export default connect(({ studentCredit, loading }) => ({
-  dataSource: studentCredit.queryBankRwaCreditsData,
+  queryBankRwaCreditsData: studentCredit.queryBankRwaCreditsData,
   loading: loading.effects['studentCredit/queryBankRwaCredits'],
 }))(CreditTable);

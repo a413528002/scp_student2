@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
-import { Button, Card, Form, InputNumber, Popconfirm, Space } from 'antd';
-import MarketRule from '@/pages/student/risk/market/MarketRule';
+import { Button, Empty, Form, InputNumber, Popconfirm, Space } from 'antd';
 import Million from '@/components/Million';
 import { toPercent, yuan } from '@/utils/commonUtils';
+import Radios from '@/components/Radios';
+import styles from '@/pages/student/risk/market/index.less';
 
 const EditableCell = ({
   editing,
@@ -43,7 +44,9 @@ const EditableCell = ({
 
 const MarketTable = (props) => {
   const { dispatch, loading, saveLoading } = props;
-  const { dataSource } = props;
+  const {
+    queryBankRwaMarketsData: { bankRwaMarkets: dataSource, period, periodCur, periodTtl },
+  } = props;
   const [form] = Form.useForm();
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
@@ -71,7 +74,6 @@ const MarketTable = (props) => {
       const values = await form.validateFields();
       if (values && classHourId && bankRwaMarketId) {
         const params = yuan(values);
-        debugger
         // 保存市场风险
         dispatch({
           type: 'studentMarket/updateBankRwaMarket',
@@ -88,15 +90,32 @@ const MarketTable = (props) => {
       console.log('Validate Failed:', errInfo);
     }
   };
+
+  // 是否可以编辑
+  const [editForm, setEditForm] = useState(true);
+  /**
+   * 查询列表
+   * @param classHourId 课堂id
+   * @param period 期数
+   */
+  const queryBankRwaMarkets = (classHourId, period) => {
+    dispatch({
+      type: 'studentMarket/queryBankRwaMarkets',
+      payload: { classHourId, period },
+    });
+  };
   useEffect(() => {
     if (classHourId) {
-      // 查询列表
-      dispatch({
-        type: 'studentMarket/queryBankRwaMarkets',
-        payload: { classHourId },
-      });
+      queryBankRwaMarkets(classHourId);
     }
   }, []);
+  // 切换期数
+  const onRadioChange = (e) => {
+    const period = e.target.value;
+    // 当期才能显示操作按钮
+    setEditForm(period === periodCur);
+    queryBankRwaMarkets(classHourId, period);
+  };
   const columns = [
     {
       title: '所属期数',
@@ -106,8 +125,8 @@ const MarketTable = (props) => {
     },
     {
       title: '剩余期限',
-      dataIndex: 'term',
-      key: 'term',
+      dataIndex: 'surplusTerm',
+      key: 'surplusTerm',
     },
     {
       title: '贷款总额(万元)',
@@ -166,14 +185,16 @@ const MarketTable = (props) => {
             </Popconfirm>
           </Space>
         ) : (
-          <Button
-            type="primary"
-            size="small"
-            disabled={editingKey !== ''}
-            onClick={() => handleEdit(record)}
-          >
-            编辑
-          </Button>
+          editForm && (
+            <Button
+              type="primary"
+              size="small"
+              disabled={editingKey !== ''}
+              onClick={() => handleEdit(record)}
+            >
+              编辑
+            </Button>
+          )
         );
       },
     },
@@ -194,9 +215,17 @@ const MarketTable = (props) => {
       }),
     };
   });
-  return (
-    <Card title="市场风险" bordered={false} type="inner">
-      {/*表单提交*/}
+  return periodTtl ? (
+    <>
+      <div className={styles.choose}>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
+      </div>
+      {/* 表单提交 */}
       <Form form={form} component={false}>
         <PublicTable
           components={{
@@ -211,12 +240,13 @@ const MarketTable = (props) => {
           bordered
         />
       </Form>
-      <MarketRule />
-    </Card>
+    </>
+  ) : (
+    <Empty />
   );
 };
 
 export default connect(({ studentMarket, loading }) => ({
-  dataSource: studentMarket.queryBankRwaMarketsData,
+  queryBankRwaMarketsData: studentMarket.queryBankRwaMarketsData,
   loading: loading.effects['studentMarket/queryBankRwaMarkets'],
 }))(MarketTable);
