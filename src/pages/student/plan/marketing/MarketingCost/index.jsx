@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Card, Form, InputNumber } from 'antd';
+import { Button, Card, Form, InputNumber, Popconfirm, message } from 'antd';
 import PublicTable from '@/components/Table';
 import MarketingCostRule from '@/pages/student/plan/marketing/MarketingCostRule';
 import Million from '@/components/Million';
-import {yuan} from '@/utils/commonUtils'
+import { yuan } from '@/utils/commonUtils';
 
 const EditableCell = ({
   editing,
@@ -28,7 +28,7 @@ const EditableCell = ({
           rules={[
             {
               required: true,
-              message: `请输入 ${title}`,
+              message: `请输入${title}`,
             },
           ]}
         >
@@ -54,7 +54,7 @@ const MarketingCost = (props) => {
     try {
       const values = await form.validateFields();
       if (values) {
-        const params = yuan(values)
+        const params = yuan(values);
         // 投入营销费用
         dispatch({
           type: 'studentMarketing/inputMarketingCost',
@@ -80,6 +80,11 @@ const MarketingCost = (props) => {
       });
     }
   }, []);
+
+  // 关闭pop
+  const handleCancelPop = () => {
+    message.error('已取消');
+  };
   const columns = [
     {
       title: '所属期数',
@@ -118,14 +123,11 @@ const MarketingCost = (props) => {
         return (
           <>
             {depositMktCost === null || loanMktCost === null ? (
-              <Button
-                type="primary"
-                size="small"
-                loading={submitLoading}
-                onClick={() => save(_key)}
-              >
-                提交
-              </Button>
+              <Popconfirm title="确认提交?" onConfirm={() => save(_key)} onCancel={handleCancelPop}>
+                <Button type="primary" size="small" loading={submitLoading}>
+                  提交
+                </Button>
+              </Popconfirm>
             ) : (
               '已提交'
             )}
@@ -154,7 +156,7 @@ const MarketingCost = (props) => {
   });
   return (
     <Card title="营销费用" bordered={false} type="inner">
-      {/*表单提交*/}
+      {/* 表单提交 */}
       <Form form={form} component={false}>
         <PublicTable
           components={{
