@@ -12,9 +12,33 @@ const RegulatoryModel = {
     *queryBankRiskRegulation({ payload }, { call, put }) {
       const response = yield call(queryBankRiskRegulation, payload);
       if (!response.errCode) {
+        const {
+          rwaCredit,
+          rwaOperational,
+          rwaMarket,
+          rwaInvestmentAndFinancing,
+          rwaTotal,
+          regulatoryCapital,
+        } = response;
+        const thousand = 10000;
+        // 金额做了万元装换
+        const queryBankRiskRegulationData = {
+          ...response,
+          rwaCredit: typeof rwaCredit === 'number' ? rwaCredit / thousand : null,
+          rwaOperational: typeof rwaOperational === 'number' ? rwaOperational / thousand : null,
+          rwaMarket: typeof rwaMarket === 'number' ? rwaMarket / thousand : null,
+          rwaInvestmentAndFinancing:
+            typeof rwaInvestmentAndFinancing === 'number'
+              ? rwaInvestmentAndFinancing / thousand
+              : null,
+          rwaTotal: typeof rwaTotal === 'number' ? rwaTotal / thousand : null,
+          regulatoryCapital:
+            typeof regulatoryCapital === 'number' ? regulatoryCapital / thousand : null,
+        };
+
         yield put({
           type: 'save',
-          payload: { queryBankRiskRegulationData: response },
+          payload: { queryBankRiskRegulationData },
         });
       }
     },

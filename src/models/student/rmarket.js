@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import {queryBankRwaMarkets, updateBankRwaMarket} from "@/services/student/mrwa";
+import { queryBankRwaMarkets, updateBankRwaMarket } from '@/services/student/mrwa';
 
 const MarketModel = {
   namespace: 'studentMarket',
@@ -9,14 +9,18 @@ const MarketModel = {
   effects: {
     // 查询列表
     *queryBankRwaMarkets({ payload }, { call, put }) {
-      const response = yield call(queryBankRwaMarkets, payload)||[];
+      const response = yield call(queryBankRwaMarkets, payload) || [];
       if (!response.errCode) {
-        const queryBankRwaMarketsData = response.map((item) => {
-          return {
-            ...item,
-            _key: item.bankRwaMarketId,
-          };
-        });
+        const { bankRwaMarkets } = response;
+        const queryBankRwaMarketsData = {
+          ...response,
+          bankRwaMarkets: bankRwaMarkets.map((item) => {
+            return {
+              ...item,
+              _key: item.bankRwaMarketId,
+            };
+          }),
+        };
         yield put({
           type: 'save',
           payload: {
@@ -30,10 +34,9 @@ const MarketModel = {
     *updateBankRwaMarket({ payload, callback }, { call, put }) {
       const response = yield call(updateBankRwaMarket, payload);
       if (!response.errCode) {
+        const {classHourId} = payload
         message.success('保存成功');
         callback();
-        // 获取课堂id
-        const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
         // 刷新表格
         yield put({
           type: 'queryBankRwaMarkets',
