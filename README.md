@@ -1,4 +1,4 @@
-# Ant Design Pro
+# 商业银行经营管理实训平台
 
 This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
@@ -51,6 +51,20 @@ npm run lint:fix
 ```bash
 npm test
 ```
+
+### Component
+
+```javascript
+Ant Design/ProLayout
+```
+
+### Websocket
+
+```javascript
+react-stomp SockJS
+```
+
+
 
 ## More
 

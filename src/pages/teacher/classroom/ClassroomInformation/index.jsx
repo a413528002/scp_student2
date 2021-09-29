@@ -48,12 +48,14 @@ const ClassroomInformation = (props) => {
 
   // 结束课堂
   const endClassHour = () => {
-    dispatch({
-      type: 'teacherClassroom/endClassHour',
-      payload: {
-        classHourId,
-      },
-    });
+    if (classHourId){
+      dispatch({
+        type: 'teacherClassroom/endClassHour',
+        payload: {
+          classHourId,
+        },
+      });
+    }
   };
   // 开始课堂并且选择课堂
   const startClassHour = () => {
