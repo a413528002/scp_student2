@@ -56,7 +56,7 @@ const FinancingTabMarket = (props) => {
     },
 
     {
-      title: '收益率',
+      title: '预计收益率',
       dataIndex: 'expectRate',
       key: 'expectRate',
     },

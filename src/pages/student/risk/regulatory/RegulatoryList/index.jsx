@@ -144,13 +144,13 @@ const RegulatoryList = (props) => {
         <Form.Item name="regulatoryCapital" label="监管资本总计（万元）">
           <InputNumber min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
-        <Form.Item name="capitalAdequacyRatio" label="资本充足率（%）">
+        <Form.Item name="capitalAdequacyRatio" label="资本充足率（小数）">
           <Input min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
-        <Form.Item name="loanToDepositRatio" label="存贷比（%）">
+        <Form.Item name="loanToDepositRatio" label="存贷比（小数）">
           <Input min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
-        <Form.Item name="provisionCoverage" label="拨备覆盖率（%）">
+        <Form.Item name="provisionCoverage" label="拨备覆盖率（小数）">
           <Input min={0} style={{ width: '100%' }} disabled={editForm} />
         </Form.Item>
       </Card>
