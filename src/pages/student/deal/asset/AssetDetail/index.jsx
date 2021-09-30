@@ -5,7 +5,7 @@ import Tags from '@/components/Tags';
 import Million from '@/components/Million';
 import { toPercent } from '@/utils/commonUtils';
 
-const AssetLiquidate = (props) => {
+const AssetDetail = (props) => {
   const { dispatch, loading } = props;
   const { dataSource } = props;
   // 获取课堂id
@@ -57,7 +57,14 @@ const AssetLiquidate = (props) => {
     {
       title: '处置状态',
       dataIndex: 'disposalTypeName',
-      render: (disposalTypeName) => <Tags>{disposalTypeName}</Tags>,
+      render: (disposalTypeName, { isNew }) => {
+        switch (isNew) {
+          case true:
+            return <Tags>未处置</Tags>;
+          default:
+            return <Tags>{disposalTypeName}</Tags>;
+        }
+      },
     },
     {
       title: '回收金额(万元)',
@@ -71,4 +78,4 @@ const AssetLiquidate = (props) => {
 export default connect(({ studentAsset, loading }) => ({
   dataSource: studentAsset.queryBankBadAssetsData,
   loading: loading.effects['studentAsset/queryBankBadAssets'],
-}))(AssetLiquidate);
+}))(AssetDetail);

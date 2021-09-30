@@ -62,36 +62,26 @@ const ProvisionOrPrepareModal = (props) => {
             handleCancelResetFields();
           },
         });
-      } else if (type === 'L') {
-        // 清收
-        dispatch({
-          type: 'studentAsset/updateBankBadAssets',
-          payload: {
-            classHourId,
-            bankFinancialBusinessId,
-            disposalType: type,
-            returnAmount: amount,
-          },
-          callback: () => {
-            handleCancelResetFields();
-          },
-        });
-      } else if (type === 'S') {
-        // 变卖
-        dispatch({
-          type: 'studentAsset/updateBankBadAssets',
-          payload: {
-            classHourId,
-            bankFinancialBusinessId,
-            disposalType: type,
-            returnAmount: amount,
-          },
-          callback: () => {
-            handleCancelResetFields();
-          },
-        });
+      } else if (type === 'L' || type === 'S') {
+        // 清收 变卖
+        updateBankBadAssets(amount, type);
       }
     }
+  };
+  // 保存不良资产数据
+  const updateBankBadAssets = (returnAmount, disposalType) => {
+    dispatch({
+      type: 'studentAsset/updateBankBadAssets',
+      payload: {
+        classHourId,
+        bankFinancialBusinessId,
+        disposalType,
+        returnAmount,
+      },
+      callback: () => {
+        handleCancelResetFields();
+      },
+    });
   };
   /**
    * 提交表单
@@ -127,7 +117,11 @@ const ProvisionOrPrepareModal = (props) => {
             },
           ]}
         >
-          <InputNumber min={0} placeholder={`请输入${title}金额（万元）`} style={{ width: '100%' }} />
+          <InputNumber
+            min={0}
+            placeholder={`请输入${title}金额（万元）`}
+            style={{ width: '100%' }}
+          />
         </Form.Item>
         <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
           <Space>
@@ -145,5 +139,6 @@ const ProvisionOrPrepareModal = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.models.studentProvision || loading.models.studentPrepare||loading.models.studentAsset,
+  loading:
+    loading.models.studentProvision || loading.models.studentPrepare || loading.models.studentAsset,
 }))(ProvisionOrPrepareModal);

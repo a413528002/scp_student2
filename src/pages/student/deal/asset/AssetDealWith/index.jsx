@@ -6,7 +6,7 @@ import PublicTable from '@/components/Table';
 import { Button, Space } from 'antd';
 import ProvisionOrPrepareModal from '@/pages/student/deal/components/provisionOrPrepareModal';
 
-const AssetRealization = (props) => {
+const AssetDealWith = (props) => {
   const { dispatch, loading } = props;
   const { dataSource } = props;
 
@@ -75,7 +75,14 @@ const AssetRealization = (props) => {
     {
       title: '处置状态',
       dataIndex: 'disposalTypeName',
-      render: (disposalTypeName) => <Tags>{disposalTypeName}</Tags>,
+      render: (disposalTypeName, { isNew }) => {
+        switch (isNew) {
+          case true:
+            return <Tags>未处置</Tags>;
+          default:
+            return <Tags>{disposalTypeName}</Tags>;
+        }
+      },
     },
     {
       title: '回收金额(万元)',
@@ -122,4 +129,4 @@ const AssetRealization = (props) => {
 export default connect(({ studentAsset, loading }) => ({
   dataSource: studentAsset.queryCurBankBadAssetsData,
   loading: loading.effects['studentAsset/queryCurBankBadAssets'],
-}))(AssetRealization);
+}))(AssetDealWith);

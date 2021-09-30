@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import AssetRealization from '@/pages/student/deal/asset/AssetRealization';
-import AssetLiquidate from '@/pages/student/deal/asset/AssetLiquidate';
+import AssetDetail from "@/pages/student/deal/asset/AssetDetail";
+import AssetDealWith from "@/pages/student/deal/asset/AssetDealWith";
 
 const { TabPane } = Tabs;
 const AssetTabs = () => {
@@ -10,8 +10,8 @@ const AssetTabs = () => {
   }
 
   const initialPanes = [
-    { tab: '清收变卖处理', content: <AssetRealization />, key: 'realization' },
-    { tab: '清收变卖明细', content: <AssetLiquidate />, key: 'liquidate' },
+    { tab: '清收变卖处理', content: <AssetDealWith />, key: 'dealWith' },
+    { tab: '清收变卖明细', content: <AssetDetail />, key: 'detail' },
   ];
   return (
     <Tabs defaultActiveKey="1" onChange={callback}>
