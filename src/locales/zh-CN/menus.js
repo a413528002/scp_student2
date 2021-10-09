@@ -44,6 +44,8 @@ export default {
 
   'menu.admin': '用户管理',
   'menu.admin.user': '用户管理',
+  'menu.admin.template': '课堂模板',
+  'menu.admin.template.classTemplate': '模板管理',
 
   'menu.account': '个人页',
   'menu.account.center': '个人中心',

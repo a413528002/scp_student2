@@ -323,11 +323,30 @@ export default [
         path: './',
         redirect: './user',
       },
+     // 用户管理
       {
         path: './user',
         name: 'user',
         icon: 'IdcardOutlined',
         component: './admin/user',
+      },
+      // 课堂模板
+      {
+        path: './template',
+        name: 'template',
+        icon: 'ExpandOutlined',
+        routes: [
+          {
+            path: './',
+            redirect: './classTemplate',
+          },
+          {
+            // 模板管理
+            path: './classTemplate',
+            name: 'classTemplate',
+            component: './admin/template/classTemplate',
+          },
+        ],
       },
     ],
   },
