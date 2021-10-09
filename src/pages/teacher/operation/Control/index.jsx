@@ -136,6 +136,7 @@ const Control = (props) => {
             <Popconfirm
               key={i}
               title={`确认${item.buttonName}?`}
+              disabled={item.buttonDisabled}
               onConfirm={item.onClick}
               onCancel={handleCancelPop}
             >
