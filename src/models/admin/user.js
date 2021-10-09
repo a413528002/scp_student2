@@ -20,7 +20,7 @@ const UserModel = {
     *queryUsers({ payload }, { call, put }) {
       const response = yield call(queryUsers, payload);
       if (!response.errCode) {
-        const content = response['content'];
+        const {content} = response;
         const queryUsersData = {
           ...response,
           content: content?.map((item, index) => {
@@ -60,7 +60,7 @@ const UserModel = {
     },
 
     // 修改用户
-    *update({ payload, callback }, { call, put }) {
+    *update({ payload, callback }, { call }) {
       const response = yield call(update, payload);
       if (!response.errCode) {
         message.success('修改成功')
@@ -68,20 +68,20 @@ const UserModel = {
       callback()
     },
     // 修改用户密码
-    *changePassword({ payload }, { call, put }) {
+    *changePassword({ payload }, { call }) {
       const response = yield call(changePassword, payload);
       if (!response.errCode) {
         message.success('修改成功')
       }
     },
     // 重置用户密码
-    *resetPassword({ payload }, { call, put }) {
+    *resetPassword({ payload }, { call }) {
       const response = yield call(resetPassword, payload);
       if (!response.errCode) {
         message.success('重置成功')
       }
     },
-    // 分页查询
+    // 下载模板
     *template({ payload, callback }, { call }) {
       try {
         const response = yield call(template, payload);
