@@ -1,5 +1,4 @@
 import { message } from 'antd';
-import { queryBankExpenses, updateBankExpense } from '@/services/student/be';
 import {
   queryBankDepreciations,
   queryCurBankDepreciations,
@@ -49,13 +48,14 @@ const DepreciationModel = {
       }
     },
     // 更新费用
-    *updateBankDepreciation({ payload }, { call, put }) {
+    *updateBankDepreciation({ payload,callback }, { call, put }) {
       const response = yield call(updateBankDepreciation, payload);
       if (!response.errCode) {
         const { classHourId } = payload;
         message.success('保存成功');
+        callback()
         yield put({
-          type: 'save',
+          type: 'queryCurBankDepreciations',
           payload: { classHourId },
         });
       }

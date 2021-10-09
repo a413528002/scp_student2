@@ -83,7 +83,7 @@ const DepreciationManage = (props) => {
         const params = yuan(values);
         // 更新费用
         dispatch({
-          type: 'studentOperation/updateBankExpense',
+          type: 'studentDepreciation/updateBankDepreciation',
           payload: {
             classHourId,
             bankDepreciationId,
