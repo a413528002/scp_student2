@@ -51,27 +51,25 @@ const UserTable = (props) => {
       type: 'adminUser/update',
       payload: {
         ...record,
-        enabled
+        enabled,
       },
       callback: () => {
         dispatch({
           type: 'adminUser/queryUsers',
           payload: { page, size, sort: 'id,desc' },
         });
-      }
+      },
     });
-  }
+  };
 
   const resetPassword = (record) => {
     if (record && record.id) {
       dispatch({
         type: 'adminUser/resetPassword',
-        payload: {userId : record.id}
+        payload: { userId: record.id },
       });
     }
-  }
-
-
+  };
 
   const columns = [
     {
@@ -90,7 +88,7 @@ const UserTable = (props) => {
       title: '角色',
       dataIndex: 'roles',
       width: '20%',
-      render: (_roles) => _roles?.map(e => roles.find(r => e === r.id)?.name || '').join(",")
+      render: (_roles) => _roles?.map((e) => roles.find((r) => e === r.id)?.name || '').join(','),
     },
     {
       title: '创建时间',
@@ -101,7 +99,7 @@ const UserTable = (props) => {
       title: '状态',
       dataIndex: 'enabled',
       width: '5%',
-      render: (enabled) => enabled ? '正常' : '停用'
+      render: (enabled) => (enabled ? '正常' : '停用'),
     },
     {
       title: '操作',
@@ -109,31 +107,31 @@ const UserTable = (props) => {
       render: (_, record) => {
         return (
           <Space>
-            {
-              record?.enabled ? (<Button type='primary'
-                                 size="small"
-                                 loading={updateLoading}
-                                 onClick={() => updateEnabled(record, false)}
-                >停用</Button>) :
-                (<Button type="default"
-                         size="small"
-                         loading={updateLoading}
-                         onClick={() => updateEnabled(record, true)}
-                >启用</Button>)
-            }
-            <Popconfirm
-              title={`确认重置为初始密码?`}
-              onConfirm={() => resetPassword(record)}
-            >
-              <Button type="primary"
-                      size="small"
-                      loading={resetPasswordLoading}
+            {record?.enabled ? (
+              <Button
+                type="primary"
+                size="small"
+                loading={updateLoading}
+                onClick={() => updateEnabled(record, false)}
               >
+                停用
+              </Button>
+            ) : (
+              <Button
+                type="default"
+                size="small"
+                loading={updateLoading}
+                onClick={() => updateEnabled(record, true)}
+              >
+                启用
+              </Button>
+            )}
+            <Popconfirm title={`确认重置为初始密码?`} onConfirm={() => resetPassword(record)}>
+              <Button type="primary" size="small" loading={resetPasswordLoading}>
                 重置密码
               </Button>
             </Popconfirm>
           </Space>
-
         );
       },
     },
