@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Form, Modal, Input } from 'antd';
 
-const ClassTemplateFormModal = (props) => {
+const ManageFormModal = (props) => {
   const {
     modalVisible,
     handleCancelModal,
@@ -110,4 +110,4 @@ const ClassTemplateFormModal = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.models.adminTemplate,
-}))(ClassTemplateFormModal);
+}))(ManageFormModal);

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Card, Space, message } from 'antd';
 import PublicTable from '@/components/Table';
-import ClassTemplateFormModal from '@/pages/admin/template/classTemplate/ClassTemplateFormModal';
+import ManageFormModal from '@/pages/admin/classTemplate/manage/ManageFormModal';
 
-const ClassTemplateTable = (props) => {
+const ManageTable = (props) => {
   const { dispatch, loading } = props;
   const { dataSource, total } = props;
   // modal状态
@@ -39,7 +39,7 @@ const ClassTemplateTable = (props) => {
   // 查询课堂模板
   useEffect(() => {
     dispatch({
-      type: 'adminTemplate/queryClassTemplates',
+      type: 'adminManage/queryClassTemplates',
       payload: { page, size, sort: 'id,desc' },
     });
   }, []);
@@ -123,7 +123,7 @@ const ClassTemplateTable = (props) => {
         }}
       />
       {modalVisible && (
-        <ClassTemplateFormModal
+        <ManageFormModal
           modalVisible={modalVisible}
           handleCancelModal={handleCancelModal}
           typeModal={typeModal}
@@ -133,8 +133,8 @@ const ClassTemplateTable = (props) => {
   );
 };
 
-export default connect(({ adminTemplate, loading }) => ({
-  dataSource: adminTemplate.queryClassTemplatesData?.content,
-  total: adminTemplate.queryClassTemplatesData?.totalElements,
-  loading: loading.effects['adminTemplate/queryClassTemplates'],
-}))(ClassTemplateTable);
+export default connect(({ adminManage, loading }) => ({
+  dataSource: adminManage.queryClassTemplatesData?.content,
+  total: adminManage.queryClassTemplatesData?.totalElements,
+  loading: loading.effects['adminManage/queryClassTemplates'],
+}))(ManageTable);

@@ -1,8 +1,8 @@
 import { message } from 'antd';
-import {createClassTemplate, queryClassTemplates, updateClassTemplate} from '@/services/admin/template';
+import {createClassTemplate, queryClassTemplates, updateClassTemplate} from '@/services/admin/manage';
 
-const TemplateModel = {
-  namespace: 'adminTemplate',
+const ManageModel = {
+  namespace: 'adminManage',
   state: {
     queryClassTemplatesData: {},
   },
@@ -68,4 +68,4 @@ const TemplateModel = {
   },
 };
 
-export default TemplateModel;
+export default ManageModel;

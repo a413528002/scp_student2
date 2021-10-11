@@ -332,19 +332,25 @@ export default [
       },
       // 课堂模板
       {
-        path: './template',
-        name: 'template',
+        path: './classTemplate',
+        name: 'classTemplate',
         icon: 'ExpandOutlined',
         routes: [
           {
             path: './',
-            redirect: './classTemplate',
+            redirect: './manage',
           },
           {
             // 模板管理
-            path: './classTemplate',
-            name: 'classTemplate',
-            component: './admin/template/classTemplate',
+            path: './manage',
+            name: 'manage',
+            component: './admin/classTemplate/manage',
+          },
+          {
+            // 模板管理
+            path: './financial',
+            name: 'financial',
+            component: './admin/classTemplate/financial',
           },
         ],
       },
