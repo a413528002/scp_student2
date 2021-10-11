@@ -354,6 +354,13 @@ export default [
           },
         ],
       },
+      // license
+      {
+        path: './license',
+        name: 'license',
+        icon: 'CheckSquareOutlined',
+        component: './admin/license',
+      },
     ],
   },
   // 设置
