@@ -93,11 +93,11 @@ const SwitchClassroomModal = (props) => {
       dataIndex: 'tchNickname',
       key: 'tchNickname',
     },
-    // {
-    //   title: '学生数量',
-    //   dataIndex: 'address',
-    //   key: 'address',
-    // },
+    {
+      title: '学生数量',
+      dataIndex: 'stuCount',
+      key: 'stuCount',
+    },
   ];
   return (
     <Modal
