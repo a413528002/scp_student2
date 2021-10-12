@@ -352,6 +352,12 @@ export default [
             name: 'financial',
             component: './admin/classTemplate/financial',
           },
+          {
+            // 凭证引擎
+            path: './voucher',
+            name: 'voucher',
+            component: './admin/classTemplate/voucher',
+          },
         ],
       },
       // license

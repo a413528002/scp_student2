@@ -47,6 +47,7 @@ export default {
   'menu.admin.classTemplate': '课堂模板',
   'menu.admin.classTemplate.manage': '模板管理',
   'menu.admin.classTemplate.financial': '金融数据',
+  'menu.admin.classTemplate.voucher': '凭证引擎',
   'menu.admin.license': 'License',
 
   'menu.account': '个人页',
