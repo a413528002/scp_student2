@@ -151,8 +151,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择业务类型">
               {BusinessType?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -196,8 +196,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择利率类型">
               {RateType?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -229,8 +229,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择存贷客户类型">
               {CustomerType?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -248,8 +248,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择贷款分类">
               {LoanType?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -284,8 +284,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择贷款信用评级">
               {CreditRating?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -303,8 +303,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择债券分类">
               {DebtType?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -323,8 +323,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择渠道代码">
               {Channel?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
@@ -343,8 +343,8 @@ const FinancialFormDrawer = (props) => {
           >
             <Select placeholder="请选择区域">
               {Region?.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name}
+                <Select.Option key={d.value} value={d.value}>
+                  {d.text}
                 </Select.Option>
               ))}
             </Select>
