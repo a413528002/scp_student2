@@ -1,8 +1,11 @@
 import { message } from 'antd';
 import {
+  createClassTemplateFinancialMarket,
   deleteClassTemplateFinancialMarket,
   queryClassTemplateFinancialMarkets,
+  queryEnums,
   queryFMClassTemplates,
+  updateClassTemplateFinancialMarket,
 } from '@/services/admin/ctfm';
 
 const FinancialModel = {
@@ -11,6 +14,7 @@ const FinancialModel = {
     queryFMClassTemplatesData: [],
     classTemplateId: null,
     queryClassTemplatesData: [],
+    queryEnumsData: [],
   },
   effects: {
     // 查询课堂模板
@@ -52,7 +56,7 @@ const FinancialModel = {
         });
       }
     },
-    // 查询课堂模板-科目
+    // 删除课堂模板-金融数据
     *deleteClassTemplateFinancialMarket({ payload }, { call, put, select }) {
       const response = yield call(deleteClassTemplateFinancialMarket, payload);
       if (!response.errCode) {
@@ -62,6 +66,50 @@ const FinancialModel = {
         yield put({
           type: 'queryClassTemplateFinancialMarkets',
           payload: { classTemplateId },
+        });
+      }
+    },
+    // 新建课堂模板-金融数据
+    *createClassTemplateFinancialMarket({ payload, callback }, { call, put, select }) {
+      const response = yield call(createClassTemplateFinancialMarket, payload);
+      if (!response.errCode) {
+        message.success('新建成功');
+        callback();
+        // 获取classTemplateId
+        const classTemplateId = yield select((state) => state.adminFinancial.classTemplateId);
+        yield put({
+          type: 'queryClassTemplateFinancialMarkets',
+          payload: { classTemplateId },
+        });
+      }
+    },
+    // 修改课堂模板-金融数据
+    *updateClassTemplateFinancialMarket({ payload, callback }, { call, put, select }) {
+      const response = yield call(updateClassTemplateFinancialMarket, payload);
+      if (!response.errCode) {
+        message.success('修改成功');
+        callback();
+        // 获取classTemplateId
+        const classTemplateId = yield select((state) => state.adminFinancial.classTemplateId);
+        yield put({
+          type: 'queryClassTemplateFinancialMarkets',
+          payload: { classTemplateId },
+        });
+      }
+    },
+    // 查询枚举
+    *queryEnums({ payload }, { call, put }) {
+      const response = yield call(queryEnums, payload);
+      if (!response.errCode) {
+        // key转换
+        const queryEnumsData = JSON.parse(
+          JSON.stringify(response)
+            .replace(/"id"/g, '"value"')
+            .replace(/"name"/g, '"text"'),
+        );
+        yield put({
+          type: 'save',
+          payload: { queryEnumsData },
         });
       }
     },

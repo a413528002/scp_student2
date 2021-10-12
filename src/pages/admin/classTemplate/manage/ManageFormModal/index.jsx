@@ -109,5 +109,5 @@ const ManageFormModal = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.models.adminTemplate,
+  loading: loading.models.adminManage,
 }))(ManageFormModal);

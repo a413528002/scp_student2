@@ -74,21 +74,13 @@ export function yuan(obj) {
 }
 
 /**
- * 业务类型转换
- * @param type
- * @returns {string}
+ * 查找枚举转换
+ * @param arr
+ * @param val
+ * @returns {null|*}
  */
-export function bizType(type) {
-  switch (type) {
-    case 'DPST':
-      return '存款';
-    case 'LOAN':
-      return '贷款';
-    case 'DEBT':
-      return '债券';
-    case 'IF':
-      return '投融资';
-    default:
-      break;
-  }
+export function findEnums(arr = [], val = null) {
+  if (!arr || !val) return null;
+  const { text } = arr.find((d) => d.value === val);
+  return text;
 }

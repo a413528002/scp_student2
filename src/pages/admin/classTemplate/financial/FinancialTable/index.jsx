@@ -1,20 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, message, Space, Select, Popconfirm } from 'antd';
 import PublicTable from '@/components/Table';
 import styles from '@/pages/admin/classTemplate/financial/index.less';
 import BizType from '@/components/BizType';
 import Million from '@/components/Million';
-import { toPercent } from '@/utils/commonUtils';
+import { findEnums, toPercent } from '@/utils/commonUtils';
+import FinancialFormDrawer from '@/pages/admin/classTemplate/financial/FinancialFormDrawer';
 
 const FinancialTable = (props) => {
   const { dispatch, deleteLoading, loading } = props;
-  const { querySelectData, classTemplateId, dataSource } = props;
+  const {
+    querySelectData,
+    classTemplateId,
+    dataSource,
+    queryEnumsData: {
+      BusinessType,
+      RateType,
+      CustomerType,
+      LoanType,
+      CreditRating,
+      DebtType,
+      Channel,
+      Region,
+    },
+  } = props;
 
   // 查询课堂模板
   useEffect(() => {
     dispatch({
       type: 'adminFinancial/queryFMClassTemplates',
+    });
+  }, []);
+
+  // 查询枚举
+  useEffect(() => {
+    dispatch({
+      type: 'adminFinancial/queryEnums',
     });
   }, []);
 
@@ -29,6 +51,35 @@ const FinancialTable = (props) => {
         payload: { classTemplateFinancialMarketId },
       });
     }
+  };
+
+  // Drawer状态
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  // modal内容
+  const [typeDrawer, setTypeDrawer] = useState({});
+
+  /**
+   * 显示modal
+   * @param type 操作类型 CREATE:新增 UPDATE:修改
+   * @param _record
+   */
+  const handleShowDrawer = (type, _record) => {
+    if (type === 'CREATE') {
+      setTypeDrawer({ type, title: '新建' });
+    } else if (type === 'UPDATE') {
+      const record = {
+        ..._record,
+        amount: _record.amount / 10000,
+        mgMoney: _record.mgMoney / 10000,
+      };
+      setTypeDrawer({ type, title: '修改', record });
+    }
+    setDrawerVisible(true);
+  };
+
+  // 关闭modal
+  const handleCancelDrawer = () => {
+    setDrawerVisible(false);
   };
 
   /**
@@ -70,7 +121,9 @@ const FinancialTable = (props) => {
       title: '业务类型',
       dataIndex: 'bizType',
       key: 'bizType',
-      render: (bizType) => <BizType>{bizType}</BizType>,
+      filters: BusinessType,
+      onFilter: (value, { bizType }) => bizType.indexOf(value) === 0,
+      render: (value) => findEnums(BusinessType, value),
     },
     {
       title: '金额(万元)',
@@ -87,6 +140,9 @@ const FinancialTable = (props) => {
       title: '利率类型',
       dataIndex: 'rateType',
       key: 'rateType',
+      filters: RateType,
+      onFilter: (value, { rateType }) => rateType.indexOf(value) === 0,
+      render: (value) => findEnums(RateType, value),
     },
     {
       title: '期望利率',
@@ -98,36 +154,55 @@ const FinancialTable = (props) => {
       title: '存贷客户类型',
       dataIndex: 'customerType',
       key: 'customerType',
+      filters: CustomerType,
+      onFilter: (value, { customerType }) => customerType.indexOf(value) === 0,
+      render: (value) => findEnums(CustomerType, value),
     },
     {
       title: '贷款分类',
       dataIndex: 'loanType',
       key: 'loanType',
+      filters: LoanType,
+      onFilter: (value, { loanType }) => loanType.indexOf(value) === 0,
+      render: (value) => findEnums(LoanType, value),
     },
     {
-      title: '质押或担保金额',
-      dataIndex: 'number',
-      key: 'number',
+      title: '质押或担保金额(万元)',
+      dataIndex: 'mgMoney',
+      key: 'mgMoney',
+      render: (mgMoney) => <Million>{mgMoney}</Million>,
     },
     {
       title: '贷款信用评级',
       dataIndex: 'creditRating',
       key: 'creditRating',
+      filters: CreditRating,
+      onFilter: (value, { creditRating }) => creditRating.indexOf(value) === 0,
+      render: (value) => findEnums(CreditRating, value),
     },
     {
       title: '债券分类',
       dataIndex: 'debtType',
       key: 'debtType',
+      filters: DebtType,
+      onFilter: (value, { debtType }) => debtType.indexOf(value) === 0,
+      render: (value) => findEnums(DebtType, value),
     },
     {
       title: '渠道代码',
       dataIndex: 'channel',
       key: 'channel',
+      filters: Channel,
+      onFilter: (value, { channel }) => channel.indexOf(value) === 0,
+      render: (value) => findEnums(Channel, value),
     },
     {
       title: '区域',
       dataIndex: 'region',
       key: 'region',
+      filters: Region,
+      onFilter: (value, { region }) => region.indexOf(value) === 0,
+      render: (value) => findEnums(Region, value),
     },
     {
       title: '操作',
@@ -135,7 +210,7 @@ const FinancialTable = (props) => {
       render: (_, record) => {
         return (
           <Space>
-            <Button type="primary" size="small" onClick={() => message.error('暂不支持操作')}>
+            <Button type="primary" size="small" onClick={() => handleShowDrawer('UPDATE', record)}>
               修改
             </Button>
             <Popconfirm
@@ -159,12 +234,20 @@ const FinancialTable = (props) => {
         <Select value={classTemplateId} onChange={handleChangeSelectOption} style={{ width: 120 }}>
           {selectOption}
         </Select>
-        <Button type="primary" onClick={() => message.error('暂不支持操作')}>
-          新增
+        <Button type="primary" onClick={() => handleShowDrawer('CREATE')}>
+          新建
         </Button>
       </div>
-
+      {/* table */}
       <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
+      {/* modal */}
+      {drawerVisible && (
+        <FinancialFormDrawer
+          drawerVisible={drawerVisible}
+          typeDrawer={typeDrawer}
+          handleCancelDrawer={handleCancelDrawer}
+        />
+      )}
     </>
   );
 };
@@ -173,6 +256,7 @@ export default connect(({ adminFinancial, loading }) => ({
   querySelectData: adminFinancial.queryFMClassTemplatesData,
   classTemplateId: adminFinancial.classTemplateId,
   dataSource: adminFinancial.queryClassTemplatesData,
+  queryEnumsData: adminFinancial.queryEnumsData,
   loading: loading.effects['adminFinancial/queryClassTemplateFinancialMarkets'],
   deleteLoading: loading.effects['adminFinancial/deleteClassTemplateFinancialMarket'],
 }))(FinancialTable);
