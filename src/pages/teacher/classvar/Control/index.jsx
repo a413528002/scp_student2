@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "umi";
-import {Button, Card} from "antd";
-import PublicTable from "@/components/Table";
-import UpdateClassVarModal from "@/pages/teacher/classvar/UpdateClassVarModal";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'umi';
+import { Button, Card } from 'antd';
+import PublicTable from '@/components/Table';
+import UpdateClassVarModal from '@/pages/teacher/classvar/UpdateClassVarModal';
 
 const Control = (props) => {
     const {dispatch, dataSource, loading} = props
@@ -58,7 +58,7 @@ const Control = (props) => {
         key: 'opt',
         render: (_, record) => (
 
-          <Button type='primary' size='small' disabled={!record.editable} onClick={e => handleUpdateClassVarShowModal(record)}>
+          <Button type='primary' size='small' onClick={e => handleUpdateClassVarShowModal(record)}>
             修改
           </Button>
         )
