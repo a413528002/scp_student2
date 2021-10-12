@@ -1,6 +1,6 @@
 import { request } from 'umi';
 
-// 查询课堂模板-科目
+// 查询课堂模板-金融数据
 export async function queryClassTemplateFinancialMarkets(params) {
   return request(`${NODE_API}/admin/ctfm/queryClassTemplateFinancialMarkets`, {
     method: 'GET',

@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, message, Space, Select, Popconfirm } from 'antd';
 import PublicTable from '@/components/Table';
 import styles from '@/pages/admin/classTemplate/financial/index.less';
-import BizType from '@/components/BizType';
 import Million from '@/components/Million';
 import { findEnums, toPercent } from '@/utils/commonUtils';
 import FinancialFormDrawer from '@/pages/admin/classTemplate/financial/FinancialFormDrawer';
@@ -55,11 +54,11 @@ const FinancialTable = (props) => {
 
   // Drawer状态
   const [drawerVisible, setDrawerVisible] = useState(false);
-  // modal内容
+  // Drawer内容
   const [typeDrawer, setTypeDrawer] = useState({});
 
   /**
-   * 显示modal
+   * 显示Drawer
    * @param type 操作类型 CREATE:新增 UPDATE:修改
    * @param _record
    */
@@ -77,7 +76,7 @@ const FinancialTable = (props) => {
     setDrawerVisible(true);
   };
 
-  // 关闭modal
+  // 关闭Drawer
   const handleCancelDrawer = () => {
     setDrawerVisible(false);
   };
@@ -239,7 +238,13 @@ const FinancialTable = (props) => {
         </Button>
       </div>
       {/* table */}
-      <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
+      <PublicTable
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        scroll={{ x: 1100 }}
+        bordered
+      />
       {/* modal */}
       {drawerVisible && (
         <FinancialFormDrawer
