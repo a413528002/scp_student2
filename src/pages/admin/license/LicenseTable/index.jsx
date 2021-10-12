@@ -66,10 +66,12 @@ const LicenseTable = (props) => {
       }
     >
       <PublicTable
+        showHeader = {false}
         dataSource={dataSource}
         columns={columns}
         loading={loading}
         bordered
+        pagination={false}
       />
       {
         activateModalVisible &&
