@@ -1,10 +1,11 @@
 import React from 'react';
+import LicenseTable from "@/pages/admin/license/LicenseTable";
 
 const License = () => {
   return (
-    <div>
-      License
-    </div>
+    <>
+      <LicenseTable/>
+    </>
   );
 };
 
