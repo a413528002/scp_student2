@@ -91,7 +91,7 @@ const VariableFormDrawer = (props) => {
         <Form
           {...formItemLayout}
           form={form}
-          name="financial_form_drawer"
+          name="form_drawer"
           initialValues={{ ...record }}
         >
           <Form.Item
