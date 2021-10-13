@@ -347,6 +347,12 @@ export default [
             component: './admin/classTemplate/manage',
           },
           {
+            // 变量
+            path: './variable',
+            name: 'variable',
+            component: './admin/classTemplate/variable',
+          },
+          {
             // 模板管理
             path: './financial',
             name: 'financial',
