@@ -64,7 +64,7 @@ const MemberInformation = (props) => {
           case true:
             return <Badge status="processing" text="已上线" />;
           case false:
-            return <Badge status="error" text="未上线" />;
+            return <Badge status="default" text="未上线" />;
           default:
             break;
         }
