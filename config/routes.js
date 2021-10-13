@@ -323,7 +323,7 @@ export default [
         path: './',
         redirect: './user',
       },
-     // 用户管理
+      // 用户管理
       {
         path: './user',
         name: 'user',
@@ -357,6 +357,12 @@ export default [
             path: './financial',
             name: 'financial',
             component: './admin/classTemplate/financial',
+          },
+          {
+            // 科目
+            path: './subject',
+            name: 'subject',
+            component: './admin/classTemplate/subject',
           },
           {
             // 凭证引擎
