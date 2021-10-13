@@ -10,7 +10,7 @@ const VariableFormDrawer = (props) => {
     queryEnumsData: { ClassVariables },
     classTemplateId,
   } = props;
-  const { dispatch, loading, voucherLoading } = props;
+  const { dispatch, loading, variableLoading } = props;
   const [form] = Form.useForm();
 
   /**
@@ -136,5 +136,5 @@ export default connect(({ adminVariable, loading }) => ({
   queryEnumsData: adminVariable.queryEnumsData,
   classTemplateId: adminVariable.classTemplateId,
   loading: loading.effects['adminVariable/queryEnums'],
-  voucherLoading: loading.models.adminVariable,
+  variableLoading: loading.models.adminVariable,
 }))(VariableFormDrawer);
