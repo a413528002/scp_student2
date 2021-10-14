@@ -370,6 +370,12 @@ export default [
             name: 'voucher',
             component: './admin/classTemplate/voucher',
           },
+          {
+            // 账务检查
+            path: './check',
+            name: 'check',
+            component: './admin/classTemplate/check',
+          },
         ],
       },
       // license
