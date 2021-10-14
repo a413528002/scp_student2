@@ -80,7 +80,7 @@ const VariableFormDrawer = (props) => {
       footer={
         <Space>
           <Button onClick={handleCancelDrawer}>取消</Button>
-          <Button type="primary" onClick={handleOk} loading={voucherLoading}>
+          <Button type="primary" onClick={handleOk} loading={variableLoading}>
             确认
           </Button>
         </Space>
