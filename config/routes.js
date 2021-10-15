@@ -158,6 +158,12 @@ export default [
             name: 'financing',
             component: './student/financial/financing',
           },
+          {
+            // 管理
+            path: './creditorsMng',
+            name: 'creditorsMng',
+            component: './student/financial/creditorsMng',
+          },
         ],
       },
       // 财务

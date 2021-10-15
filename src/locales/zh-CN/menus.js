@@ -19,6 +19,7 @@ export default {
   'menu.student.financial': '金融市场',
   'menu.student.financial.creditors': '债权市场',
   'menu.student.financial.financing': '投融资市场',
+  'menu.student.financial.creditorsMng': '债权管理',
   'menu.student.finance': '财务管理',
   'menu.student.finance.operation': '运营管理',
   'menu.student.finance.transfer': '资金转账',
