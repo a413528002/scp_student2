@@ -5,21 +5,21 @@ import { connect, useModel } from 'umi';
 import { Button, Card, Modal, Tag } from 'antd';
 import { toPercent } from '@/utils/commonUtils';
 import { useSubscription } from 'react-stomp-hooks';
-import Tags from "@/components/Tags";
-import Million from "@/components/Million";
+import Tags from '@/components/Tags';
+import Million from '@/components/Million';
 
 const DepositTabRob = (props) => {
-  const {dispatch, dataSource, grabStatus, startDuration} = props
-  const {loading, grabLoading} = props
+  const { dispatch, dataSource, grabStatus, startDuration } = props;
+  const { loading, grabLoading } = props;
 
   const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState
+  const { currentUser } = initialState;
 
-  const {classHourId} = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {}
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
-  const [makeUpCostConfirmModelVisible, setMakeUpCostConfirmModelVisible] = useState(false)
-  const [currentClassFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
-  const [makeUpCostConfirmModelText, setMakeUpCostConfirmModelText] = useState("")
+  const [makeUpCostConfirmModelVisible, setMakeUpCostConfirmModelVisible] = useState(false);
+  const [currentClassFinancialMarketId, setCurrentFinancialMarketId] = useState(null);
+  const [makeUpCostConfirmModelText, setMakeUpCostConfirmModelText] = useState('');
 
   /**
    * 处理消息
@@ -30,45 +30,45 @@ const DepositTabRob = (props) => {
     if (msgBody.msgType === 'FINMKT_GRAB_INFO') {
       dispatch({
         type: 'studentGrabDeposit/setGrabInfo',
-        payload: { ...msgBody.data, currentUserId: currentUser?.id }
-      })
+        payload: { ...msgBody.data, currentUserId: currentUser?.id },
+      });
     } else if (msgBody.msgType === 'FINMKT_GRABBED') {
       dispatch({
         type: 'studentGrabDeposit/setGrabbedData',
-        payload: msgBody.data
-      })
+        payload: msgBody.data,
+      });
     } else {
-      console.log("未处理的MESSAGE：" + msgBody)
+      console.log('未处理的MESSAGE：' + msgBody);
     }
-  }
+  };
 
   useSubscription('/app/clshr/' + classHourId + '/finMkt/dpst', handleMsg);
 
   // 执行抢单
   const doGrab = (classFinancialMarketId, makeUpCost) => {
-    setCurrentFinancialMarketId(classFinancialMarketId)
+    setCurrentFinancialMarketId(classFinancialMarketId);
     dispatch({
       type: 'studentGrabDeposit/grab',
       payload: { classHourId, classFinancialMarketId, makeUpCost },
       callback: (response) => {
         if (response.errCode === 31 && !makeUpCostConfirmModelVisible) {
-          setMakeUpCostConfirmModelText(response.errMsg)
-          setMakeUpCostConfirmModelVisible(true)
+          setMakeUpCostConfirmModelText(response.errMsg);
+          setMakeUpCostConfirmModelVisible(true);
         } else {
-          setCurrentFinancialMarketId(null)
+          setCurrentFinancialMarketId(null);
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   const makeUpCostConfirmModelCancel = () => {
-    setMakeUpCostConfirmModelVisible(false)
-  }
+    setMakeUpCostConfirmModelVisible(false);
+  };
 
   const makeUpCostConfirmModelOk = () => {
-    doGrab(currentClassFinancialMarketId,true)
-    setMakeUpCostConfirmModelVisible(false)
-  }
+    doGrab(currentClassFinancialMarketId, true);
+    setMakeUpCostConfirmModelVisible(false);
+  };
 
   const columns = [
     {
@@ -109,11 +109,19 @@ const DepositTabRob = (props) => {
     },
     {
       title: '抢单',
-      render: (_, {classFinancialMarketId, status}) => {
+      render: (_, { classFinancialMarketId, status }) => {
         return (
-          <Button type={'primary'} onClick={() => doGrab(classFinancialMarketId, false)} loading={grabLoading} disabled={status !== 'NORMAL'}>抢单</Button>
-        )
-      }
+          <Button
+            type={'primary'}
+            onClick={() => doGrab(classFinancialMarketId, false)}
+            loading={grabLoading}
+            disabled={status !== 'NORMAL'}
+            size="small"
+          >
+            抢单
+          </Button>
+        );
+      },
     },
   ];
 
@@ -121,30 +129,38 @@ const DepositTabRob = (props) => {
     if (classHourId && startDuration) {
       dispatch({
         type: 'studentGrabDeposit/countDown',
-      })
+      });
     }
-  }, [classHourId, startDuration > 0])
-
+  }, [classHourId, startDuration > 0]);
 
   const renderGrabStatus = () => {
     if (grabStatus === 'NONE') {
-      return <div className={styles.timer}><span>抢单未开始</span></div>
+      return (
+        <div className={styles.timer}>
+          <span>抢单未开始</span>
+        </div>
+      );
     }
     if (grabStatus === 'STARTED') {
-      return <div className={styles.timer}>抢单开始倒计时：<span>{startDuration ?? 0}秒</span></div>
+      return (
+        <div className={styles.timer}>
+          抢单开始倒计时：<span>{startDuration ?? 0}秒</span>
+        </div>
+      );
     }
     if (grabStatus === 'ENDED') {
-      return <div className={styles.timer}><span>抢单已结束</span></div>
+      return (
+        <div className={styles.timer}>
+          <span>抢单已结束</span>
+        </div>
+      );
     }
-    return <div></div>
-  }
+    return <div></div>;
+  };
 
   return (
     <>
-      <Card
-        size={'small'}
-        type="inner"
-      >
+      <Card size={'small'} type="inner">
         {renderGrabStatus()}
       </Card>
 
@@ -162,20 +178,22 @@ const DepositTabRob = (props) => {
         visible={makeUpCostConfirmModelVisible}
         onCancel={makeUpCostConfirmModelCancel}
         onOk={makeUpCostConfirmModelOk}
-        title='是否补足营销费用'
+        title="是否补足营销费用"
         width={400}
       >
         {makeUpCostConfirmModelText}
       </Modal>
     </>
-
   );
 };
 
-export default connect(({studentGrabDeposit, loading}) => ({
-  dataSource: studentGrabDeposit.startDuration && studentGrabDeposit.startDuration > 0 ? [] : studentGrabDeposit.financialMarketData,
+export default connect(({ studentGrabDeposit, loading }) => ({
+  dataSource:
+    studentGrabDeposit.startDuration && studentGrabDeposit.startDuration > 0
+      ? []
+      : studentGrabDeposit.financialMarketData,
   grabStatus: studentGrabDeposit.grabStatus,
   startDuration: studentGrabDeposit.startDuration,
-  loading:loading.effects['studentGrabDeposit/countDown'],
-  grabLoading:loading.effects['studentGrabDeposit/grab']
+  loading: loading.effects['studentGrabDeposit/countDown'],
+  grabLoading: loading.effects['studentGrabDeposit/grab'],
 }))(DepositTabRob);
