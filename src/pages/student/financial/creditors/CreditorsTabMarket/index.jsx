@@ -1,37 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import { connect, useModel } from 'umi';
+import React from 'react';
+import { connect } from 'umi';
 import PublicTable from '@/components/Table';
 import CreditorsRule from '@/pages/student/financial/creditors/CreditorsRule';
-import {Button, Card, Modal} from 'antd';
+import { Button, Popconfirm, message } from 'antd';
 import { useSubscription } from 'react-stomp-hooks';
 import { toPercent } from '@/utils/commonUtils';
-import styles from '@/pages/student/deal/deposit/index.less';
+import Million from '@/components/Million';
 
 const CreditorsTabMarket = (props) => {
   const { dispatch, loading, grabLoading } = props;
-  const { dataSource = [], grabStatus, startDuration } = props;
-
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState;
+  const { dataSource } = props;
 
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
-
-  const [makeUpCostConfirmModelVisible, setMakeUpCostConfirmModelVisible] = useState(false)
-  const [currentClassFinancialMarketId, setCurrentFinancialMarketId] = useState(null)
-  const [makeUpCostConfirmModelText, setMakeUpCostConfirmModelText] = useState("")
-
-  /*useEffect(() => {
-    if (classHourId) {
-      // 查询金融市场数据
-      dispatch({
-        type: 'studentCreditors/gdebtQueryFinancialMarkets',
-        payload: {
-          classHourId
-        }
-      })
-    }
-  }, [])*/
 
   /**
    * 处理消息
@@ -42,41 +23,40 @@ const CreditorsTabMarket = (props) => {
     if (msgBody.msgType === 'FINMKT_GRAB_INFO') {
       dispatch({
         type: 'studentCreditors/setGrabInfo',
-        payload: { ...msgBody.data, currentUserId: currentUser?.id },
+        payload: { ...msgBody.data },
       });
     } else if (msgBody.msgType === 'FINMKT_GRABBED') {
       dispatch({
-        type: 'studentGrabLoan/setGrabbedData',
+        type: 'studentCreditors/setGrabbedData',
         payload: msgBody.data,
       });
     } else {
-      console.log('未处理的MESSAGE：' + msgBody);
+      console.log(`未处理的MESSAGE：${msgBody}`);
     }
   };
 
-  useSubscription('/app/clshr/' + classHourId + '/finMkt/debt', handleMsg);
+  /**
+   * 监听websocket连接
+   */
+  useSubscription(`/app/clshr/${classHourId}/finMkt/debt`, handleMsg);
 
   /**
    * 债券抢单
-   * @param financialMarketId row id
+   * @param classFinancialMarketId id
    */
-  const gdebtGrab = (financialMarketId) => {
-    if (classHourId && financialMarketId) {
+  const grab = (classFinancialMarketId) => {
+    if (classHourId && classFinancialMarketId) {
       dispatch({
-        type: 'studentCreditors/gdebtGrab',
-        payload: { classHourId, financialMarketId },
+        type: 'studentCreditors/grab',
+        payload: { classHourId, classFinancialMarketId },
       });
     }
   };
 
-  const makeUpCostConfirmModelCancel = () => {
-    setMakeUpCostConfirmModelVisible(false)
-  }
-
-  const makeUpCostConfirmModelOk = () => {
-    doGrab(currentClassFinancialMarketId,true)
-    setMakeUpCostConfirmModelVisible(false)
-  }
+  // 关闭Pop
+  const handleCancelPop = () => {
+    message.error('已取消');
+  };
 
   const columns = [
     {
@@ -99,13 +79,14 @@ const CreditorsTabMarket = (props) => {
       title: '金额(万元)',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => (!amount ? null : `${amount / 10000}`),
+      render: (amount) => <Million>{amount}</Million>,
     },
 
     {
       title: '预计收益率',
       dataIndex: 'expectRate',
       key: 'expectRate',
+      render: (expectRate) => toPercent(expectRate),
     },
     {
       title: '期限',
@@ -118,82 +99,34 @@ const CreditorsTabMarket = (props) => {
       key: 'grab',
       render: (_, { status, classFinancialMarketId }) => {
         return (
-          <Button
-            type="primary"
-            size="small"
-            onClick={() => gdebtGrab(classFinancialMarketId)}
-            loading={grabLoading}
+          <Popconfirm
+            title="确认抢单?"
+            onConfirm={() => grab(classFinancialMarketId)}
+            onCancel={handleCancelPop}
+            disabled={status !== 'NORMAL'}
           >
-            抢单
-          </Button>
+            <Button
+              type="primary"
+              size="small"
+              loading={grabLoading}
+              disabled={status !== 'NORMAL'}
+            >
+              抢单
+            </Button>
+          </Popconfirm>
         );
       },
     },
   ];
-
-  useEffect(() => {
-    if (classHourId && startDuration) {
-      dispatch({
-        type: 'studentGrabDeposit/countDown',
-      });
-    }
-  }, [classHourId, startDuration > 0]);
-
-  const renderGrabStatus = () => {
-    if (grabStatus === 'NONE') {
-      return (
-        <div className={styles.timer}>
-          <span>抢单未开始</span>
-        </div>
-      );
-    }
-    if (grabStatus === 'STARTED') {
-      return (
-        <div className={styles.timer}>
-          抢单倒计时：<span>{startDuration ?? 0}秒</span>
-        </div>
-      );
-    }
-    if (grabStatus === 'ENDED') {
-      return (
-        <div className={styles.timer}>
-          <span>抢单已结束</span>
-        </div>
-      );
-    }
-    return <div></div>;
-  };
-
   return (
     <>
-      <Card
-        size={'small'}
-        type="inner"
-      >
-        {renderGrabStatus()}
-      </Card>
       <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
       <CreditorsRule />
-      <Modal
-        visible={makeUpCostConfirmModelVisible}
-        onCancel={makeUpCostConfirmModelCancel}
-        onOk={makeUpCostConfirmModelOk}
-        title='是否补足营销费用'
-        width={400}
-      >
-        {makeUpCostConfirmModelText}
-      </Modal>
     </>
   );
 };
 
 export default connect(({ studentCreditors, loading }) => ({
-  dataSource:
-    studentCreditors.startDuration && studentCreditors.startDuration > 0
-      ? []
-      : studentCreditors.financialMarketData,
-  grabStatus: studentCreditors.grabStatus,
-  startDuration: studentCreditors.startDuration,
-  loading: loading.effects['studentCreditors/gdebtQueryFinancialMarkets'],
-  grabLoading: loading.effects['studentCreditors/gdebtGrab'],
+  dataSource: studentCreditors.creditorsMarketData,
+  loading: loading.models.studentCreditors,
 }))(CreditorsTabMarket);
