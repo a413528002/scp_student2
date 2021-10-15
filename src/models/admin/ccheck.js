@@ -1,8 +1,10 @@
 import {
+  createClassTemplateManualBookCheck, deleteClassTemplateManualBookCheck,
   queryClassTemplateManualBookChecks,
   queryClassTemplates,
-  queryEnums,
+  queryEnums, updateClassTemplateManualBookCheck,
 } from '@/services/admin/ctmbc';
+import {message} from "antd";
 
 const CheckModel = {
   namespace: 'adminCheck',
@@ -65,6 +67,47 @@ const CheckModel = {
         yield put({
           type: 'save',
           payload: { queryEnumsData },
+        });
+      }
+    },
+    // 删除课堂模板-账务检查
+    *deleteClassTemplateManualBookCheck({ payload }, { call, put, select }) {
+      const response = yield call(deleteClassTemplateManualBookCheck, payload);
+      if (!response.errCode) {
+        message.success('删除成功');
+        // 获取classTemplateId
+        const classTemplateId = yield select((state) => state.adminCheck.classTemplateId);
+        yield put({
+          type: 'queryClassTemplateManualBookChecks',
+          payload: { classTemplateId },
+        });
+      }
+    },
+    // 新建课堂模板-账务检查
+    *createClassTemplateManualBookCheck({ payload, callback }, { call, put, select }) {
+      const response = yield call(createClassTemplateManualBookCheck, payload);
+      if (!response.errCode) {
+        message.success('新建成功');
+        callback();
+        // 获取classTemplateId
+        const classTemplateId = yield select((state) => state.adminCheck.classTemplateId);
+        yield put({
+          type: 'queryClassTemplateManualBookChecks',
+          payload: { classTemplateId },
+        });
+      }
+    },
+    // 修改课堂模板-账务检查
+    *updateClassTemplateManualBookCheck({ payload, callback }, { call, put, select }) {
+      const response = yield call(updateClassTemplateManualBookCheck, payload);
+      if (!response.errCode) {
+        message.success('修改成功');
+        callback();
+        // 获取classTemplateId
+        const classTemplateId = yield select((state) => state.adminCheck.classTemplateId);
+        yield put({
+          type: 'queryClassTemplateManualBookChecks',
+          payload: { classTemplateId },
         });
       }
     },

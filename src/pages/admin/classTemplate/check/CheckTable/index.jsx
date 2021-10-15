@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Select } from 'antd';
+import { Button, message, Popconfirm, Select, Space } from 'antd';
 import PublicTable from '@/components/Table';
 import { findEnums } from '@/utils/commonUtils';
 import styles from '@/pages/admin/classTemplate/variable/index.less';
+import CheckFormDrawer from '@/pages/admin/classTemplate/check/CheckFormDrawer';
 
 const CheckTable = (props) => {
   const {
@@ -12,7 +13,7 @@ const CheckTable = (props) => {
     classTemplateId,
     queryEnumsData: { CheckType },
   } = props;
-  const { dispatch, loading } = props;
+  const { dispatch, loading, deleteLoading } = props;
   // 查询课堂模板
   useEffect(() => {
     dispatch({
@@ -26,6 +27,46 @@ const CheckTable = (props) => {
       type: 'adminCheck/queryEnums',
     });
   }, []);
+
+  /**
+   * 删除课堂模板-账务检查
+   * @param classTemplateManualBookCheckId
+   */
+  const deleteClassTemplateManualBookCheck = (classTemplateManualBookCheckId) => {
+    if (classTemplateManualBookCheckId) {
+      dispatch({
+        type: 'adminCheck/deleteClassTemplateManualBookCheck',
+        payload: { classTemplateManualBookCheckId },
+      });
+    }
+  };
+
+  // Drawer状态
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  // Drawer内容
+  const [typeDrawer, setTypeDrawer] = useState({});
+
+  /**
+   * 显示modal
+   * @param type 操作类型 CREATE:新增 UPDATE:修改
+   * @param _record
+   */
+  const handleShowDrawer = (type, _record) => {
+    if (type === 'CREATE') {
+      setTypeDrawer({ type, title: '新建' });
+    } else if (type === 'UPDATE') {
+      const record = {
+        ..._record,
+      };
+      setTypeDrawer({ type, title: '修改', record });
+    }
+    setDrawerVisible(true);
+  };
+
+  // 关闭Drawer
+  const handleCancelDrawer = () => {
+    setDrawerVisible(false);
+  };
 
   /**
    * 下拉框切换
@@ -46,6 +87,11 @@ const CheckTable = (props) => {
       {d.name}
     </Select.Option>
   ));
+
+  // 取消Pop
+  const handleCancelPop = () => {
+    message.error('已取消');
+  };
 
   const columns = [
     {
@@ -106,6 +152,36 @@ const CheckTable = (props) => {
       dataIndex: 'comments',
       key: 'comments',
     },
+    {
+      title: '操作',
+      key: 'opt',
+      fixed: 'right',
+      align: 'center',
+      render: (_, record) => {
+        return (
+          <Space>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                handleShowDrawer('UPDATE', record);
+              }}
+            >
+              修改
+            </Button>
+            <Popconfirm
+              title="确认删除?"
+              onConfirm={() => deleteClassTemplateManualBookCheck(record.id)}
+              onCancel={handleCancelPop}
+            >
+              <Button type="primary" size="small" loading={deleteLoading}>
+                删除
+              </Button>
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
   ];
   return (
     <>
@@ -114,9 +190,30 @@ const CheckTable = (props) => {
         <Select value={classTemplateId} onChange={handleChangeSelectOption} style={{ width: 120 }}>
           {selectOption}
         </Select>
+        <Button
+          type="primary"
+          onClick={() => {
+            handleShowDrawer('CREATE');
+          }}
+        >
+          新建
+        </Button>
       </div>
       {/* table */}
-      <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered scroll={{x:1800}}/>
+      <PublicTable
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        bordered
+        scroll={{ x: 1900 }}
+      />
+      {drawerVisible && (
+        <CheckFormDrawer
+          drawerVisible={drawerVisible}
+          handleCancelDrawer={handleCancelDrawer}
+          typeDrawer={typeDrawer}
+        />
+      )}
     </>
   );
 };
@@ -127,4 +224,5 @@ export default connect(({ adminCheck, loading }) => ({
   classTemplateId: adminCheck.classTemplateId,
   queryEnumsData: adminCheck.queryEnumsData,
   loading: loading.effects['adminCheck/queryClassTemplateManualBookChecks'],
+  deleteLoading: loading.effects['adminCheck/deleteClassTemplateManualBookCheck'],
 }))(CheckTable);
