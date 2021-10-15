@@ -57,8 +57,6 @@ const VoucherTable = (props) => {
     } else if (type === 'UPDATE') {
       const record = {
         ..._record,
-        amount: _record.amount / 10000,
-        mgMoney: _record.mgMoney / 10000,
       };
       setTypeDrawer({ type, title: '修改', record });
     }
