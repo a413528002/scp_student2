@@ -44,8 +44,6 @@ const Login = (props) => {
     try {
       // 登录
       const response = await getLogin({...values});
-      // console.log(response)
-
       if (!response.errCode) {
         const defaultloginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
@@ -96,24 +94,24 @@ const Login = (props) => {
   }
   return (
     <div className={styles.container}>
-      {/*国际化*/}
+      {/* 国际化 */}
       <div className={styles.lang} data-lang>
         {SelectLang && <SelectLang/>}
       </div>
       <div className={styles.content}>
-        {/*头部*/}
+        {/* 头部 */}
         <div className={styles.top}>
           <div className={styles.header}>
             <Link to="/">
-              {/*<img alt="logo" className={styles.logo} src="/logo.svg"/>*/}
+              {/* <img alt="logo" className={styles.logo} src="/logo.svg"/> */}
               <span className={styles.title}>商业银行经营管理实训平台</span>
             </Link>
           </div>
-          {/*<div className={styles.desc}>
+          {/* <div className={styles.desc}>
             {intl.formatMessage({
               id: 'pages.layouts.userLayout.title',
             })}
-          </div>*/}
+          </div> */}
         </div>
 
         <div className={styles.main}>

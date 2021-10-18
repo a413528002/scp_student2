@@ -21,3 +21,10 @@ export async function getLogout() {
     method: 'POST',
   })
 }
+
+// 查询租户LOGO
+export async function queryTenantLogo(options) {
+  return request(`${NODE_API}/queryTenantLogo`, {
+    method: 'GET',
+  })
+}

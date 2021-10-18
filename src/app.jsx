@@ -1,9 +1,12 @@
 import { PageLoading } from '@ant-design/pro-layout';
-import { notification } from 'antd';
+import { Divider, notification } from 'antd';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { queryCurrentUser } from '@/services/user';
+import { queryTenantLogo } from '@/services/login';
+import img from '@umijs/preset-dumi/lib/transformer/remark/img';
+import Logo from "@/components/Logo";
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -20,11 +23,13 @@ export const initialStateConfig = {
 export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
-      const response = await queryCurrentUser();
-      if (response.errCode) {
+      const currentUser = await queryCurrentUser();
+      // 请求logo
+      const tenantLogo = await queryTenantLogo();
+      if (currentUser.errCode || tenantLogo.errCode) {
         history.push(loginPath);
       }
-      return response;
+      return { ...currentUser, tenantLogo };
     } catch (error) {
       history.push(loginPath);
     }
@@ -147,6 +152,8 @@ export const layout = ({ initialState }) => {
       }
     },
     menuHeaderRender: undefined,
+    logo: () => <Logo />,
+    // logo: initialState.currentUser.tenantLogo,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
