@@ -53,8 +53,8 @@ const TenantDrawer = (props) => {
     if (!isLt2M) {
       message.error('文件不能大于2MB');
       return false;
-    }else {
-      message.success('上传成功')
+    } else {
+      message.success('上传成功');
     }
     return isLt2M;
   };
@@ -62,7 +62,7 @@ const TenantDrawer = (props) => {
   const uploadProps = {
     beforeUpload,
     maxCount: 1,
-    accept: 'image/png, image/jpeg, .svg',
+    accept: 'image/svg+xml',
   };
 
   // 栅格
@@ -92,7 +92,7 @@ const TenantDrawer = (props) => {
           {...formItemLayout}
           form={form}
           name="form_drawer"
-          initialValues={{ ...currentTenantData }}
+          initialValues={{ tenantName: currentTenantData.tenantName }}
         >
           <Form.Item
             name="tenantName"
@@ -118,7 +118,7 @@ const TenantDrawer = (props) => {
             ]}
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            extra="仅支持.svg/.jpg/.png/.jpeg文件格式"
+            extra="仅支持.svg文件格式"
           >
             <Upload name="logo" {...uploadProps}>
               <Button icon={<UploadOutlined />}>点击上传文件</Button>
