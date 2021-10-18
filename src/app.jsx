@@ -1,11 +1,10 @@
 import { PageLoading } from '@ant-design/pro-layout';
-import { Divider, notification } from 'antd';
+import { notification } from 'antd';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { queryCurrentUser } from '@/services/user';
 import { queryTenantLogo } from '@/services/login';
-import img from '@umijs/preset-dumi/lib/transformer/remark/img';
 import Logo from "@/components/Logo";
 
 const isDev = process.env.NODE_ENV === 'development';

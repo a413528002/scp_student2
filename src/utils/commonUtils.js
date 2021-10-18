@@ -84,3 +84,23 @@ export function findEnums(arr = [], val = null) {
   const { text } = arr.find((d) => d.value === val);
   return text;
 }
+
+/**
+ * 文件转为base64
+ * @param file
+ * @returns {Promise<unknown>}
+ */
+export function fileToBase64(file) {
+  return new Promise((resolve) => {
+    if (file.status === 'done') {
+      const formData = new FormData();
+      formData.append('file', file.originFileObj);
+      const reader = new FileReader();
+      reader.readAsDataURL(file.originFileObj);
+      reader.onloadend = (e) => {
+        const base64 = e?.target?.result?.split('base64,')[1]
+        resolve(base64);
+      };
+    }
+  });
+}

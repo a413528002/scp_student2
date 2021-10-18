@@ -391,6 +391,13 @@ export default [
         icon: 'CheckSquareOutlined',
         component: './admin/license',
       },
+      // 租户管理
+      {
+        path: './tenant',
+        name: 'tenant',
+        icon: 'InteractionOutlined',
+        component: './admin/tenant',
+      },
     ],
   },
   // 设置

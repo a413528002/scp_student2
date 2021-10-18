@@ -53,6 +53,7 @@ export default {
   'menu.admin.classTemplate.voucher': '凭证引擎',
   'menu.admin.classTemplate.check': '账务检查',
   'menu.admin.license': 'License',
+  'menu.admin.tenant': '租户管理',
 
   'menu.account': '个人页',
   'menu.account.center': '个人中心',
