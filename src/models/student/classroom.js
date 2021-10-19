@@ -11,7 +11,7 @@ import {
   getStudentQueryClassHourUserDetails,
   getStudentQueryJoinedClassHours,
 } from '@/services/student/classroom';
-import {message} from 'antd';
+import { message } from 'antd';
 
 const ClassroomModel = {
   namespace: 'studentClassroom',
@@ -22,36 +22,36 @@ const ClassroomModel = {
     classData: {}, // 课堂信息
     classUserData: {}, // 学生在课堂的信息
     bankData: {}, // 银行信息
-    bankMembersData: [] // 成员信息
+    bankMembersData: [], // 成员信息
   },
   effects: {
     // 选择课堂
-    * switchClassroom({payload}, {call, put}) {
+    *switchClassroom({ payload }, { call, put }) {
       if (!payload) {
-        return
+        return;
       }
-      const {classHourId} = payload
+      const { classHourId } = payload;
       if (!classHourId) {
-        return
+        return;
       }
-      localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(payload))
+      localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(payload));
       yield put({
         type: 'save',
         payload: {
           classData: payload,
           classOpt: true,
-          bankOpt: true
-        }
-      })
+          bankOpt: true,
+        },
+      });
       yield put({
         type: 'queryClassHourUserDetails',
-        payload: {classHourId}
-      })
+        payload: { classHourId },
+      });
     },
 
     // 根据课堂编码查询课堂
-    * queryClassHourByCode({payload}, {call, put}) {
-      const response = yield call(getStudentQueryClassHourByCode, payload)
+    *queryClassHourByCode({ payload }, { call, put }) {
+      const response = yield call(getStudentQueryClassHourByCode, payload);
       if (!response.errCode) {
         if (response) {
           // localStorage.setItem('STUDENT_IN_CLASS', JSON.stringify(response))
@@ -64,96 +64,96 @@ const ClassroomModel = {
               classData: response,
               bankData: {},
               bankMembersData: [],
-            }
-          })
+            },
+          });
         } else {
-          message.error('未找到该课堂')
+          message.error('未找到该课堂');
         }
       }
     },
 
     // 加入课堂
-    * joinClassHour({payload}, {call, put, select}) {
-      const classData = yield select(state => state.studentClassroom.classData)
-      const {classHourId, classHourCode} = classData
-      const response = yield call(getStudentJoinClassHour, {classHourId})
+    *joinClassHour({ payload }, { call, put, select }) {
+      const classData = yield select((state) => state.studentClassroom.classData);
+      const { classHourId, classHourCode } = classData;
+      const response = yield call(getStudentJoinClassHour, { classHourId });
       if (!response.errCode) {
         // localStorage.setItem('STUDENT_IN_CLASS_STATE', '已加入')
         yield put({
           type: 'save',
           payload: {
             // studentClassroomStudentInClassStateData: '已加入'
-          }
-        })
-        message.success('已加入')
-        const classHourVo = yield call(getStudentQueryClassHourByCode, {code: classHourCode})
+          },
+        });
+        message.success('已加入');
+        const classHourVo = yield call(getStudentQueryClassHourByCode, { code: classHourCode });
         yield put({
           type: 'switchClassroom',
-          payload: classHourVo
-        })
+          payload: classHourVo,
+        });
       }
     },
 
     // 退出课堂
-    * exitClassHour({payload}, {call, put, select}) {
-      const classOpt = yield select(state => state.studentClassroom.classOpt)
+    *exitClassHour({ payload }, { call, put, select }) {
+      const classOpt = yield select((state) => state.studentClassroom.classOpt);
       if (!classOpt) {
         return;
       }
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const response = yield call(getStudentExitClassHour, {classHourId})
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const response = yield call(getStudentExitClassHour, { classHourId });
       if (!response.errCode) {
-        localStorage.removeItem("STUDENT_IN_CLASS")
+        localStorage.removeItem('STUDENT_IN_CLASS');
         yield put({
           type: 'save',
           payload: {
             classData: {},
             bankData: {},
             bankMembersData: [],
-          }
-        })
+          },
+        });
       }
     },
 
     // 查询已加入课堂
-    * queryJoinedClassHours({payload}, {call, put}) {
-      const response = yield call(getStudentQueryJoinedClassHours, payload)
+    *queryJoinedClassHours({ payload }, { call, put }) {
+      const response = yield call(getStudentQueryJoinedClassHours, payload);
       if (!response.errCode) {
-        response.map(item => item._key = item.classHourId)
+        response.map((item) => (item._key = item.classHourId));
         yield put({
           type: 'save',
           payload: {
             studentClassroomQueryJoinedClassHoursData: response,
-          }
-        })
+          },
+        });
       }
     },
     // 创建银行
-    * createBank({payload, callback}, {call, put, select}) {
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const response = yield call(getStudentCreateBank, {...payload, classHourId})
+    *createBank({ payload, callback }, { call, put, select }) {
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const response = yield call(getStudentCreateBank, { ...payload, classHourId });
       if (!response.errCode) {
-        message.success('新建成功')
-        callback()
+        message.success('新建成功');
+        callback();
         // 将当前正在进行中的课堂信息保存起来 数据持久化
         // localStorage.setItem('BANK_IN_INFO', JSON.stringify(response))
         // 同时存储一份在redux中
         yield put({
           type: 'queryClassHourUserDetails',
-          payload: {classHourId}
-        })
+          payload: { classHourId },
+        });
       }
     },
     // 退出银行
-    * exitBank({payload}, {call, put, select}) {
-      const bankOpt = yield select(state => state.studentClassroom.bankOpt)
+    *exitBank({ payload }, { call, put, select }) {
+      const bankOpt = yield select((state) => state.studentClassroom.bankOpt);
       if (!bankOpt) {
         return;
       }
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const response = yield call(getStudentExitBank, {classHourId})
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const response = yield call(getStudentExitBank, { classHourId });
       if (!response.errCode) {
-        message.success('退出成功')
+        message.success('退出成功');
         // 退出银行后，将保存的银行清除
         // localStorage.removeItem('BANK_IN_INFO')
         // 退出银行后redux中的银行信息赋值为 undefined
@@ -162,20 +162,19 @@ const ClassroomModel = {
           payload: {
             bankData: {},
             bankMembersData: [],
-          }
-        })
-
+          },
+        });
       }
     },
 
     // 根据银行编码查询银行
-    * queryBankByCode({payload}, {call, put, select}) {
-      const classOpt = yield select(state => state.studentClassroom.classOpt)
+    *queryBankByCode({ payload }, { call, put, select }) {
+      const classOpt = yield select((state) => state.studentClassroom.classOpt);
       if (!classOpt) {
         return;
       }
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const response = yield call(getStudentQueryBankByCode, {...payload, classHourId})
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const response = yield call(getStudentQueryBankByCode, { ...payload, classHourId });
       if (!response.errCode) {
         if (response) {
           // 如果有返回值 将银行信息存储 localStorage ，覆盖之前的银行信息
@@ -192,43 +191,43 @@ const ClassroomModel = {
               },
               bankOpt: false,
               bankMembersData: [],
-            }
-          })
+            },
+          });
         } else {
-          message.error('没有该银行')
+          message.error('没有该银行');
         }
       }
     },
     // 加入银行
-    * joinBank({payload}, {call, put, select}) {
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const bankId = yield select(state => state.studentClassroom.bankData.bankId)
+    *joinBank({ payload, callback }, { call, select }) {
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const bankId = yield select((state) => state.studentClassroom.bankData.bankId);
       if (!bankId) {
-        message.error('请查询银行')
-        return
+        message.error('请查询银行');
+        return;
       }
-      const response = yield call(getStudentJoinBank, {bankId, classHourId})
+      const response = yield call(getStudentJoinBank, { bankId, classHourId });
       if (!response.errCode) {
-        message.success('加入成功，等待行长接受')
+        callback();
+        message.success('加入成功，等待行长接受');
       }
     },
 
     // 查询用户在课堂的详细信息
-    * queryClassHourUserDetails({payload}, {call, put}) {
-      const response = yield call(getStudentQueryClassHourUserDetails, payload)
+    *queryClassHourUserDetails({ payload }, { call, put }) {
+      const response = yield call(getStudentQueryClassHourUserDetails, payload);
       if (!response.errCode) {
-        let bankMembersData = []
+        let bankMembersData = [];
         // 如果有银行成员，则处理一下数据
         if (response.bankMembers) {
-          bankMembersData = response.bankMembers
-            .map(item => {
-              return {
-                ...item,
-                _key: item.stuUserId,
-                _kickOpt: response.isPresident && item.stuUserId !== response.stuUserId, // 可踢出操作判断逻辑  是行长并且非自己
-                _acceptOpt: item.bankStatus === 'PENDING'           // 同意操作判断逻辑 银行状态为等待接受
-              };
-            })
+          bankMembersData = response.bankMembers.map((item) => {
+            return {
+              ...item,
+              _key: item.stuUserId,
+              _kickOpt: response.isPresident && item.stuUserId !== response.stuUserId, // 可踢出操作判断逻辑  是行长并且非自己
+              _acceptOpt: item.bankStatus === 'PENDING', // 同意操作判断逻辑 银行状态为等待接受
+            };
+          });
         }
         yield put({
           type: 'save',
@@ -238,45 +237,51 @@ const ClassroomModel = {
               bankCode: response.bankCode,
               presNickname: response.bankPresNickname,
               bankName: response.bankName,
+              totalDeposit: response.totalDeposit,
+              totalLoan: response.totalLoan,
+              totalDebt: response.totalDebt,
+              totalInvestmentAndFinancing: response.totalInvestmentAndFinancing,
+              firstPeriodInjectMoney: response.firstPeriodInjectMoney,
+              bankruptInjectMoney: response.bankruptInjectMoney,
             },
-            bankMembersData
-          }
-        })
+            bankMembersData,
+          },
+        });
       }
     },
     // 踢出银行成员
-    * kickBankMember({payload}, {call, put, select}) {
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const response = yield call(getStudentKickBankMember, {...payload, classHourId})
+    *kickBankMember({ payload }, { call, put, select }) {
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const response = yield call(getStudentKickBankMember, { ...payload, classHourId });
       if (!response.errCode) {
-        message.success('踢出成功')
+        message.success('踢出成功');
         // 刷新表格 查询用户在课堂的详细信息
         yield put({
           type: 'queryClassHourUserDetails',
-          payload: {classHourId}
-        })
+          payload: { classHourId },
+        });
       }
     },
     // 同意加入银行
-    * acceptBankMember({payload}, {call, put, select}) {
-      const classHourId = yield select(state => state.studentClassroom.classData.classHourId)
-      const response = yield call(getStudentAcceptBankMember, {...payload, classHourId})
+    *acceptBankMember({ payload }, { call, put, select }) {
+      const classHourId = yield select((state) => state.studentClassroom.classData.classHourId);
+      const response = yield call(getStudentAcceptBankMember, { ...payload, classHourId });
       if (!response.errCode) {
-        message.success('已同意')
+        message.success('已同意');
         // 刷新表格 查询用户在课堂的详细信息
         yield put({
           type: 'queryClassHourUserDetails',
-          payload: {classHourId}
-        })
+          payload: { classHourId },
+        });
       }
     },
   },
   reducers: {
-    save(state, {payload}) {
+    save(state, { payload }) {
       return {
         ...state,
         ...payload,
-      }
+      };
     },
     reset() {
       return {
@@ -286,10 +291,10 @@ const ClassroomModel = {
         classData: {}, // 课堂信息
         classUserData: {}, // 学生在课堂的信息
         bankData: {}, // 银行信息
-        bankMembersData: [] // 成员信息
-      }
-    }
+        bankMembersData: [], // 成员信息
+      };
+    },
   },
-}
+};
 
-export default ClassroomModel
+export default ClassroomModel;

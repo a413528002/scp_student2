@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Card, Descriptions, Empty, Input, message, Popconfirm, Space } from 'antd';
 import NewBankModal from '@/pages/student/classroom/NewBankModal';
+import Million from '@/components/Million';
 
 const BankInformation = (props) => {
   const { dispatch, classOpt, bankOpt, bankData } = props;
-  const { searchLoading, joinLoading } = props;
+  const { searchLoading, joinLoading, detailsLoading } = props;
+  // 获取课堂id
+  const { classHourId } = JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) || {};
 
   // 新建银行modal显示状态 ----start-----
   const [newBankModalVisible, setBankModalVisible] = useState(false);
@@ -20,6 +23,9 @@ const BankInformation = (props) => {
     setBankModalVisible(false);
   };
   // 新建银行modal显示状态 ----end-----
+
+  // 是否显示银行总量信息
+  const [bankDataTotal, setBankDataTotal] = useState(true);
 
   /**
    * 根据银行编码查询银行
@@ -39,6 +45,7 @@ const BankInformation = (props) => {
           code,
         },
       });
+      setBankDataTotal(false);
     } else {
       message.error('请输入银行编号');
     }
@@ -48,6 +55,12 @@ const BankInformation = (props) => {
   const joinBank = () => {
     dispatch({
       type: 'studentClassroom/joinBank',
+      callback: () => {
+        // 加入成功了才显示Total
+        if (!bankDataTotal) {
+          setBankDataTotal(true);
+        }
+      },
     });
   };
 
@@ -57,6 +70,18 @@ const BankInformation = (props) => {
       type: 'studentClassroom/exitBank',
     });
   };
+
+  // 刷新银行总量信息
+  const handleRefreshTotal = () => {
+    if (classHourId) {
+      dispatch({
+        type: 'studentClassroom/queryClassHourUserDetails',
+        payload: { classHourId },
+      });
+      setBankDataTotal(true);
+    }
+  };
+
   // 关闭pop
   const handleCancelExitBankPop = () => {
     message.error('已取消');
@@ -65,10 +90,11 @@ const BankInformation = (props) => {
     <Card
       title="银行信息"
       bordered={false}
+      loading={detailsLoading}
       extra={
         <>
           <Space wrap>
-            <Input.Group >
+            <Input.Group>
               <Input.Search
                 allowClear
                 enterButton="查询银行"
@@ -92,17 +118,44 @@ const BankInformation = (props) => {
             >
               <Button disabled={!bankOpt}>退出银行</Button>
             </Popconfirm>
+            <Button onClick={handleRefreshTotal} disabled={!classOpt}>
+              刷新
+            </Button>
           </Space>
         </>
       }
       type="inner"
     >
       {bankData.bankId ? (
-        <Descriptions column={2}>
-          <Descriptions.Item label="银行编号">{bankData.bankCode}</Descriptions.Item>
-          <Descriptions.Item label="银行行长">{bankData.presNickname}</Descriptions.Item>
-          <Descriptions.Item label="银行名称">{bankData.bankName}</Descriptions.Item>
-        </Descriptions>
+        <>
+          <Descriptions column={2}>
+            <Descriptions.Item label="银行编号">{bankData.bankCode}</Descriptions.Item>
+            <Descriptions.Item label="银行行长">{bankData.presNickname}</Descriptions.Item>
+            <Descriptions.Item label="银行名称">{bankData.bankName}</Descriptions.Item>
+          </Descriptions>
+          {bankDataTotal && (
+            <Descriptions column={2}>
+              <Descriptions.Item label="存款总量(万)">
+                <Million>{bankData.totalDeposit}</Million>
+              </Descriptions.Item>
+              <Descriptions.Item label="贷款总量(万)">
+                <Million>{bankData.totalLoan}</Million>
+              </Descriptions.Item>
+              <Descriptions.Item label="国债总量(万)">
+                <Million>{bankData.totalDebt}</Million>
+              </Descriptions.Item>
+              <Descriptions.Item label="投融资总量(万)">
+                <Million>{bankData.totalInvestmentAndFinancing}</Million>
+              </Descriptions.Item>
+              <Descriptions.Item label="期初注资金额(万)">
+                <Million>{bankData.firstPeriodInjectMoney}</Million>
+              </Descriptions.Item>
+              <Descriptions.Item label="破产融资金额(万)">
+                <Million>{bankData.bankruptInjectMoney}</Million>
+              </Descriptions.Item>
+            </Descriptions>
+          )}
+        </>
       ) : (
         <Empty />
       )}
@@ -121,4 +174,5 @@ export default connect(({ studentClassroom, loading }) => ({
   bankData: studentClassroom.bankData,
   searchLoading: loading.effects['studentClassroom/queryBankByCode'],
   joinLoading: loading.effects['studentClassroom/joinBank'],
+  detailsLoading: loading.effects['studentClassroom/queryClassHourUserDetails'],
 }))(BankInformation);
