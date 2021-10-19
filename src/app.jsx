@@ -4,7 +4,6 @@ import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { queryCurrentUser } from '@/services/user';
-import { queryTenantLogo } from '@/services/login';
 import Logo from "@/components/Logo";
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -23,12 +22,10 @@ export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
       const currentUser = await queryCurrentUser();
-      // 请求logo
-      const tenantLogo = await queryTenantLogo();
-      if (currentUser.errCode || tenantLogo.errCode) {
+      if (currentUser.errCode) {
         history.push(loginPath);
       }
-      return { ...currentUser, tenantLogo };
+      return { ...currentUser };
     } catch (error) {
       history.push(loginPath);
     }
