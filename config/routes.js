@@ -44,7 +44,7 @@ export default [
         path: './macroeconomic',
         name: 'macroeconomic',
         icon: 'FireOutlined',
-        component: './student/macroeconomic',
+        component: './common/macroeconomic',
       },
       // 规划
       {
@@ -257,6 +257,13 @@ export default [
         icon: 'MessageOutlined',
         component: './student/consultation',
       },
+      // 排行榜
+      {
+        path: './rank',
+        name: 'rank',
+        icon: 'RocketOutlined',
+        component: './common/rank',
+      },
     ],
   },
 
@@ -291,10 +298,10 @@ export default [
       },
       // 宏观经济
       {
-        path: './macro',
-        name: 'macro',
+        path: './macroeconomic',
+        name: 'macroeconomic',
         icon: 'FireOutlined',
-        component: './teacher/macro',
+        component: './common/macroeconomic',
       },
       // 经营管理
       {
@@ -312,10 +319,10 @@ export default [
       },
       // 排行榜
       {
-        path: './ranking',
-        name: 'ranking',
+        path: './rank',
+        name: 'rank',
         icon: 'RocketOutlined',
-        component: './teacher/ranking',
+        component: './common/rank',
       },
     ],
   },

@@ -1,46 +1,30 @@
 import React from 'react';
 import { Card, Col, Row } from 'antd';
-import DepositAndLoanInterestRate from '@/pages/student/macroeconomic/DepositAndLoanInterestRate';
-import DepositAndLoanAmount from '@/pages/student/macroeconomic/DepositAndLoanAmount';
-import DepositAndLoanCount from '@/pages/student/macroeconomic/DepositAndLoanCount';
-
+import DepositAndLoanInterestRate from '@/pages/common/macroeconomic/DepositAndLoanInterestRate';
+import DepositAndLoanAmount from '@/pages/common/macroeconomic/DepositAndLoanAmount';
+import DepositAndLoanCount from '@/pages/common/macroeconomic/DepositAndLoanCount';
 
 const MacroeconomicList = () => {
-  const gutter = { xs: 24, sm: 12, md: 12, lg: 12 }
+  const gutter = { xs: 24, sm: 12, md: 12, lg: 12 };
   return (
     <>
-      <Row gutter={[16,24]}>
+      <Row gutter={[16, 24]}>
         <Col {...gutter}>
-          <Card
-            size='small'
-            type="inner"
-            title="存贷款利率"
-            bordered={false}
-          >
-            <DepositAndLoanInterestRate/>
+          <Card size="small" type="inner" title="存贷款利率" bordered={false}>
+            <DepositAndLoanInterestRate />
           </Card>
         </Col>
         <Col {...gutter}>
-          <Card
-            size='small'
-            type="inner"
-            title="存贷款总量"
-            bordered={false}
-          >
-            <DepositAndLoanAmount/>
+          <Card size="small" type="inner" title="存贷款总量" bordered={false}>
+            <DepositAndLoanAmount />
           </Card>
         </Col>
         <Col {...gutter}>
-          <Card
-            size='small'
-            type="inner"
-            title="存贷款单量"
-            bordered={false}
-          >
-            <DepositAndLoanCount/>
+          <Card size="small" type="inner" title="存贷款单量" bordered={false}>
+            <DepositAndLoanCount />
           </Card>
         </Col>
-       {/* <Col {...gutter}>
+        {/* <Col {...gutter}>
           <Card
             size='small'
             type="inner"

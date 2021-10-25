@@ -33,15 +33,16 @@ export default {
   'menu.student.risk.market': '市场风险',
   'menu.student.risk.regulatory': '风险监管',
   'menu.student.consultation': '第三方咨询',
+  'menu.student.rank': '排行榜',
 
   'menu.teacher': '老师',
   'menu.teacher.classroom': '我的课堂',
   'menu.teacher.operation': '经营控制',
   'menu.teacher.classvar': '参数控制',
-  'menu.teacher.macro': '宏观经济',
+  'menu.teacher.macroeconomic': '宏观经济',
   'menu.teacher.business': '经营管理',
   'menu.teacher.bankruptcy': '破产管理',
-  'menu.teacher.ranking': '排行榜',
+  'menu.teacher.rank': '排行榜',
 
   'menu.admin': '用户管理',
   'menu.admin.user': '用户管理',

@@ -1,11 +1,11 @@
 import React from 'react';
-import RankingTable from '@/pages/teacher/ranking/RankingTable';
+import RankTable from '@/pages/common/rank/RankTable';
 import { Card } from 'antd';
 
 const Ranking = () => {
   return (
     <Card title="排行榜" bordered={false} type="inner">
-      <RankingTable />
+      <RankTable />
     </Card>
   );
 };

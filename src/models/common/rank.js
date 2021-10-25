@@ -1,7 +1,7 @@
-import { queryBankRanks } from '@/services/teacher/bankRank';
+import { queryBankRanks } from '@/services/common/bsr';
 
-const RankingModel = {
-  namespace: 'teacherRanking',
+const RankModel = {
+  namespace: 'teacherRank',
   state: {
     queryBankRanksData: [],
   },
@@ -39,4 +39,4 @@ const RankingModel = {
   },
 };
 
-export default RankingModel;
+export default RankModel;

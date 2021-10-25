@@ -2,17 +2,20 @@ import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Empty } from 'antd';
 import PublicTable from '@/components/Table';
-import styles from '@/pages/student/risk/credit/index.less';
+import styles from '@/pages/common/rank/index.less';
 import Radios from '@/components/Radios';
 
-const RankingTable = (props) => {
+const RankTable = (props) => {
   const { dispatch, loading } = props;
   const {
     queryBankRanksData: { bankScoreRanks: dataSource, period, periodCur, periodTtl },
   } = props;
 
   // 获取课堂id
-  const { classHourId } = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {};
+  const { classHourId } =
+    JSON.parse(localStorage.getItem('STUDENT_IN_CLASS')) ||
+    JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) ||
+    {};
 
   /**
    * 银行排名
@@ -21,7 +24,7 @@ const RankingTable = (props) => {
    */
   const queryBankRanksData = (classHourId, period) => {
     dispatch({
-      type: 'teacherRanking/queryBankRanksData',
+      type: 'teacherRank/queryBankRanksData',
       payload: { classHourId, period },
     });
   };
@@ -72,7 +75,7 @@ const RankingTable = (props) => {
   );
 };
 
-export default connect(({ teacherRanking, loading }) => ({
-  queryBankRanksData: teacherRanking.queryBankRanksData,
+export default connect(({ teacherRank, loading }) => ({
+  queryBankRanksData: teacherRank.queryBankRanksData,
   loading: loading.effects['teacherRanking/queryBankRanksData'],
-}))(RankingTable);
+}))(RankTable);

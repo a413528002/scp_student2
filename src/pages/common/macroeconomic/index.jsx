@@ -1,5 +1,5 @@
 import React from 'react';
-import MacroeconomicList from '@/pages/student/macroeconomic/MacroeconomicList';
+import MacroeconomicList from '@/pages/common/macroeconomic/MacroeconomicList';
 import { Card } from 'antd';
 
 const Macroeconomic = () => {
