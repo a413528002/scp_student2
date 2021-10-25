@@ -62,9 +62,9 @@ const MemberInformation = (props) => {
       render: (online) => {
         switch (online) {
           case true:
-            return <Badge status="processing" text="已上线" />;
+            return <Badge status="processing" text="在线" />;
           case false:
-            return <Badge status="default" text="未上线" />;
+            return <Badge status="default" text="离线" />;
           default:
             break;
         }
