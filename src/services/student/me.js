@@ -2,7 +2,7 @@ import { request } from 'umi';
 
 // 查询存贷款利率
 export async function queryDepositAndLoanInterestRate(params) {
-  return request(`${NODE_API}/student/me/queryDepositAndLoanInterestRate`, {
+  return request(`${NODE_API}/common/me/queryDepositAndLoanInterestRate`, {
     method: 'GET',
     params
   })
@@ -10,7 +10,7 @@ export async function queryDepositAndLoanInterestRate(params) {
 
 // 查询存贷款总量
 export async function queryDepositAndLoanAmount(params) {
-  return request(`${NODE_API}/student/me/queryDepositAndLoanAmount`, {
+  return request(`${NODE_API}/common/me/queryDepositAndLoanAmount`, {
     method: 'GET',
     params
   })
@@ -18,7 +18,7 @@ export async function queryDepositAndLoanAmount(params) {
 
 // 查询存贷款单量
 export async function queryDepositAndLoanCount(params) {
-  return request(`${NODE_API}/student/me/queryDepositAndLoanCount`, {
+  return request(`${NODE_API}/common/me/queryDepositAndLoanCount`, {
     method: 'GET',
     params
   })

@@ -1,9 +1,43 @@
-import React from 'react';
-import {Button, Card, Popconfirm} from "antd";
-import PublicTable from "@/components/Table";
+import React, { useEffect } from 'react';
+import { connect } from 'umi';
+import { Empty } from 'antd';
+import PublicTable from '@/components/Table';
+import styles from '@/pages/student/risk/credit/index.less';
+import Radios from '@/components/Radios';
 
-const RankingTable = () => {
-  const dataSource = []
+const RankingTable = (props) => {
+  const { dispatch, loading } = props;
+  const {
+    queryBankRanksData: { bankScoreRanks: dataSource, period, periodCur, periodTtl },
+  } = props;
+
+  // 获取课堂id
+  const { classHourId } = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {};
+
+  /**
+   * 银行排名
+   * @param classHourId 课堂id
+   * @param period 期数
+   */
+  const queryBankRanksData = (classHourId, period) => {
+    dispatch({
+      type: 'teacherRanking/queryBankRanksData',
+      payload: { classHourId, period },
+    });
+  };
+
+  useEffect(() => {
+    if (classHourId) {
+      queryBankRanksData(classHourId);
+    }
+  }, []);
+
+  // 切换期数
+  const onRadioChange = (e) => {
+    const period = e.target.value;
+    queryBankRanksData(classHourId, period);
+  };
+
   const columns = [
     {
       title: '银行名称',
@@ -12,29 +46,33 @@ const RankingTable = () => {
     },
     {
       title: '分值',
-      dataIndex: 'moduleName',
-      key: 'moduleName',
+      dataIndex: 'score',
+      key: 'score',
     },
     {
       title: '排名',
-      dataIndex: 'testingTime',
-      key: 'testingTime',
+      dataIndex: 'rank',
+      key: 'rank',
     },
   ];
-  return (
-    <Card
-      title="排行榜"
-      bordered={false}
-      type='inner'
-    >
-      <PublicTable
-        dataSource={dataSource}
-        columns={columns}
-        // loading={loading}
-        bordered
-      />
-    </Card>
+  return periodTtl ? (
+    <>
+      <div className={styles.choose}>
+        <Radios
+          period={period}
+          periodCur={periodCur}
+          periodTtl={periodTtl}
+          onRadioChange={onRadioChange}
+        />
+      </div>
+      <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
+    </>
+  ) : (
+    <Empty />
   );
 };
 
-export default RankingTable;
+export default connect(({ teacherRanking, loading }) => ({
+  queryBankRanksData: teacherRanking.queryBankRanksData,
+  loading: loading.effects['teacherRanking/queryBankRanksData'],
+}))(RankingTable);

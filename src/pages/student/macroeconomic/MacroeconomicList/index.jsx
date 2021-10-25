@@ -40,7 +40,7 @@ const MacroeconomicList = () => {
             <DepositAndLoanCount/>
           </Card>
         </Col>
-        <Col {...gutter}>
+       {/* <Col {...gutter}>
           <Card
             size='small'
             type="inner"
@@ -69,7 +69,7 @@ const MacroeconomicList = () => {
           >
             <div>TODO</div>
           </Card>
-        </Col>
+        </Col> */}
       </Row>
     </>
   );
