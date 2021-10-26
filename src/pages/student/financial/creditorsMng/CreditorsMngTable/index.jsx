@@ -4,7 +4,7 @@ import Million from '@/components/Million';
 import { Button, Space, Popconfirm, message } from 'antd';
 import PublicTable from '@/components/Table';
 import CreditorsMngModal from '@/pages/student/financial/creditorsMng/CreditorsMngModal';
-
+import { toPercent } from '@/utils/commonUtils';
 
 const CreditorsMngTable = (props) => {
   const { dispatch, loading } = props;
@@ -63,7 +63,7 @@ const CreditorsMngTable = (props) => {
   // 利息结算modal显示状态 ----end-----
 
   // 关闭Pop
-  const handleCancelPop = (e) => {
+  const handleCancelPop = () => {
     message.error('已取消');
   };
 
@@ -98,9 +98,10 @@ const CreditorsMngTable = (props) => {
     },
 
     {
-      title: '预计收益率',
+      title: '预计收益率(%)',
       dataIndex: 'expectRate',
       key: 'expectRate',
+      render: (expectRate) => toPercent(expectRate),
     },
     {
       title: '期限',
@@ -111,7 +112,7 @@ const CreditorsMngTable = (props) => {
       title: '利息',
       dataIndex: 'interest',
       key: 'interest',
-      render: (_, { bankFinancialBusinessId }) => {
+      render: (_, { bankFinancialBusinessId, ended }) => {
         return (
           <Space>
             <Button
@@ -121,15 +122,17 @@ const CreditorsMngTable = (props) => {
             >
               计息
             </Button>
-            <Popconfirm
-              title="确认卖出?"
-              onConfirm={() => sellDebt(bankFinancialBusinessId)}
-              onCancel={handleCancelPop}
-            >
-              <Button type="primary" size="small">
-                卖出
-              </Button>
-            </Popconfirm>
+            {!ended && (
+              <Popconfirm
+                title="确认卖出?"
+                onConfirm={() => sellDebt(bankFinancialBusinessId)}
+                onCancel={handleCancelPop}
+              >
+                <Button type="primary" size="small">
+                  卖出
+                </Button>
+              </Popconfirm>
+            )}
           </Space>
         );
       },
@@ -137,12 +140,7 @@ const CreditorsMngTable = (props) => {
   ];
   return (
     <>
-      <PublicTable
-        dataSource={dataSource}
-        columns={columns}
-        loading={loading}
-        bordered
-      />
+      <PublicTable dataSource={dataSource} columns={columns} loading={loading} bordered />
       {modalVisible && (
         <CreditorsMngModal modalVisible={modalVisible} handleCancelModal={handleCancelModal} />
       )}

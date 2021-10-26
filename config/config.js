@@ -31,7 +31,7 @@ export default defineConfig({
     loading: '@ant-design/pro-layout/es/PageLoading',
   },
   targets: {
-    ie: 10,
+    ie: 11,
   },
   // umi routes: https://umijs.org/docs/routing
   routes,

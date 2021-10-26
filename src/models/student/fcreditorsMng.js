@@ -1,5 +1,10 @@
 import { message } from 'antd';
-import {queryDebtInterests, queryDebts, sellDebt, updateDebtInterest} from '@/services/student/debtm';
+import {
+  queryDebtInterests,
+  queryDebts,
+  sellDebt,
+  updateDebtInterest,
+} from '@/services/student/debtm';
 
 // 存款管理
 const CreditorsMngModel = {
@@ -36,12 +41,12 @@ const CreditorsMngModel = {
       if (!response.errCode) {
         // 获取可以编辑的bankFinancialBusinessInstId
         const editBankFinancialBusinessInstId = response
-          .filter((item) => item.get_disable === false)
+          .filter((item) => item._disable === false)
           .map((item) => item.bankFinancialBusinessInstId)
           .toString();
         // 获取可以编辑的当前行editRow
         const [editRow] = response
-          ?.filter((item) => item.get_disable === false)
+          ?.filter((item) => item._disable === false)
           .map((item) => {
             // interest 元转换为万元
             return { ...item, interest: item.interest / 10000 };
@@ -71,10 +76,15 @@ const CreditorsMngModel = {
       }
     },
     // 卖出债券
-    *sellDebt({ payload }, { call }) {
+    *sellDebt({ payload }, { call, put }) {
       const response = yield call(sellDebt, payload);
       if (!response.errCode) {
+        const { classHourId } = payload;
         message.success('卖出成功');
+        yield put({
+          type: 'queryDebts',
+          payload: { classHourId },
+        });
       }
     },
   },
