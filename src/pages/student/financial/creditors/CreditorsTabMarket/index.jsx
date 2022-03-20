@@ -67,8 +67,8 @@ const CreditorsTabMarket = (props) => {
     },
     {
       title: '业务类型',
-      dataIndex: 'customerTypeName',
-      key: 'customerTypeName',
+      dataIndex: 'debtTypeName',
+      key: 'debtTypeName',
     },
     {
       title: '区域',

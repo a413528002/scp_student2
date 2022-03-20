@@ -41,7 +41,7 @@ const AssetDetail = (props) => {
     },
     {
       title: '回收率',
-      dataIndex: 'returnPeriod',
+      dataIndex: 'returnRate',
       render: (val) => toPercent(val),
     },
     {

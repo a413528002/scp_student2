@@ -100,7 +100,7 @@ const CreditorsMngModal = (props) => {
       render: (period) => `第${period}期`,
     },
     {
-      title: '利息支出(万元)',
+      title: '收益(万元)',
       dataIndex: 'interest',
       key: 'interest',
       editable: true,
@@ -129,7 +129,7 @@ const CreditorsMngModal = (props) => {
       visible={modalVisible}
       onCancel={handleCancelModal}
       onOk={updateDepositInterest}
-      title="利息结算"
+      title="收益结算"
       okButtonProps={{ disabled: !bankFinancialBusinessInstId }}
       confirmLoading={confirmLoading}
     >

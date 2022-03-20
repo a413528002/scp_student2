@@ -19,16 +19,21 @@ const CreditorsTabRecord = (props) => {
     }
   }, []);
   const columns = [
-    {
+ /*   {
       title: '序号',
       dataIndex: 'notation',
       key: 'notation',
       render: (text, record, index) => `${index + 1}`,
+    },*/
+    {
+      title: '所属期数',
+      dataIndex: 'period',
+      render: (period) => `第${period}期`,
     },
     {
       title: '业务类型',
-      dataIndex: 'customerTypeName',
-      key: 'customerTypeName',
+      dataIndex: 'debtTypeName',
+      key: 'debtTypeName',
     },
     {
       title: '区域',
@@ -42,7 +47,7 @@ const CreditorsTabRecord = (props) => {
       render: (amount) => <Million>{amount}</Million>,
     },
     {
-      title: '利率',
+      title: '预计收益率',
       dataIndex: 'expectRate',
       key: 'expectRate',
       render: (expectRate) => toPercent(expectRate),
@@ -52,12 +57,12 @@ const CreditorsTabRecord = (props) => {
       dataIndex: 'term',
       key: 'term',
     },
-    {
+    /*{
       title: '收益(万元)',
       dataIndex: 'mgMoney',
       key: 'mgMoney',
       render: (mgMoney) => <Million>{mgMoney}</Million>,
-    },
+    },*/
   ];
   return (
     <div>

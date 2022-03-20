@@ -13,9 +13,9 @@ export default {
       target: 'http://192.168.1.20:8081',
       changeOrigin: true,
       ws: true,
-      pathRewrite: {
-        '^/scp-api/': '',
-      },
+      // pathRewrite: {
+      //   '^/scp-api/': '',
+      // },
     },
   },
   test: {

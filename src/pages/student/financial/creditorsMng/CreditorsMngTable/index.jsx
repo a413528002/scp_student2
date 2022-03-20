@@ -82,8 +82,8 @@ const CreditorsMngTable = (props) => {
     },
     {
       title: '业务类型',
-      dataIndex: 'customerTypeName',
-      key: 'customerTypeName',
+      dataIndex: 'debtTypeName',
+      key: 'debtTypeName',
     },
     {
       title: '区域',
@@ -98,7 +98,7 @@ const CreditorsMngTable = (props) => {
     },
 
     {
-      title: '预计收益率(%)',
+      title: '收益率(%)',
       dataIndex: 'expectRate',
       key: 'expectRate',
       render: (expectRate) => toPercent(expectRate),
@@ -109,7 +109,7 @@ const CreditorsMngTable = (props) => {
       key: 'term',
     },
     {
-      title: '利息',
+      title: '收益',
       dataIndex: 'interest',
       key: 'interest',
       render: (_, { bankFinancialBusinessId, ended }) => {
@@ -120,7 +120,7 @@ const CreditorsMngTable = (props) => {
               size="small"
               onClick={() => handleShowModal(bankFinancialBusinessId)}
             >
-              计息
+              结算
             </Button>
             {!ended && (
               <Popconfirm
