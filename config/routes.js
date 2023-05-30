@@ -324,6 +324,88 @@ export default [
         icon: 'RocketOutlined',
         component: './common/rank',
       },
+      // 启信慧眼
+      {
+        path: './qixin',
+        name: '企业大数据',
+        // icon: 'RocketOutlined',
+        // component: './qixin',
+        routes: [
+          {
+            path: './advanced',
+            name: '企业查询',
+            // icon: 'RocketOutlined',
+            component: './qixin/advanced',
+          },
+          {
+            path: './people',
+            name: '人员查询',
+            // icon: 'RocketOutlined',
+            component: './qixin/people',
+          },
+          {
+            path: './global',
+            name: '海外企业',
+            // icon: 'RocketOutlined',
+            component: './qixin/global',
+          },
+          {
+            path: './propertyClue',
+            name: '财产线索',
+            // icon: 'RocketOutlined',
+            component: './qixin/propertyClue',
+          },
+          {
+            path: './financingIncident',
+            name: '投资机构',
+            // icon: 'RocketOutlined',
+            component: './qixin/financingIncident',
+          },
+          {
+            path: './enterpriseMonitor',
+            name: '企业监控',
+            // icon: 'RocketOutlined',
+            component: './qixin/enterpriseMonitor',
+          },
+          {
+            path: './personMonitor',
+            name: '人员监控',
+            // icon: 'RocketOutlined',
+            component: './qixin/personMonitor',
+          },
+          // {
+          //   path: './getRelation',
+          //   name: '找关系',
+          //   // icon: 'RocketOutlined',
+          //   component: './qixin/relation/getRelation',
+          // },
+          // {
+          //   path: './relationshipCheck',
+          //   name: '关联关系',
+          //   // icon: 'RocketOutlined',
+          //   component: './qixin/relation/relationshipCheck',
+          // },
+          // {
+          //   path: './groupRelation',
+          //   name: '集团图谱',
+          //   // icon: 'RocketOutlined',
+          //   component: './qixin/relation/groupRelation',
+          // },
+          // {
+          //   path: './lawsuitRelation',
+          //   name: '诉讼图谱',
+          //   // icon: 'RocketOutlined',
+          //   component: './qixin/relation/lawsuitRelation',
+          // },
+          // {
+          //   path: './eventRelation',
+          //   name: '事件图谱',
+          //   // icon: 'RocketOutlined',
+          //   component: './qixin/relation/eventRelation',
+          // },
+        ],
+        // wrappers: ['@/wrappers/toQiXin'],
+      },
     ],
   },
   {
