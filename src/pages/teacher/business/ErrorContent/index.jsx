@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import PublicTable from '@/components/Table';
+import { Select } from 'antd';
+import { useRequest } from '@/.umi/plugin-request/request';
 
 const ErrorContent = (props) => {
   const { dispatch, loading } = props;
@@ -9,6 +11,7 @@ const ErrorContent = (props) => {
   const [page, setPage] = useState(0);
   // 每页条数
   const [size, setSize] = useState(10);
+  const [bankId, setBankId] = useState(null);
   // 获取课堂id
   const { classHourId } = JSON.parse(localStorage.getItem('TEACHER_IN_CLASS')) || {};
   useEffect(() => {
@@ -16,10 +19,22 @@ const ErrorContent = (props) => {
     if (classHourId) {
       dispatch({
         type: 'teacherBusiness/queryBankWrongs',
-        payload: { classHourId, sort: 'id,desc', page, size },
+        payload: { classHourId, bankId, sort: 'id,desc', page, size },
       });
     }
-  }, [page, size]);
+  }, [page, size, bankId, classHourId]);
+
+  const { data: bankData, loading: bankLoading } = useRequest(
+    {
+      url: '/scp-api/teacher/om/queryBanks',
+      method: 'get',
+      params: { classHourId },
+    },
+    {
+      formatResult: (res) => res,
+    },
+  );
+
   const columns = [
     {
       title: '银行名称',
@@ -48,22 +63,35 @@ const ErrorContent = (props) => {
     },
   ];
   return (
-    <PublicTable
-      dataSource={dataSource}
-      columns={columns}
-      loading={loading}
-      bordered
-      pagination={{
-        // 数据总数
-        total,
-        // 页码或 pageSize 改变的回调，参数是改变后的页码及每页条数
-        onChange: (page, pageSize) => {
-          // 接口page是从0开始
-          setPage(page - 1);
-          setSize(pageSize);
-        },
-      }}
-    />
+    <>
+      <Select
+        placeholder={'选择银行'}
+        allowClear
+        options={bankData?.map((item) => ({ label: item.name, value: item.id }))}
+        onSelect={(value) => {
+          setBankId(value);
+        }}
+        onClear={() => {
+          setBankId(null);
+        }}
+      />
+      <PublicTable
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        bordered
+        pagination={{
+          // 数据总数
+          total,
+          // 页码或 pageSize 改变的回调，参数是改变后的页码及每页条数
+          onChange: (page, pageSize) => {
+            // 接口page是从0开始
+            setPage(page - 1);
+            setSize(pageSize);
+          },
+        }}
+      />
+    </>
   );
 };
 

@@ -6,9 +6,7 @@ const ConsultationHintTable = (props) => {
   const { loading } = props;
   const { dataSource } = props;
 
-
   const columns = [
-
     {
       title: '模块名称',
       dataIndex: 'moduleName',
@@ -32,6 +30,16 @@ const ConsultationHintTable = (props) => {
       dataIndex: 'errorPoint',
       key: 'errorPoint',
     },
+    {
+      title: '错误值',
+      dataIndex: 'value1',
+      key: 'value1',
+    },
+    // {
+    //   title: '正确值',
+    //   dataIndex: 'value2',
+    //   key: 'value2',
+    // },
   ];
 
   return (
@@ -44,11 +52,10 @@ const ConsultationHintTable = (props) => {
         defaultPageSize: 10,
         // 数据总数
         total: dataSource.length,
-
       }}
     />
   );
-}
+};
 
 export default connect(({ studentConsultation, loading }) => ({
   dataSource: studentConsultation.queryBankWrongsData,
