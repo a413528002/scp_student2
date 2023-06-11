@@ -1,13 +1,13 @@
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {Alert, message, Tabs} from 'antd';
-import React, {useState} from 'react';
-import ProForm, {ProFormSelect, ProFormText} from '@ant-design/pro-form';
-import {connect, FormattedMessage, history, Link, SelectLang, useIntl, useModel} from 'umi';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Alert, message, Tabs } from 'antd';
+import React, { useState } from 'react';
+import ProForm, { ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { connect, FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import {getLogin, getQueryTenantOptions} from '@/services/login';
+import { getLogin, getQueryTenantOptions } from '@/services/login';
 import styles from './index.less';
 
-const LoginMessage = ({content}) => (
+const LoginMessage = ({ content }) => (
   <Alert
     style={{
       marginBottom: 24,
@@ -19,31 +19,31 @@ const LoginMessage = ({content}) => (
 );
 
 const Login = (props) => {
-  const { dispatch } = props
+  const { dispatch } = props;
   const [submitting, setSubmitting] = useState(false);
   const [userLoginState, setUserLoginState] = useState({});
-  const {initialState, setInitialState} = useModel('@@initialState');
+  const { initialState, setInitialState } = useModel('@@initialState');
   const intl = useIntl();
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
-      await setInitialState((s) => ({...s, currentUser: userInfo}));
+      await setInitialState((s) => ({ ...s, currentUser: userInfo }));
     }
   };
 
   const clearData = () => {
     // 考虑意外退出的情况 登录成功后将存储的localStorage清除
-    localStorage.clear()
-    dispatch({type: 'studentClassroom/reset'})
-    dispatch({type: 'teacherClassroom/reset'})
-  }
+    localStorage.clear();
+    dispatch({ type: 'studentClassroom/reset' });
+    dispatch({ type: 'teacherClassroom/reset' });
+  };
 
   const handleSubmit = async (values) => {
     setSubmitting(true);
     try {
       // 登录
-      const response = await getLogin({...values});
+      const response = await getLogin({ ...values });
       if (!response.errCode) {
         const defaultloginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
@@ -51,14 +51,14 @@ const Login = (props) => {
         });
         message.success(defaultloginSuccessMessage);
         // 清除一些数据
-        clearData()
+        clearData();
 
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
         if (!history) return;
-        const {query} = history.location;
-        const {redirect} = query;
+        const { query } = history.location;
+        const { redirect } = query;
         history.push(redirect || '/');
         // 刷新页面，清空model里的数据
         // window.location.reload()
@@ -77,26 +77,27 @@ const Login = (props) => {
     setSubmitting(false);
   };
 
-  const {status} = userLoginState;
+  const { status } = userLoginState;
   const formRef = React.createRef(null);
   // 获取下拉列表datalist
   const request = async () => {
-    return getQueryTenantOptions()
-      .then(tenants => {
-        formRef?.current?.setFieldsValue({
-          tenantId: tenants.find(() => true)?.id,
-        });
-        return tenants.map(item => {return {
-          label: item.name,
-          value: item.id
-        }});
+    return getQueryTenantOptions().then((tenants) => {
+      formRef?.current?.setFieldsValue({
+        tenantId: tenants.find(() => true)?.id,
       });
-  }
+      return tenants.map((item) => {
+        return {
+          label: item.name,
+          value: item.id,
+        };
+      });
+    });
+  };
   return (
     <div className={styles.container}>
       {/* 国际化 */}
       <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang/>}
+        {SelectLang && <SelectLang />}
       </div>
       <div className={styles.content}>
         {/* 头部 */}
@@ -104,7 +105,7 @@ const Login = (props) => {
           <div className={styles.header}>
             <Link to="/">
               {/* <img alt="logo" className={styles.logo} src="/logo.svg"/> */}
-              <span className={styles.title}>商业银行经营管理实训平台</span>
+              <span className={styles.title}>企业大数据平台</span>
             </Link>
           </div>
           {/* <div className={styles.desc}>
@@ -118,8 +119,8 @@ const Login = (props) => {
           <ProForm
             formRef={formRef}
             initialValues={{
-              "username": "student",
-              "password": "123456",
+              username: 'student',
+              password: '123456',
             }}
             submitter={{
               searchConfig: {
@@ -166,15 +167,17 @@ const Login = (props) => {
                 fieldProps={{
                   size: 'large',
                 }}
-                request={request}
+                hidden={true}
+                initialValue={'DEMO'}
+                // request={request}
                 placeholder="请选择租户"
-                rules={[{required: true, message: '请选择租户'}]}
+                rules={[{ required: true, message: '请选择租户' }]}
               />
               <ProFormText
                 name="username"
                 fieldProps={{
                   size: 'large',
-                  prefix: <UserOutlined className={styles.prefixIcon}/>,
+                  prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.username.placeholder',
@@ -196,7 +199,7 @@ const Login = (props) => {
                 name="password"
                 fieldProps={{
                   size: 'large',
-                  prefix: <LockOutlined className={styles.prefixIcon}/>,
+                  prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.password.placeholder',
@@ -220,21 +223,23 @@ const Login = (props) => {
                 marginBottom: 24,
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-end',
               }}
             >
               <a
-                style={{
-                  // float: 'right',
-                }}
+                style={
+                  {
+                    // float: 'right',
+                  }
+                }
               >
-                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
+                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
               </a>
             </div>
           </ProForm>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

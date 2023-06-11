@@ -274,7 +274,7 @@ export default [
     flatMenu: true,
     access: 'teacherRouteFilter',
     routes: [
-      {
+      /*{
         path: './',
         redirect: './classroom',
       },
@@ -323,8 +323,12 @@ export default [
         name: 'rank',
         icon: 'RocketOutlined',
         component: './common/rank',
-      },
+      },*/
       // 启信慧眼
+      {
+        path: './',
+        redirect: './qixin/advanced',
+      },
       {
         path: './qixin',
         name: '企业大数据',
@@ -355,7 +359,7 @@ export default [
             // icon: 'RocketOutlined',
             component: './qixin/propertyClue',
           },
-          {
+          /*{
             path: './financingIncident',
             name: '投资机构',
             // icon: 'RocketOutlined',
@@ -372,7 +376,8 @@ export default [
             name: '人员监控',
             // icon: 'RocketOutlined',
             component: './qixin/personMonitor',
-          },
+          },*/
+
           // {
           //   path: './getRelation',
           //   name: '找关系',

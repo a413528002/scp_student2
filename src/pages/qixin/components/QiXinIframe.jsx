@@ -38,7 +38,7 @@ const QiXinIframe = (props) => {
       }}
       // scrolling={'no'}
       style={{ width: '100%', height: h, border: 'none', overflow: 'auto' }}
-      src={`https://per-plugin.qixin.com/third-login?tenant=dbcjdx1&token=${data}&returnUrl=${returnUrl}`}
+      src={`https://per-plugin.qixin.com/third-login?tenant=dbcj08&token=${data}&returnUrl=${returnUrl}`}
     ></iframe>
     // </div>
   );
