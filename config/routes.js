@@ -348,6 +348,12 @@ export default [
             component: './qixin/people',
           },
           {
+            path: './people',
+            name: '批量查询',
+            // icon: 'RocketOutlined',
+            component: './qixin/batch',
+          },
+          {
             path: './global',
             name: '海外企业',
             // icon: 'RocketOutlined',
