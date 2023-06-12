@@ -348,7 +348,7 @@ export default [
             component: './qixin/people',
           },
           {
-            path: './people',
+            path: './batch',
             name: '批量查询',
             // icon: 'RocketOutlined',
             component: './qixin/batch',
